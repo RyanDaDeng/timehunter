@@ -192,7 +192,7 @@
             <div class="resume-item d-flex flex-column flex-md-row mb-5">
                 <div class="resume-content mr-auto">
                     <h3 class="mb-0">Java Developer Intern</h3>
-                    <div class="subheading mb-3">Shout! Media Productions</div>
+                    <div class="subheading mb-3">Java back-end Developer</div>
                     <p>Worked as a three month full-time internship.</p>
                     <ul>
                         <li> Built an online bookstore during the training session by using Spring MVC and J2EE tools.
