@@ -78,11 +78,41 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Ryan Deng (Project Under Implementation)
+                <div class="title">
+                    Ryan Deng
                 </div>
 
                 <div class="links">
+                    <h2></h2>
+
+
+                    <ul>
+                        <li>Vue.js Basic CRUD</li>
+                        <li>HTML/JS/JQuery/Ajax CRUD</li>
+                        <li>Swagger API Documentation</li>
+                        <li>Websocket</li>
+                        <li>Cron Jobs</li>
+                        <li>Redis Server</li>
+                        <li>Microservices - Spring Boot (Java)</li>
+                        <li>Microservices - Django (Python)</li>
+                        <li>REST APIs</li>
+                        <li>Ajax/JQuery/JavaScript</li>
+                        <li>MVC</li>
+                        <li>Repository-Service Pattern</li>
+                        <li>Design Patterns</li>
+                        <li>AWS EC2/DNS/VPN/VPC</li>
+                        <li>oAuth</li>
+                        <li>MySQL</li>
+                        <li>MongoDB</li>
+                        <li>DevOps - Git Flow</li>
+                        <li>Integration/Regression/Unit Testing</li>
+                        <li>Auto Deployment - pipeline</li>
+                        <li>Algorithms</li>
+                        <li>AI</li>
+                        <li>Bitbucket/JIRA</li>
+                        <li>Docker</li>
+                        <li>HCI - Human Computer Interaction</li>
+                    </ul>
                     {{--<a href="https://laravel.com/docs">Documentation</a>--}}
                     {{--<a href="https://laracasts.com">Laracasts</a>--}}
                     {{--<a href="https://laravel-news.com">News</a>--}}
