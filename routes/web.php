@@ -1,5 +1,4 @@
 <?php
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,7 +9,16 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/aboutme', function () {
+    return view('about-me');
+})->name('AboutMe');;
+
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => ['auth'], 'prefix' => 'module', 'as' => 'module.'], function () {
+    Route::get('todolist', 'TodoListController@index')->name('todolist.index');
+
 });
