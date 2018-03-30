@@ -1,4 +1,5 @@
 <?php
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -9,16 +10,23 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'HomeController@index')->name('home');
+
+Route::get('/', 'Vue\VueHomeController@index')->name('home');
+Route::get('/home', 'Vue\VueHomeController@index')->name('vue.home');
 
 Route::get('/aboutme', function () {
     return view('about-me');
 })->name('AboutMe');;
 
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
+//Auth::routes();
 
-Route::group(['middleware' => ['auth'], 'prefix' => 'module', 'as' => 'module.'], function () {
-    Route::get('todolist', 'TodoListController@index')->name('todolist.index');
 
-});
+//Route::group([ 'prefix' => 'module', 'as' => 'module.'], function () {
+//    Route::get('todolist', 'TodoListController@index')->name('todolist.index');
+//    Route::get('oauth', 'OAuthSettingController@index')->name('oauth.setting');
+//});
+
+
+//Route::get('/vue', function () {
+//    return view('vue.welcome');
+//})->name('VueWelcome');;

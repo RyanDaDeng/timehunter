@@ -187,7 +187,7 @@
             var app = this;
             axios.get('/api/todolists/v1/tasks')
                     .then(function (resp) {
-                        app.tasks = resp.data;
+                        app.tasks = resp.data.results;
                     })
                     .catch(function (resp) {
                         console.log(resp);

@@ -24,6 +24,9 @@
         "vue-template-compiler": "^2.5.16"
     },
     "dependencies": {
-        "moment": "^2.19.2"
+        "element-ui": "^2.3.2",
+        "moment": "^2.19.2",
+        "vue-infinite-loading": "^2.2.3",
+        "vue-infinite-scroll": "^2.0.2"
     }
 }
