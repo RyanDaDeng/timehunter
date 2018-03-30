@@ -18,6 +18,7 @@ class CreateTimerTable extends Migration
             $table->timestamps();
             $table->integer('user_id')->nullable();
             $table->string('name')->nullable();
+            $table->string('date')->nullable();
             $table->string('description')->nullable();
             $table->integer('total_seconds')->nullable();
             $table->string('total_duration')->nullable();
