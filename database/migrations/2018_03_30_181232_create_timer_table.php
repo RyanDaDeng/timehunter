@@ -13,7 +13,7 @@ class CreateTimerTable extends Migration
      */
     public function up()
     {
-        Schema::create('timer', function (Blueprint $table) {
+        Schema::create('timers', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
             $table->integer('user_id')->nullable();
