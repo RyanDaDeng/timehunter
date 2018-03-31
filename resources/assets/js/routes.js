@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router';
 
 import Login from './forms/public/Login.vue';
-import Signup from './forms/public/signup.vue';
+import Signup from './forms/public/Signup.vue';
 import VueDashboard from './components/ExampleComponent.vue';
 import PublicHome from './forms/public/Navigation.vue';
 import Task from './forms/todolists/Task.vue';
