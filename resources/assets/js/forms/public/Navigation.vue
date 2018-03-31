@@ -110,6 +110,7 @@
                         this.activeIndex = 'signup';
                         break;
                     default:
+                        this.activeIndex = '1';
                         break;
                 }
             },
