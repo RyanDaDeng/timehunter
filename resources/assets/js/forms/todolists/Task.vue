@@ -54,8 +54,8 @@
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="form.description" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Notes" prop="desc" :label-width="formLabelWidth">
-                        <el-input type="textarea" v-model="form.notes"></el-input>
+                    <el-form-item label="Notes" prop="notes" :label-width="formLabelWidth">
+                        <el-input type="textarea" v-model="form.notes" auto-complete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -73,8 +73,8 @@
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="editForm.description" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Notes" prop="desc" :label-width="formLabelWidth">
-                        <el-input type="textarea" v-model="editForm.notes"></el-input>
+                    <el-form-item label="Notes" prop="notes" :label-width="formLabelWidth">
+                        <el-input type="textarea" v-model="editForm.notes" auto-complete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
