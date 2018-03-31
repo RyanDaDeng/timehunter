@@ -48,7 +48,7 @@ class TasksController extends BaseController
             [
                 'name' => $request->name,
                 'description' => $request->description,
-                'notes'=>$request->notes
+                'notes' => $request->notes
             ]
         );
 
@@ -61,7 +61,8 @@ class TasksController extends BaseController
         $task = new Task([
             'user_id' => $user->id,
             'name' => $request->name,
-            'description' => $request->description
+            'description' => $request->description,
+            'notes' => $request->notes
         ]);
         $task->save();
 
