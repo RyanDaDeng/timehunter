@@ -31,7 +31,7 @@
                         label="Task Notes"
                 >
                     <template slot-scope="scope">
-                        <span style="margin-left: 10px"><pre>{{ scope.row.notes }}</pre></span>
+                        <pre style="margin-left: 10px">{{ scope.row.notes }}</pre>
                     </template>
 
                 </el-table-column>
