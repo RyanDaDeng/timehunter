@@ -55,7 +55,7 @@
 
 
                     <div style="padding: 14px;">
-                        <el-row disabled><i v-model="spinner" class="fas fa-clock  fa-4x " style="color: darkgray;"></i></el-row>
+                        <el-row disabled><i class="fas fa-clock  fa-4x " style="color: darkgray;"></i></el-row>
 
                         <div class="bottom clearfix">
                                 No running timer. :(
