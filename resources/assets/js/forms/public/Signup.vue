@@ -73,7 +73,7 @@
 </template>
 
 <script>
-    import moment from 'moment-timezone';
+    import momentTimezone from 'moment-timezone';
     export default {
         data() {
             var validatePass = (rule, value, callback) => {
@@ -123,7 +123,7 @@
         },
         methods: {
             getTimezones(){
-                this.timezones =  moment.tz.names();
+                this.timezones =  momentTimezone.tz.names();
             },
             showSignin(){
                 this.$router.push('/signin');
