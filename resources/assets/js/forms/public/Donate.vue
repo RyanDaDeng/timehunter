@@ -2,6 +2,7 @@
 
 
     <div>
+
         <el-row :gutter="24">
             <el-col :span="20" :offset="2">
                 <div class="grid-content bg-purple">
@@ -16,6 +17,7 @@
                                 <h3>Please support me.</h3>
                                 <p>Support Tick-Tock (A completely free time management software.) </p>
                                 <div>
+                                    <p>Paypal</p>
                                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
                                         <input type="hidden" name="cmd" value="_s-xclick">
                                         <input type="hidden" name="hosted_button_id" value="86DJ8L37TK65Q">
@@ -27,6 +29,11 @@
                                              width="1" height="1">
                                     </form>
 
+                                </div>
+
+                                <div>
+                                    <p>Wechat</p>
+                                    <img :src="'/img/wechat.jpg'"  height="250" width="200">
                                 </div>
                             </div>
 
