@@ -48150,9 +48150,9 @@ if (false) {(function () {
         submitForm: function submitForm(formName) {
             var _this = this;
 
+            this.fullscreenLoading = true;
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    _this.fullscreenLoading = true;
                     var data = {
                         name: _this.form.name,
                         description: _this.form.description
@@ -48183,9 +48183,9 @@ if (false) {(function () {
         submitEditForm: function submitEditForm(formName) {
             var _this2 = this;
 
+            this.fullscreenLoading = true;
             this.$refs[formName].validate(function (valid) {
                 if (valid) {
-                    _this2.fullscreenLoading = true;
                     var data = {
                         name: _this2.editForm.name,
                         description: _this2.editForm.description

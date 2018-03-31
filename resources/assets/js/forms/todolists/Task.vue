@@ -160,9 +160,9 @@
                 app.loading = false;
             },
             submitForm(formName) {
+                this.fullscreenLoading = true;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.fullscreenLoading = true;
                         let data = {
                             name: this.form.name,
                             description: this.form.description
@@ -193,9 +193,9 @@
             });
             },
             submitEditForm(formName) {
+                this.fullscreenLoading = true;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        this.fullscreenLoading = true;
                         let data = {
                             name: this.editForm.name,
                             description: this.editForm.description
