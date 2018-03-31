@@ -131,7 +131,7 @@
                 return momentTimezone.tz.guess();
             },
             getTimezones(){
-                this.ruleForm2.timezones =  momentTimezone.tz.names();
+                this.timezones =  momentTimezone.tz.names();
             },
             showSignin(){
                 this.$router.push('/signin');
