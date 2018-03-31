@@ -7,8 +7,8 @@
 
                 <el-menu-item index="0" disabled><i class="fas fa-clock fa-2x fa-spin" style="color: red;"></i></el-menu-item>
                 <el-menu-item index="1">Tick-Tock</el-menu-item>
-                <el-menu-item index="2">About Me</el-menu-item>
                 <el-menu-item index="3">Support Forum</el-menu-item>
+                <el-menu-item index="version">About Tick-Tock</el-menu-item>
                 <!--<el-submenu index="4" :show-timeout=100>-->
                     <!--<template slot="title">Products</template>-->
                     <!--<el-menu-item index="4-1">Time Management</el-menu-item>-->
@@ -24,6 +24,7 @@
                     <el-menu-item v-loading.fullscreen.lock="fullscreenLoading" @click="logout" index="logout" >Logout</el-menu-item>
                 </el-submenu>
 
+                <el-menu-item v-if="!authenticated && user == null" style="float: right;" @click="showSignin()" index="signin">Sign in</el-menu-item>
             </el-menu>
         </el-header>
         <el-main class="container-gap" >
@@ -32,7 +33,9 @@
                     <AuthControl></AuthControl>
                 </div>
 
-                <Login v-else>Login</Login>
+                <div v-else>
+                    <router-view to="/signin"></router-view>
+                </div>
             </div>
             <div v-else>
                 Not implemented.
@@ -43,22 +46,30 @@
 
 <script>
     import AuthControl from '@/forms/public/AuthControl.vue';
-    import Login from '@/forms/public/Login.vue';
     export default {
         components: {
-            AuthControl,
-            Login
+            AuthControl
         },
         mounted() {
             Event.$on('userLoggedIn', () => {
                 this.authenticated = true;
-            this.user = auth.user;
-        });
+                this.user = auth.user;
+                this.$notify({
+                    title: 'Success',
+                    type:'success',
+                    message: 'Hello, my friend! Ready to time yourself?'
+                });
+            });
 
             Event.$on('userLoggedOut', () => {
                 this.authenticated = false;
-            this.user =null;
-        });
+                this.user =null;
+                this.$notify({
+                    title: 'Success',
+                    type:'success',
+                    message: 'See you next time.'
+                });
+            });
         },
         data() {
             return {
@@ -69,8 +80,13 @@
             };
         },
         methods: {
+            showSignin(){
+                var app= this;
+                this.activeIndex = '1';
+            },
             logout() {
                 var app = this;
+                this.authenticated = false;
                 app.fullscreenLoading = true;
                 axios.post('/api/logout')
                         .then(function (resp) {
@@ -84,6 +100,7 @@
                             app.fullscreenLoading = false;
                             alert("Could not logout");
                         });
+                app.$router.push('/signin');
             },
             handleSelect(key, keyPath) {
                 this.activeIndex = key;

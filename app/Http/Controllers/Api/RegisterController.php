@@ -49,31 +49,33 @@ class RegisterController extends BaseController
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',
-            'c_password' => 'required|same:password',
-            'timezone'=>'required'
+            'checkPass' => 'required|same:password',
+            'timezone' => 'required'
         ]);
 
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return response()->json(['error' => 'Validation Error.'], 401);
         }
 
         if (User::where('email', $request->email)->exists()) {
-            return $this->sendError('User exists.', null, 400);
+            return response()->json(['error' => 'The email had already been registered.'], 401);
         }
 
 
         $input = $request->all();
+        $input['name'] = $input['email'];
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $success['token'] = $user->createToken('MyApp')->accessToken;
-        $success['name'] = $user->name;
 
-
-        return $this->sendResponse($success, 'User register successfully.');
+        return response()->json(
+            [
+                'token' => $user->createToken('MyApp')->accessToken,
+                'user' => $user,
+                'status' => 200
+            ], $this->successStatus);
     }
 
 

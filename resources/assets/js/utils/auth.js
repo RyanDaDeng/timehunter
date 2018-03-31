@@ -16,6 +16,7 @@ class Auth {
         this.token = token;
         this.user = user;
 
+
         Event.$emit('userLoggedIn');
     }
 
