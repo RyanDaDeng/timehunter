@@ -6,25 +6,39 @@ import VueDashboard from './components/ExampleComponent.vue';
 import PublicHome from './forms/public/Navigation.vue';
 import Task from './forms/todolists/Task.vue';
 import Timer from './forms/todolists/Timer.vue';
-
+import AboutApp from '@/forms/public/AboutApp.vue';
+import AppControl from '@/forms/public/AuthControl.vue';
+import Dashboard from  './forms/todolists/Dashboard.vue';
+import Reports from  './forms/todolists/Reports.vue';
 let routes = [
     {
         path: '/',
-        component: Timer,
+        component: AppControl,
+        children: [
+            // UserHome will be rendered inside User's <router-view>
+            // when /user/:id is matched
+            { path: '/timers', name:'Timers',component: Timer },
+            { path: '/tasks', name:'Tasks',component: Task },
+            {
+                path: '/dashboard',
+                component: Dashboard,
+                name: 'Dashboard'
+            },
+            {
+                path: '/reports',
+                component: Reports,
+                name: 'Reports'
+            }
+            // ...other sub routes
+        ],
         name: 'App',
+        redirect: '/timers',
         meta: { requiresAuth: true }
     },
     {
-        path: '/timers',
-        component: Timer,
-        name: 'Timer',
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/tasks',
-        component: Task,
-        name: 'Task',
-        meta: { requiresAuth: true }
+        path: '/aboutapp',
+        component: AboutApp,
+        name: 'AboutApp'
     },
     {
         path: '/signin',
@@ -40,12 +54,6 @@ let routes = [
         path: '/home',
         component: PublicHome,
         name: 'PublicHome',
-        meta: { requiresAuth: true }
-    },
-    {
-        path: '/dashboard',
-        component: VueDashboard,
-        name: 'VueDashboard',
         meta: { requiresAuth: true }
     }
 ]

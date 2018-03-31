@@ -1,6 +1,10 @@
 <template>
 
-    <el-row v-if="hasRunningTimer== true" style="text-align: center;">
+    <div>
+
+    <div v-if="hasRunningTimer== true">
+
+    <el-row  style="text-align: center;">
         <el-col >
             <el-card :body-style="{ padding: '0px' }">
 
@@ -14,7 +18,8 @@
                 </el-popover>
 
                 <div style="padding: 14px;" v-popover:popover1>
-                    <i class="fas fa-clock fa-4x fa-spin" style="color: red;"></i>
+
+                    <div><i class="fas fa-clock fa-4x fa-spin" style="color: red;"></i></div>
                     <div class="bottom clearfix">
                         <div v-if="hasRunningTimer==true">
                             <div v-if="activeTimerString != 'Calculating...'">
@@ -38,6 +43,37 @@
             </el-card>
         </el-col>
     </el-row>
+    </div>
+
+    <div v-if="hasRunningTimer===false">
+
+
+        <el-row  style="text-align: center;">
+            <el-col >
+                <el-card :body-style="{ padding: '0px' }">
+
+
+
+                    <div style="padding: 14px;">
+                        <el-row disabled><i v-model="spinner" class="fas fa-clock  fa-4x " style="color: darkgray;"></i></el-row>
+
+                        <div class="bottom clearfix">
+                                No running timer. :(
+
+                        </div>
+                        <el-row>
+                            <!--<el-button type="text" circle><i class="fas fa-pause-circle fa-2x" style="color: darkgreen;"></i></el-button>-->
+                      </el-row>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+
+
+
+
+    </div>
+    </div>
 </template>
 
 <script>

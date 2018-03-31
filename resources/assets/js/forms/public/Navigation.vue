@@ -7,8 +7,9 @@
 
                 <el-menu-item index="0" disabled><i class="fas fa-clock fa-2x fa-spin" style="color: red;"></i></el-menu-item>
                 <el-menu-item index="1">Tick-Tock</el-menu-item>
-                <el-menu-item index="3">Support Forum</el-menu-item>
-                <el-menu-item index="version">About Tick-Tock</el-menu-item>
+                <el-menu-item index="3">Community Forum</el-menu-item>
+                <el-menu-item index="about-app">About Tick-Tock</el-menu-item>
+                <el-menu-item index="api">APIs</el-menu-item>
                 <!--<el-submenu index="4" :show-timeout=100>-->
                     <!--<template slot="title">Products</template>-->
                     <!--<el-menu-item index="4-1">Time Management</el-menu-item>-->
@@ -21,35 +22,20 @@
                    <template slot="title"> ({{ user.timezone }})  {{ user.name }}</template>
                     <el-menu-item  index="usersetting" >User Setting</el-menu-item>
                     <el-menu-item  index="advancedsetting" >Advanced Setting</el-menu-item>
-                    <el-menu-item v-loading.fullscreen.lock="fullscreenLoading" @click="logout" index="logout" >Logout</el-menu-item>
+                    <el-menu-item  @click="logout" index="logout" >Logout</el-menu-item>
                 </el-submenu>
 
                 <el-menu-item v-if="!authenticated && user == null" style="float: right;" @click="showSignin()" index="signin">Sign in</el-menu-item>
             </el-menu>
         </el-header>
-        <el-main class="container-gap" >
-            <div v-if="activeIndex === '1'" >
-                <div v-if="authenticated && user != null">
-                    <AuthControl></AuthControl>
-                </div>
-
-                <div v-else>
-                    <router-view to="/signin"></router-view>
-                </div>
-            </div>
-            <div v-else>
-                Not implemented.
-            </div>
+        <el-main class="container-gap" v-loading.fullscreen.lock="fullscreenLoading">
+            <router-view ></router-view>
         </el-main>
     </div>
 </template>
 
 <script>
-    import AuthControl from '@/forms/public/AuthControl.vue';
     export default {
-        components: {
-            AuthControl
-        },
         mounted() {
             Event.$on('userLoggedIn', () => {
                 this.authenticated = true;
@@ -81,7 +67,6 @@
         },
         methods: {
             showSignin(){
-                var app= this;
                 this.activeIndex = '1';
             },
             logout() {
@@ -104,9 +89,25 @@
             },
             handleSelect(key, keyPath) {
                 this.activeIndex = key;
+                this.fullscreenLoading = true;
                 if(key == 'logout'){
                     this.activeIndex = '1'
+                    this.$router.push('/signin');
                 }
+
+                else if(key == '1' && !this.authenticated && this.user == null){
+                    this.$router.push('/signin');
+                }
+                else if(key == '1' && this.authenticated && this.user != null){
+                    this.$router.push('/');
+                }else if(key == 'about-app'){
+                    this.$router.push('/aboutapp');
+                } else if(key == 'about-app'){
+                    this.$router.push('/aboutapp');
+                }else if(key == 'about-app'){
+                    this.$router.push('/aboutapp');
+                }
+                this.fullscreenLoading = false;
                 console.log(key)
             }
         }
