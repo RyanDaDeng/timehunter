@@ -9,6 +9,7 @@
             <el-table v-loading="loading"
                       :data="tasks"
                       style="width: 100%">
+
                 <el-table-column
                         label="Task Name"
                 >
@@ -25,14 +26,16 @@
                     </template>
 
                 </el-table-column>
+
                 <el-table-column
                         label="Task Notes"
                 >
                     <template slot-scope="scope">
-                        <span style="margin-left: 10px">{{ scope.row.notes }}</span>
+                        <span style="margin-left: 10px"><pre>{{ scope.row.notes }}</pre></span>
                     </template>
 
                 </el-table-column>
+
                 <el-table-column fixed="right" label="Actions">
                     <template slot-scope="scope">
                         <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.$index, scope.row)"></el-button>
@@ -69,6 +72,9 @@
                     </el-form-item>
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="editForm.description" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Notes" prop="desc" :label-width="formLabelWidth">
+                        <el-input type="textarea" v-model="editForm.notes"></el-input>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -238,13 +244,14 @@
             },
             handleEdit(index, row) {
                 console.log(index, row);
-
+                this.editLoading = false;
                 this.editFormVisible = false;
                 this.editTaskTitle = 'Edit '+'#'+row.id +' task: '+row.name;
                 this.editFormVisible = true;
                 this.editForm.name = row.name;
                 this.editForm.id= row.id;
                 this.editForm.description = row.description;
+                this.editForm.notes = row.notes;
                 this.editForm.tableIndex = row.tableIndex;
             },
             handleDelete(index, row) {
@@ -316,3 +323,19 @@
         }
     }
 </script>
+
+
+<style>
+    .demo-table-expand {
+        font-size: 0;
+    }
+    .demo-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+    }
+    .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+    }
+</style>
