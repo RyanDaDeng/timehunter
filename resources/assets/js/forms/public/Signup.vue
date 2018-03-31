@@ -2,6 +2,7 @@
 
 
     <div v-loading.fullscreen.lock="fullscreenLoading">
+
         <el-row :gutter="24">
             <el-col :span="12" :offset="6"><div class="grid-content bg-purple">
 
@@ -45,6 +46,7 @@
                         <el-form-item label="Timezone" prop="timezone"  >
                             <el-select filterable v-model="ruleForm2.timezone" placeholder="Please enter your local timezone.">
 
+
                                 <el-option
                                         v-for="item in timezones"
                                         :label="item"
@@ -53,7 +55,7 @@
                                 </el-option>
 
 
-                            </el-select>
+                            </el-select> <small>keep it the same as computer timezone.</small>
 
                         </el-form-item>
                         <el-form-item style="text-align: right;">
@@ -91,13 +93,14 @@
                 }
             };
             return {
+
                 timezones: [],
                 fullscreenLoading: false,
                 ruleForm2: {
                     pass: '',
                     checkPass: '',
                     email:'',
-                    timezone:''
+                    timezone: ''
                 },
                 rules2: {
                     checkPass: [
@@ -119,11 +122,16 @@
             };
         },
         mounted() {
+
+            this.ruleForm2.timezone = this.guessTimezone();
             this.getTimezones();
         },
         methods: {
+            guessTimezone(){
+                return momentTimezone.tz.guess();
+            },
             getTimezones(){
-                this.timezones =  momentTimezone.tz.names();
+                this.ruleForm2.timezones =  momentTimezone.tz.names();
             },
             showSignin(){
                 this.$router.push('/signin');
