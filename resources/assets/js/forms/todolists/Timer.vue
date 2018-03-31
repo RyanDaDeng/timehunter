@@ -13,8 +13,8 @@
                 <el-card class="box-card card-gap">
                     <div slot="header" class="clearfix">
                         <span><b>{{k.date_name}}</b></span>
-                        <el-button style="float: right; padding: 3px 0" type="text">Total Time: {{k.total_seconds | hhmmss}}
-                        </el-button>
+                        <p style="float: right; padding: 3px 0;" type="text">Total Time: {{k.total_seconds | hhmmss}}
+                        </p>
                     </div>
 
                     <div v-for="b,index in k.timers" :key="b.id" class="text item">
@@ -24,7 +24,7 @@
                                 <el-col :span="12">
                                     <div class="grid-content bg-purple">Task Name: {{b.name}}</div>
                                 </el-col>
-                                <el-col :span="5" :offset=2>
+                                <el-col :span="3" :offset=2>
                                     <div class="grid-content bg-purple">{{b.started_at | hour}} - {{b.stopped_at
                                         |hour}}
                                     </div>
@@ -34,6 +34,11 @@
                                          type="text">{{b.total_duration}}
                                     </div>
                                 </el-col>
+                                <el-col :span="4">
+                                    <el-button style="float: right;" type="text" icon="el-icon-caret-right"></el-button>
+                                    <el-button style="float: right;"  type="text" icon="el-icon-edit"></el-button>
+                                    <el-button style="float: right; " type="text" icon="el-icon-delete"></el-button>
+                               </el-col>
                             </el-row>
                         </div>
                     </div>

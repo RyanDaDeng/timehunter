@@ -10,6 +10,7 @@ import AboutApp from '@/forms/public/AboutApp.vue';
 import AppControl from '@/forms/public/AuthControl.vue';
 import Dashboard from  './forms/todolists/Dashboard.vue';
 import Reports from  './forms/todolists/Reports.vue';
+import AboutMe from '@/forms/public/AboutMe.vue';
 let routes = [
     {
         path: '/',
@@ -39,6 +40,11 @@ let routes = [
         path: '/aboutapp',
         component: AboutApp,
         name: 'AboutApp'
+    },
+    {
+        path: '/aboutme',
+        component: AboutMe,
+        name: 'AboutMe'
     },
     {
         path: '/signin',

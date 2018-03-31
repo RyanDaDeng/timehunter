@@ -13,9 +13,7 @@
                         @close="handleClose">
 
                     <el-menu-item index="Dashboard">
-                        <i class="fab fa-fort-awesome"></i>
-
-                        <i class="fas fa-home fa-lg" ></i>
+                        <i class="fab fa-fort-awesome fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Dashboard</span>
                     </el-menu-item>
 

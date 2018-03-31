@@ -8,11 +8,13 @@
                 <el-menu-item index="0" disabled><i class="fas fa-clock fa-2x fa-spin" style="color: red;"></i></el-menu-item>
                 <el-menu-item index="1">Tick-Tock</el-menu-item>
                 <el-menu-item index="3">Community Forum</el-menu-item>
-                <el-menu-item index="about-app">About Tick-Tock</el-menu-item>
                 <el-menu-item index="api">APIs</el-menu-item>
+                <el-menu-item index="about-app">About App</el-menu-item>
+                <el-menu-item index="about-me">About Me</el-menu-item>
                 <!--<el-submenu index="4" :show-timeout=100>-->
-                    <!--<template slot="title">Products</template>-->
-                    <!--<el-menu-item index="4-1">Time Management</el-menu-item>-->
+                    <!--<template slot="title">About Tick-Tock</template>-->
+                    <!--<el-menu-item index="about-app">About App</el-menu-item>-->
+                    <!--<el-menu-item index="about-me">About Me</el-menu-item>-->
                 <!--</el-submenu>-->
 
 
@@ -106,6 +108,8 @@
                     this.$router.push('/aboutapp');
                 }else if(key == 'about-app'){
                     this.$router.push('/aboutapp');
+                }else if(key == 'about-me'){
+                    this.$router.push('/aboutme');
                 }
                 this.fullscreenLoading = false;
                 console.log(key)

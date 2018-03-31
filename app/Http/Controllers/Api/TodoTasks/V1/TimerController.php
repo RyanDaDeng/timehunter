@@ -83,12 +83,15 @@ class TimerController extends BaseController
         if ($request->offset) {
             $timers = $timers->offset($this->offset);
         }
-        $timers = $timers->orderBy('date', 'desc')->get();
+        $timers = $timers->orderBy('date', 'desc')->orderBy('stopped_at', 'desc')->get();
 
 
         $result = [];
         foreach ($timers as $timer) {
-            $dateName = Carbon::parse($timer->date)->formatLocalized('%a,%d %B');
+            $timer->date = Carbon::parse($timer->date,'UTC')->timezone($user->timezone)->formatLocalized('%a,%d %B');
+            $timer->started_at = Carbon::parse($timer->started_at,'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $timer->stopped_at = Carbon::parse($timer->stopped_at,'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $dateName = Carbon::parse($timer->date,'UTC')->timezone($user->timezone)->formatLocalized('%a,%d %B');
 
             if (!isset($result[$timer->date])) {
                 $result[$timer->date] = [
@@ -102,7 +105,6 @@ class TimerController extends BaseController
             $result[$timer->date]['total_seconds'] += $timer->total_seconds;
             $result[$timer->date]['timers'][] = $timer;
             $result[$timer->date]['total_timers'] += 1;
-
         }
 
         $new = [];
