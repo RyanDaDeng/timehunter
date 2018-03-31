@@ -11,6 +11,7 @@
                 <el-menu-item index="api">APIs</el-menu-item>
                 <el-menu-item index="about-app">About App</el-menu-item>
                 <el-menu-item index="about-me">About Me</el-menu-item>
+                <el-menu-item index="donate-me">Support Me</el-menu-item>
                 <!--<el-submenu index="4" :show-timeout=100>-->
                     <!--<template slot="title">About Tick-Tock</template>-->
                     <!--<el-menu-item index="about-app">About App</el-menu-item>-->
@@ -27,7 +28,8 @@
                     <el-menu-item  @click="logout" index="logout" >Logout</el-menu-item>
                 </el-submenu>
 
-                <el-menu-item v-if="!authenticated && user == null" style="float: right;" @click="showSignin()" index="signin">Sign in</el-menu-item>
+                <el-menu-item v-if="!authenticated && user == null" style="float: right;"  index="signin">Sign in</el-menu-item>
+                <el-menu-item v-if="!authenticated && user == null" style="float: right;"  index="signup">Sign up</el-menu-item>
             </el-menu>
         </el-header>
         <el-main class="container-gap" v-loading.fullscreen.lock="fullscreenLoading">
@@ -39,6 +41,7 @@
 <script>
     export default {
         mounted() {
+            this.getRouteName();
             Event.$on('userLoggedIn', () => {
                 this.authenticated = true;
                 this.user = auth.user;
@@ -62,15 +65,12 @@
         data() {
             return {
                 fullscreenLoading: false,
-                activeIndex: '1',
+                activeIndex: '',
                 authenticated: auth.check(),
                 user: auth.user
             };
         },
         methods: {
-            showSignin(){
-                this.activeIndex = '1';
-            },
             logout() {
                 var app = this;
                 this.authenticated = false;
@@ -89,11 +89,35 @@
                         });
                 app.$router.push('/signin');
             },
+            getRouteName(){
+                switch(this.$route.name){
+                    case 'App':
+                        this.activeIndex = '1';
+                        break;
+                    case 'AboutApp':
+                        this.activeIndex = 'about-app';
+                        break;
+                    case 'DonateMe':
+                        this.activeIndex = 'donate-me';
+                        break;
+                    case 'AboutMe':
+                        this.activeIndex = 'about-me';
+                        break;
+                    case 'Signin':
+                        this.activeIndex = 'signin';
+                        break;
+                    case 'Signup':
+                        this.activeIndex = 'signup';
+                        break;
+                    default:
+                        break;
+                }
+            },
             handleSelect(key, keyPath) {
                 this.activeIndex = key;
                 this.fullscreenLoading = true;
                 if(key == 'logout'){
-                    this.activeIndex = '1'
+                    this.activeIndex = '1';
                     this.$router.push('/signin');
                 }
 
@@ -102,14 +126,16 @@
                 }
                 else if(key == '1' && this.authenticated && this.user != null){
                     this.$router.push('/');
-                }else if(key == 'about-app'){
-                    this.$router.push('/aboutapp');
-                } else if(key == 'about-app'){
-                    this.$router.push('/aboutapp');
+                }else if(key == 'signin'){
+                    this.$router.push('/signin');
+                } else if(key == 'signup'){
+                    this.$router.push('/signup');
                 }else if(key == 'about-app'){
                     this.$router.push('/aboutapp');
                 }else if(key == 'about-me'){
                     this.$router.push('/aboutme');
+                }else if(key == 'donate-me'){
+                    this.$router.push('/donateme');
                 }
                 this.fullscreenLoading = false;
                 console.log(key)

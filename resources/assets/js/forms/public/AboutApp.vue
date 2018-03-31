@@ -3,7 +3,7 @@
 
     <div>
         <el-row :gutter="24">
-            <el-col :span="12" :offset="6">
+            <el-col :span="20" :offset="2">
                 <div class="grid-content bg-purple">
 
 

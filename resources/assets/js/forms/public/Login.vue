@@ -4,11 +4,19 @@
 
     <div v-loading.fullscreen.lock="fullscreenLoading">
 
-
         <div v-if="login == true">
+
             <el-row :gutter="24">
                 <el-col :span="12" :offset="6"><div class="grid-content bg-purple">
-
+                    <div>
+                        <el-alert
+                                title="Site is under implementation."
+                                type="warning"
+                                description="Please be aware that a few buttons are not responsive."
+                                :closable = "false"
+                                show-icon>
+                        </el-alert>
+                    </div>
 
                 <el-card class="box-card">
 

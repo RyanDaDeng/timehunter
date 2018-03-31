@@ -11,6 +11,7 @@ import AppControl from '@/forms/public/AuthControl.vue';
 import Dashboard from  './forms/todolists/Dashboard.vue';
 import Reports from  './forms/todolists/Reports.vue';
 import AboutMe from '@/forms/public/AboutMe.vue';
+import DonateMe from '@/forms/public/Donate.vue';
 let routes = [
     {
         path: '/',
@@ -45,6 +46,11 @@ let routes = [
         path: '/aboutme',
         component: AboutMe,
         name: 'AboutMe'
+    },
+    {
+        path: '/donateme',
+        component: DonateMe,
+        name: 'DonateMe'
     },
     {
         path: '/signin',
