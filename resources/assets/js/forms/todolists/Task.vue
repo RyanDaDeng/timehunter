@@ -2,7 +2,7 @@
 
     <el-container>
         <el-header style="text-align: left;">
-            <el-button type="success" round @click="dialogFormVisible = true">Create a new task</el-button>
+            <el-button type="success" round @click="handleCreate();">Create a new task</el-button>
         </el-header>
 
         <el-main>
@@ -29,7 +29,7 @@
                         label="Task Notes"
                 >
                     <template slot-scope="scope">
-                        <span style="margin-left: 10px">{{ scope.row.description }}</span>
+                        <span style="margin-left: 10px">{{ scope.row.notes }}</span>
                     </template>
 
                 </el-table-column>
@@ -43,7 +43,7 @@
             </el-table>
 
 
-            <el-dialog v-loading.fullscreen.lock="fullscreenLoading" title="Create a new task" :visible.sync="dialogFormVisible">
+            <el-dialog  title="Create a new task" :visible.sync="dialogFormVisible">
                 <el-form :model="form" status-icon :rules="rules2" ref="form" label-width="100px" class="demo-ruleForm">
                     <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
                         <el-input v-model="form.name" auto-complete="off"></el-input>
@@ -51,15 +51,18 @@
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="form.description" auto-complete="off"></el-input>
                     </el-form-item>
+                    <el-form-item label="Notes" prop="desc" :label-width="formLabelWidth">
+                        <el-input type="textarea" v-model="form.notes"></el-input>
+                    </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="submitForm('form')">Submit</el-button>
+                    <el-button type="primary" @click="submitForm('form')" :loading="createLoading">Submit</el-button>
                 </div>
             </el-dialog>
 
 
-            <el-dialog v-loading.fullscreen.lock="fullscreenLoading" :title="editTaskTitle" :visible.sync="editFormVisible">
+            <el-dialog :title="editTaskTitle" :visible.sync="editFormVisible">
                 <el-form :model="editForm" status-icon :rules="rules2" ref="editForm" label-width="100px" class="demo-ruleForm">
                     <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
                         <el-input v-model="editForm.name" auto-complete="off"></el-input>
@@ -70,7 +73,7 @@
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editFormVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="submitEditForm('editForm')">Submit</el-button>
+                    <el-button type="primary" @click="submitEditForm('editForm')" :loading="editLoading">Submit</el-button>
                 </div>
             </el-dialog>
 
@@ -88,6 +91,8 @@
     export default {
         data: function () {
             return {
+                editLoading: false,
+                createLoading: false,
                 editTaskTitle: '',
                 editFormVisible:false,
                 fullscreenLoading: false,
@@ -96,12 +101,14 @@
                 dialogFormVisible: false,
                 form: {
                     name: '',
-                    description:''
+                    description:'',
+                    notes:'',
                 },
                 editForm:{
                     id: null,
                     name: '',
                     description:'',
+                    notes:'',
                     tableIndex:null
                 },
                 formLabelWidth: '120px',
@@ -159,13 +166,18 @@
                         });
                 app.loading = false;
             },
+            handleCreate(){
+                this.createLoading = false;
+                this.dialogFormVisible = true
+            },
             submitForm(formName) {
-                this.fullscreenLoading = true;
+                this.createLoading = true;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data = {
                             name: this.form.name,
-                            description: this.form.description
+                            description: this.form.description,
+                            notes:this.form.notes
                         };
 
                         axios.post('/api/todolists/v1/tasks',data)
@@ -184,21 +196,20 @@
                             message: error.response.data.message
                         });
                     });
-                        this.fullscreenLoading = false;
                     } else {
                         console.log('error submit!!');
-                this.fullscreenLoading = false;
                 return false;
             }
             });
             },
             submitEditForm(formName) {
-                this.fullscreenLoading = true;
+                this.editLoading = true;
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data = {
                             name: this.editForm.name,
-                            description: this.editForm.description
+                            description: this.editForm.description,
+                            notes:this.editForm.notes
                         };
 
                         axios.put('/api/todolists/v1/tasks/'+this.editForm.id,data)
@@ -217,10 +228,10 @@
                             message: error.response.data.message
                         });
                     });
-                        this.fullscreenLoading = false;
+
+                        this.$refs[formName].clearValidate();
                     } else {
                         console.log('error submit!!');
-                this.fullscreenLoading = false;
                 return false;
             }
             });
@@ -228,7 +239,7 @@
             handleEdit(index, row) {
                 console.log(index, row);
 
-                this.editFormVisible = true;
+                this.editFormVisible = false;
                 this.editTaskTitle = 'Edit '+'#'+row.id +' task: '+row.name;
                 this.editFormVisible = true;
                 this.editForm.name = row.name;

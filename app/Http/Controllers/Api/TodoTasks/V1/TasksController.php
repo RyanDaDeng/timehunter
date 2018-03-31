@@ -47,7 +47,8 @@ class TasksController extends BaseController
         $task->update(
             [
                 'name' => $request->name,
-                'description' => $request->description
+                'description' => $request->description,
+                'notes'=>$request->notes
             ]
         );
 
