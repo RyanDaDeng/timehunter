@@ -12,6 +12,7 @@ import Dashboard from  './forms/todolists/Dashboard.vue';
 import Reports from  './forms/todolists/Reports.vue';
 import AboutMe from '@/forms/public/AboutMe.vue';
 import DonateMe from '@/forms/public/Donate.vue';
+import Todos from './forms/todolists/Todos.vue';
 let routes = [
     {
         path: '/',
@@ -30,6 +31,11 @@ let routes = [
                 path: '/reports',
                 component: Reports,
                 name: 'Reports'
+            },
+            {
+                path: '/todos',
+                component: Todos,
+                name: 'Todos'
             }
             // ...other sub routes
         ],

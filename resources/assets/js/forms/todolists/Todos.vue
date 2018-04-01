@@ -2,8 +2,9 @@
 
     <el-container>
         <el-header style="text-align: left;">
+
             <el-alert
-                    title="Reports - Not implemented yet. Please wait for site announcement."
+                    title="Todos - Not implemented yet. Please wait for site announcement."
                     type="error"
                     show-icon>
             </el-alert>

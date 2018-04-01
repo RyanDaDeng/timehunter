@@ -13,21 +13,25 @@
                         @close="handleClose">
 
                     <el-menu-item index="Dashboard">
-                        <i class="fab fa-fort-awesome fa-lg"></i>
+                        <i class="fa fa-home fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Dashboard</span>
                     </el-menu-item>
 
 
                     <el-menu-item index="Timers">
-                        <i class="fas fa-clock fa-lg" ></i>
+                        <i class="far fa-clock fa-lg" ></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Timers</span>
                     </el-menu-item>
 
 
 
                     <el-menu-item index="Tasks">
-                        <i class="fas fa-list-ol fa-lg"></i>
+                        <i class="fas fa-tasks fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Tasks</span>
+                    </el-menu-item>
+                    <el-menu-item index="Todos">
+                        <i class="far fa-calendar-check fa-lg"></i>
+                        <span slot="title">&nbsp;&nbsp;&nbsp;Todos</span>
                     </el-menu-item>
                     <el-menu-item index="Reports">
                         <i class="fas fa-chart-bar fa-lg"></i>
@@ -83,6 +87,9 @@
                     case 'Reports':
                         this.$router.push('/reports');
                         break;
+                    case 'Todos':
+                        this.$router.push('/todos');
+                        break;
                     default:
                         break;
                 }
@@ -101,6 +108,9 @@
                         break;
                     case 'Reports':
                         this.activeIndex = 'Reports';
+                        break;
+                    case 'Todos':
+                        this.activeIndex = 'Todos';
                         break;
                     default:
                         break;
