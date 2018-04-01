@@ -86,6 +86,15 @@
             }
         },
         mounted() {
+            Event.$on('timerStopped', () => {
+          this.timers =[];
+            this.limit = 7;
+            this.offset =0;
+            var app = this;
+            if(this.$route.name == 'Timers'){
+                app.busy = false;
+            }
+        });
 
         },
         filters: {

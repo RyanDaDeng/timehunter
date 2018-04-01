@@ -159,6 +159,9 @@
                         type: 'success',
                         message: resp.data.message
                     });
+
+                    Event.$emit('timerStopped');
+
                 }).catch(function (resp) {
                     console.log(resp);
                     app.$message({
