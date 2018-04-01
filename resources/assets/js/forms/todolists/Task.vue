@@ -5,8 +5,8 @@
             <el-button type="success" round @click="handleCreate();">Create a new task</el-button>
         </el-header>
 
-        <el-main>
-            <el-table v-loading="loading"
+        <el-main v-loading="loading">
+            <el-table
                       :data="tasks"
                       style="width: 100%">
 
@@ -155,13 +155,13 @@
 
             },
             getTasks(){
-                var app = this;
+                var app=this;
                 app.loading = true;
                 api.get('/api/todolists/v1/tasks')
                         .then(function (resp) {
 
                             app.tasks = resp.data.results;
-
+                            app.loading = false;
                         })
                         .catch(function (resp) {
                             console.log(resp);
@@ -169,8 +169,9 @@
                                 type: 'error',
                                 message: 'Tasks cannot be retrieved.'
                             });
+                            app.loading = false;
                         });
-                app.loading = false;
+
             },
             handleCreate(){
                 this.createLoading = false;

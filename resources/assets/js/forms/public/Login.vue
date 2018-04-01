@@ -45,12 +45,12 @@
                         <!--<i class="fas fa-clock fa-8x" style="color: red;"></i>-->
                     </div>
 
-                        <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
+                        <el-form  :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
                             <el-form-item prop="email" label="Email">
                                 <el-input v-model="ruleForm2.email"></el-input>
                             </el-form-item>
                             <el-form-item label="Password" prop="pass">
-                                <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
+                                <el-input @keyup.enter.native="submitForm('ruleForm2')"  type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
                             </el-form-item>
                             <el-form-item style="text-align: right;">
 
