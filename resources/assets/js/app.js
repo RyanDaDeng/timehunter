@@ -23,9 +23,9 @@ import router from './routes.js';
 import App from './App.vue';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import locale from 'element-ui/lib/locale/lang/en'
 
-
-window.Vue.use(ElementUI);
+window.Vue.use(ElementUI,{ locale });
 
 //const app = new Vue({
 //    router,

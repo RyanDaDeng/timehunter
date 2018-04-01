@@ -35,7 +35,7 @@
 
                         <el-table
                                 :data="tableData2"
-                                :row-class-name="tableRowClassName">
+                                >
                             <el-table-column
                                     prop="todo"
                                     label="Todo"
