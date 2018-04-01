@@ -5,8 +5,8 @@
             <el-button type="success" round @click="handleCreate();">Create a new task</el-button>
         </el-header>
 
-        <el-main v-loading="loading">
-            <el-table
+        <el-main >
+            <el-table v-loading="loading"
                       :data="tasks"
                       style="width: 100%">
 
