@@ -45,7 +45,6 @@
                                     prop="tag"
                                     label="Tag(s)"
                             >
-                                4234
                             </el-table-column>
                         </el-table>
                     </el-card>

@@ -12,3 +12,11 @@
         }
     };
 </script>
+
+<style>
+
+    a,header,body{
+        font-family: 'Proxima Nova', sans-serif;
+    }
+
+</style>
