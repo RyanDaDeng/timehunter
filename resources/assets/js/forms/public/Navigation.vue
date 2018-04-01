@@ -3,9 +3,10 @@
     <div>
 
         <el-header class="fixed-top">
-            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
+            <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect"  background-color="#D94D44"  text-color="#FFFFFF"
+                     active-text-color="#FFFFFF">
 
-                <el-menu-item index="0" disabled><i class="fas fa-clock fa-2x fa-spin" style="color: red;"></i></el-menu-item>
+                <el-menu-item index="0" disabled><i class="fas fa-clock fa-2x fa-spin" style="color: whitesmoke;"></i></el-menu-item>
                 <el-menu-item index="1">Tick-Tock</el-menu-item>
                 <el-menu-item index="3">Community Forum</el-menu-item>
                 <el-menu-item index="about-me">About Me</el-menu-item>

@@ -10,7 +10,9 @@
                         class="el-menu-vertical-demo"
                         @select="handleSelect"
                         @open="handleOpen"
-                        @close="handleClose">
+                        @close="handleClose"
+                    
+                       >
 
                     <el-menu-item index="Dashboard">
                         <i class="fa fa-home fa-lg"></i>
@@ -29,10 +31,26 @@
                         <i class="fas fa-tasks fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Tasks</span>
                     </el-menu-item>
-                    <el-menu-item index="Todos">
-                        <i class="far fa-calendar-check fa-lg"></i>
-                        <span slot="title">&nbsp;&nbsp;&nbsp;Todos</span>
+
+
+                    <el-submenu index="Todos">
+                        <template slot="title">
+                            <i class="far fa-calendar-check fa-lg"></i>
+                            <span>&nbsp;&nbsp;&nbsp;Todos</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="inbox">Inbox</el-menu-item>
+                            <el-menu-item index="today">Today</el-menu-item>
+                            <el-menu-item index="calendar">Calendar</el-menu-item>
+                        </el-menu-item-group>
+
+                    </el-submenu>
+
+                    <el-menu-item index="projects">
+                        <i class="far fa-folder-open fa-lg"></i>
+                        <span slot="title">&nbsp;&nbsp;&nbsp;Projects</span>
                     </el-menu-item>
+
                     <el-menu-item index="Reports">
                         <i class="fas fa-chart-bar fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Reports</span>
