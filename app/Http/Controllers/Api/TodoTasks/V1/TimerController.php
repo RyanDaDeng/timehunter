@@ -29,7 +29,7 @@ class TimerController extends BaseController
 
         $task = Task::findOrFail($taskId);
         // stop all running task
-        Timer::where('user_id', $user->id)->whereNull('stopped_at')->update(['stopped_at' => new Carbon()]);
+        $this->stopTimerByUserId($user->id);
 
         $now = new Carbon();
         $timer = new Timer([
@@ -46,9 +46,27 @@ class TimerController extends BaseController
         return $this->sendOkResponse($timer, "Task: {$timer['name']} started.");
     }
 
+    public function stopTimerByUserId($userId){
 
-    public function stopTimer($id)
-    {
+        if ($timer = Timer::where('user_id', $userId)->whereNull('stopped_at')->first()) {
+            $now = new Carbon();
+            $start = Carbon::parse($timer->started_at);
+
+            $totalSeconds = $now->diffInSeconds($start);
+            $timer->update(
+                [
+                    'stopped_at' => $now->format('Y-m-d H:i:s'),
+                    'total_seconds' => $totalSeconds,
+                    'total_duration' => gmdate("H:i:s", $totalSeconds)
+                ]
+            );
+            return $timer;
+        }
+        return null;
+
+    }
+    public function stopTimerById($id){
+
         if ($timer = Timer::where('id', $id)->first()) {
             $now = new Carbon();
             $start = Carbon::parse($timer->started_at);
@@ -61,9 +79,18 @@ class TimerController extends BaseController
                     'total_duration' => gmdate("H:i:s", $totalSeconds)
                 ]
             );
+            return $timer;
+        }
+        return null;
+
+    }
+
+    public function stopTimer($id)
+    {
+        if($timer = $this->stopTimerById($id) != null){
             return $this->sendOkResponse($timer, 'Running timer stopped successfully.');
         }
-        return $this->sendBadRequest($timer, 'Timer is not found.');
+        return $this->sendBadRequest(null, 'Timer is not found.');
 
     }
 

@@ -3,21 +3,25 @@
     <div>
 
     <div v-if="hasRunningTimer== true">
+        <el-dialog
+                title="Task Description"
+                :visible.sync="centerDialogVisible"
+                width="30%"
+                center>
+            <span><p>Name: {{runningTimerDetails.name}}</p></span>
+            <span><p>Description: {{runningTimerDetails.description}}</p></span>
+  <span slot="footer" class="dialog-footer">
+    <el-button type="primary" @click="centerDialogVisible = false">Close</el-button>
+  </span>
+        </el-dialog>
 
     <el-row  style="text-align: center;">
         <el-col >
             <el-card :body-style="{ padding: '0px' }">
 
-                <el-popover
-                        ref="popover1"
-                        placement="right-start"
-                        :title="title"
-                        width="200"
-                        trigger="hover"
-                        :content="content">
-                </el-popover>
 
-                <div style="padding: 14px;" v-popover:popover1>
+                <div style="padding: 14px;">
+
 
                     <div><i class="fas fa-clock fa-4x fa-spin" style="color: red;"></i></div>
                     <div class="bottom clearfix">
@@ -36,7 +40,7 @@
 
                     </div>
                     <el-row>
-                        <!--<el-button type="text" circle><i class="fas fa-pause-circle fa-2x" style="color: darkgreen;"></i></el-button>-->
+                        <el-button type="text" circle @click="centerDialogVisible = true"><i class="fas fa-info-circle fa-2x" style="color: cadetblue;"></i></el-button>
                         <el-button type="text" circle @click="stopTimerById(runningTimer.id)"><i class="fas fa-stop-circle fa-2x" style="color: orange;"></i></el-button>
                     </el-row>
                 </div>
@@ -45,7 +49,7 @@
     </el-row>
     </div>
 
-    <div v-if="hasRunningTimer===false">
+    <div v-else>
 
 
         <el-row  style="text-align: center;">
@@ -81,8 +85,8 @@
     export default {
         data: function () {
             return {
-                title:'',
-                content:'',
+                centerDialogVisible: false,
+                runningTimerDetails: {},
                 timezone: auth.user.timezone,
                 hasRunningTimer: false,
                 runningTimer:{id:null,name:'',started_at:''},
@@ -99,8 +103,7 @@
                 app.runningTimer = resp.data.results;
             app.hasRunningTimer = true;
             app.startTimer(resp.data.results);
-            app.title = resp.data.results.name;
-            app.content = resp.data.results.description;
+            app.runningTimerDetails = resp.data.results;
         });
 
 
@@ -111,8 +114,7 @@
                             app.runningTimer = resp.data.results;
                             app.hasRunningTimer = true;
                             app.startTimer(resp.data.results);
-                            app.title = resp.data.results.name;
-                            app.content = resp.data.results.description;
+                            app.runningTimerDetails = resp.data.results;
                         }
                     })
                     .catch(function (resp) {
