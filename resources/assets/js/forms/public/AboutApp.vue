@@ -21,7 +21,7 @@
                             <!--<i class="fas fa-clock fa-8x" style="color: red;"></i>-->
                         </div>
                         <div>
-                            <p><b style="color:blue;">v0.2.1</b> - 1st April 2018</p>
+                            <p><b style="color:blue;">v0.2.1</b> - 3rd April 2018</p>
 
                             <ul>- Supported CRUD on TODO</ul>
                             <ul> - Supported Frequency on task.</ul>
