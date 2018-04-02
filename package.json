@@ -12,11 +12,23 @@
     "devDependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
-        "popper.js": "^1.12",
         "cross-env": "^5.1",
         "jquery": "^3.2",
-        "laravel-mix": "^2.0",
+        "laravel-mix": "^2.1.7",
         "lodash": "^4.17.4",
-        "vue": "^2.5.7"
+        "popper.js": "^1.12",
+        "vue": "^2.5.7",
+        "vue-axios": "^2.0.2",
+        "vue-loader": "^14.2.1",
+        "vue-router": "^3.0.1",
+        "vue-template-compiler": "^2.5.16"
+    },
+    "dependencies": {
+        "chart.js": "^2.7.2",
+        "element-ui": "^2.3.2",
+        "moment": "^2.19.2",
+        "moment-timezone": "^0.5.14",
+        "vue-chartjs": "^3.3.1",
+        "vue-infinite-scroll": "^2.0.2"
     }
 }

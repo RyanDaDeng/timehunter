@@ -11,6 +11,22 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'Vue\VueHomeController@index')->name('home');
+Route::get('/home', 'Vue\VueHomeController@index')->name('vue.home');
+
+Route::get('/aboutme', function () {
+    return view('about-me');
+})->name('AboutMe');;
+
+//Auth::routes();
+
+
+//Route::group([ 'prefix' => 'module', 'as' => 'module.'], function () {
+//    Route::get('todolist', 'TodoListController@index')->name('todolist.index');
+//    Route::get('oauth', 'OAuthSettingController@index')->name('oauth.setting');
+//});
+
+
+//Route::get('/vue', function () {
+//    return view('vue.welcome');
+//})->name('VueWelcome');;
