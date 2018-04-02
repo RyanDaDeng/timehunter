@@ -108,6 +108,10 @@ class TodosController extends BaseController
         if (!$todo) {
             return $this->sendBadRequest('Resource cannot be found.');
         }
+
+        if($todo->is_done == true){
+            return $this->sendBadRequest('Todo had already been finished!');
+        }
         $todo->is_done = true;
         $todo->save();
 
