@@ -3,7 +3,7 @@
 
         <el-container style="height: 600px; border: 1px solid #eee">
 
-            <el-aside width="200px" >
+            <el-aside width="200px">
                 <FloatTimer></FloatTimer>
                 <el-menu
                         :default-active=activeIndex
@@ -12,7 +12,7 @@
                         @open="handleOpen"
                         @close="handleClose"
 
-                       >
+                >
 
                     <el-menu-item index="Dashboard">
                         <i class="fa fa-home fa-lg"></i>
@@ -21,10 +21,9 @@
 
 
                     <el-menu-item index="Timers">
-                        <i class="far fa-clock fa-lg" ></i>
+                        <i class="far fa-clock fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Timers</span>
                     </el-menu-item>
-
 
 
                     <el-menu-item index="Tasks">
@@ -39,8 +38,8 @@
                             <span>&nbsp;&nbsp;&nbsp;Todos</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="inbox">Inbox</el-menu-item>
-                            <el-menu-item index="today">Today</el-menu-item>
+                            <el-menu-item index="TodosInbox">Inbox</el-menu-item>
+                            <el-menu-item index="TodosToday">Today</el-menu-item>
                             <el-menu-item index="calendar">Calendar</el-menu-item>
                         </el-menu-item-group>
 
@@ -58,11 +57,11 @@
                 </el-menu>
             </el-aside>
 
-            <router-view ></router-view>
+            <router-view></router-view>
 
         </el-container>
 
-        </div>
+    </div>
 
 </template>
 
@@ -75,7 +74,7 @@
         },
         data() {
             return {
-                activeIndex:'dashboard'
+                activeIndex: 'dashboard'
             };
         },
         mounted(){
@@ -92,7 +91,7 @@
                 console.log(key, keyPath);
                 this.activeIndex = key;
 
-                switch(this.activeIndex){
+                switch (this.activeIndex) {
                     case 'Timers':
                         this.$router.push('/timers');
                         break;
@@ -108,13 +107,19 @@
                     case 'Todos':
                         this.$router.push('/todos');
                         break;
+                    case 'TodosInbox':
+                        this.$router.push('/todos/inbox');
+                        break;
+                    case 'TodosToday':
+                        this.$router.push('/todos/today');
+                        break;
                     default:
                         break;
                 }
 
             },
             getRouteName(){
-                switch(this.$route.name){
+                switch (this.$route.name) {
                     case 'Tasks':
                         this.activeIndex = 'Tasks';
                         break;
@@ -127,8 +132,11 @@
                     case 'Reports':
                         this.activeIndex = 'Reports';
                         break;
-                    case 'Todos':
-                        this.activeIndex = 'Todos';
+                    case 'TodosInbox':
+                        this.activeIndex = 'TodosInbox';
+                        break;
+                    case 'TodosToday':
+                        this.activeIndex = 'TodosToday';
                         break;
                     default:
                         break;

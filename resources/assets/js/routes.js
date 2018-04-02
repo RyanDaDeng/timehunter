@@ -12,7 +12,8 @@ import Dashboard from  './forms/todolists/Dashboard.vue';
 import Reports from  './forms/todolists/Reports.vue';
 import AboutMe from '@/forms/public/AboutMe.vue';
 import DonateMe from '@/forms/public/Donate.vue';
-import Todos from './forms/todolists/Todos.vue';
+import TodoInbox from './forms/todolists/TodosInbox.vue';
+import TodosToday from './forms/todolists/TodosToday.vue';
 let routes = [
     {
         path: '/',
@@ -33,9 +34,14 @@ let routes = [
                 name: 'Reports'
             },
             {
-                path: '/todos',
-                component: Todos,
-                name: 'Todos'
+                path: '/todos/inbox',
+                component: TodoInbox,
+                name: 'TodosInbox'
+            },
+            {
+                path: '/todos/today',
+                component: TodosToday,
+                name: 'TodosToday'
             }
             // ...other sub routes
         ],

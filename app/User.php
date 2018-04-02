@@ -37,4 +37,12 @@ class User extends Authenticatable
     }
 
 
+    /**
+     * Todos
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function todos()
+    {
+        return $this->hasMany('App\Todo', 'user_id');
+    }
 }

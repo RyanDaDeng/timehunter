@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\TodoTasks\V1;
 
 use App\Task;
 use App\Timer;
+use App\Todo;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,6 +24,32 @@ class TimerController extends BaseController
         return $this->sendOkResponse($timer, 'Running timer retrieved successfully.');
     }
 
+
+    public function startTimerByTodoId($todoId)
+    {
+        $user = Auth::user();
+
+        $todo = Todo::findOrFail($todoId);
+        // stop all running task
+        $this->stopTimerByUserId($user->id);
+
+        $now = new Carbon();
+        $timer = new Timer([
+            'user_id' => $user->id,
+            'started_at' => $now,
+            'date' => $now->format('Y-m-d'),
+            'name' => $todo->name,
+            'todo_id'=>$todo->id,
+            'description' => $todo->description
+        ]);
+        $timer->save();
+        $timer = Timer::where('id', $timer->id)->first();
+
+        $timer = $timer?$timer->toArray():[];
+        return $this->sendOkResponse($timer, "Task: {$timer['name']} started.");
+    }
+
+
     public function startTimerByTaskId($taskId)
     {
         $user = Auth::user();
@@ -37,6 +64,7 @@ class TimerController extends BaseController
             'started_at' => $now,
             'date' => $now->format('Y-m-d'),
             'name' => $task->name,
+            'task_id'=>$task->id,
             'description' => $task->description
         ]);
         $timer->save();
