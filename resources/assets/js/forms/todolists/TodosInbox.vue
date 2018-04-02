@@ -13,6 +13,14 @@
                       style="width: 100%">
 
                 <el-table-column
+                        label="Name"
+                >
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.name }}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column
                         label="Description"
                 >
                     <template slot-scope="scope">
