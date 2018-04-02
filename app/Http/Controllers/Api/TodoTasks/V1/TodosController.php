@@ -121,7 +121,7 @@ class TodosController extends BaseController
                 'name' => $todo->name,
                 'description' => $todo->description,
                 'due_date_time' => Carbon::parse($todo->due_date_time)->startOfDay()->addday()->addHours(7)->format('Y-m-d H:i:s'),
-                'task_id' => $todo->id,
+                'task_id' => $todo->task_id,
                 'notes' => $todo->notes,
                 'frequency' => $todo->frequency
             ]);
