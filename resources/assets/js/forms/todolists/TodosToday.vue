@@ -78,6 +78,9 @@
 
             <el-dialog  title="Create a new todo" :visible.sync="dialogFormVisible">
                 <el-form :model="form" status-icon :rules="rules2" ref="form" label-width="100px" class="demo-ruleForm">
+                    <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
+                        <el-input v-model="form.name" auto-complete="off"></el-input>
+                    </el-form-item>
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="form.description" auto-complete="off"></el-input>
                     </el-form-item>
@@ -99,6 +102,9 @@
 
             <el-dialog :title="editTodoTitle" :visible.sync="editFormVisible">
                 <el-form :model="editForm" status-icon :rules="rules2" ref="editForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
+                        <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                    </el-form-item>
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="editForm.description" auto-complete="off"></el-input>
                     </el-form-item>
