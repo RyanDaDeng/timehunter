@@ -10,7 +10,7 @@
                 <el-menu-item index="1">Tick-Tock</el-menu-item>
                 <el-menu-item index="3">Community Forum</el-menu-item>
                 <el-menu-item index="about-me">About Me</el-menu-item>
-                <el-menu-item index="donate-me">Support Me</el-menu-item>
+                <!--<el-menu-item index="donate-me">Support Me</el-menu-item>-->
                 <el-submenu index="4" :show-timeout=100>
                     <template slot="title">Dev Tools</template>
                     <el-menu-item index="apis">APIs</el-menu-item>
