@@ -5,11 +5,11 @@
         <el-main >
             <el-button type="success" round @click="handleCreate();">Create a new task</el-button>
             <el-table v-loading="loading"
-                      :data="tasks"
+                      :data="projects"
                       style="width: 100%">
 
                 <el-table-column
-                        label="Task Name"
+                        label="Project Name"
                 >
                     <template slot-scope="scope">
                         <i class="el-icon-time"></i>
@@ -17,28 +17,10 @@
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="Task Description"
+                        label="Project Description"
                 >
                     <template slot-scope="scope">
                         <span style="margin-left: 10px">{{ scope.row.description }}</span>
-                    </template>
-
-                </el-table-column>
-
-                <el-table-column
-                        label="Task Notes"
-                >
-                    <template slot-scope="scope">
-                        <span style="margin-left: 10px">{{ scope.row.notes }}</span>
-                    </template>
-
-                </el-table-column>
-
-                <el-table-column
-                        label="Frequency"
-                >
-                    <template slot-scope="scope">
-                        <span style="margin-left: 10px">{{ scope.row.frequency ? scope.row.frequency: "N/A"}}</span>
                     </template>
 
                 </el-table-column>
@@ -47,7 +29,6 @@
                     <template slot-scope="scope">
                         <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.$index, scope.row)"></el-button>
                         <el-button type="danger" icon="el-icon-delete" circle  @click="handleDelete(scope.$index, scope.row)"></el-button>
-                        <el-button type="warning" icon="el-icon-caret-right" circle  @click="handleStart(scope.$index, scope.row)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -61,15 +42,6 @@
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="form.description" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Notes" prop="notes" :label-width="formLabelWidth">
-                        <el-input type="textarea" v-model="form.notes" auto-complete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Frequency" :label-width="formLabelWidth">
-                        <el-radio-group v-model="form.frequency" size="medium">
-                            <el-radio border label="every day"  auto-complete="off"></el-radio>
-                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -78,22 +50,13 @@
             </el-dialog>
 
 
-            <el-dialog :title="editTaskTitle" :visible.sync="editFormVisible">
+            <el-dialog :title="editProjectTitle" :visible.sync="editFormVisible">
                 <el-form :model="editForm" status-icon :rules="rules2" ref="editForm" label-width="100px" class="demo-ruleForm">
                     <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
                         <el-input v-model="editForm.name" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="editForm.description" auto-complete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Notes" prop="notes" :label-width="formLabelWidth">
-                        <el-input type="textarea" v-model="editForm.notes" auto-complete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Frequency" :label-width="formLabelWidth">
-                        <el-radio-group v-model="editForm.frequency" size="medium">
-                            <el-radio border label="every day"></el-radio>
-                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
-                        </el-radio-group>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -118,11 +81,11 @@
             return {
                 editLoading: false,
                 createLoading: false,
-                editTaskTitle: '',
+                editProjectTitle: '',
                 editFormVisible:false,
                 fullscreenLoading: false,
                 loading: true,
-                tasks: [],
+                projects: [],
                 dialogFormVisible: false,
                 form: {
                 },
@@ -131,16 +94,13 @@
                 formLabelWidth: '120px',
                 rules2: {
                     name: [
-                        { required: true, message: 'Task name is required.', trigger: 'blur' }
-                    ],
-                    description:[
-                        { required: true, message: 'Task description is required.', trigger: 'blur' }
+                        { required: true, message: 'Project name is required.', trigger: 'blur' }
                     ]
                 }
             }
         },
         mounted() {
-          this.getTasks();
+          this.getProjects();
         },
         methods: {
             /**
@@ -150,7 +110,7 @@
                 vm.hasRunningTimer = true;
                 console.log(taskId);
 //                let vm = this;
-//                axios.post('/api/todolists/v1/tasks/' + taskId + '/start').then(function (resp) {
+//                axios.post('/api/todolists/v1/projects/' + taskId + '/start').then(function (resp) {
 //                    clearInterval(vm.counter.ticker);
 //
 //                    // Reset the counter and timer string
@@ -165,20 +125,20 @@
 //                });
 
             },
-            getTasks(){
+            getProjects(){
                 var app=this;
                 app.loading = true;
-                api.get('/api/todolists/v1/tasks')
+                api.get('/api/todolists/v1/projects')
                         .then(function (resp) {
 
-                            app.tasks = resp.data.results;
+                            app.projects = resp.data.results;
                             app.loading = false;
                         })
                         .catch(function (resp) {
                             console.log(resp);
                             app.$message({
                                 type: 'error',
-                                message: 'Tasks cannot be retrieved.'
+                                message: 'Projects cannot be retrieved.'
                             });
                             app.loading = false;
                         });
@@ -194,9 +154,9 @@
                     if (valid) {
                         let data = this.form;
 
-                        axios.post('/api/todolists/v1/tasks',data)
+                        axios.post('/api/todolists/v1/projects',data)
                                 .then(response => {
-                            this.tasks.push(response.data.results)
+                            this.projects.push(response.data.results)
                         this.$message({
                             type: 'success',
                             message: response.data.message
@@ -222,15 +182,15 @@
                     if (valid) {
                         let data = this.editForm;
 
-                        axios.put('/api/todolists/v1/tasks/'+this.editForm.id,data)
+                        axios.put('/api/todolists/v1/projects/'+this.editForm.id,data)
                                 .then(response => {
-                            this.tasks[this.editForm.tableIndex] = response.data.results;
+                            this.projects[this.editForm.tableIndex] = response.data.results;
                         this.$message({
                             type: 'success',
                             message: response.data.message
                         });
                         this.editFormVisible = false;
-                        this.getTasks();
+                        this.getProjects();
                     })
                     .catch(error => {
                             this.$message({
@@ -250,7 +210,7 @@
                 console.log(index, row);
                 this.editLoading = false;
                 this.editFormVisible = false;
-                this.editTaskTitle = 'Edit '+'#'+row.id +' task: '+row.name;
+                this.editProjectTitle = 'Edit '+'#'+row.id +' task: '+row.name;
                 this.editFormVisible = true;
                 this.editForm = row;
             },
@@ -263,9 +223,9 @@
                     center: true
                 }).then(() => {
 
-                    axios.delete('/api/todolists/v1/tasks/' + row.id)
+                    axios.delete('/api/todolists/v1/projects/' + row.id)
                         .then(response => {
-                        this.tasks.splice(index, 1);
+                        this.projects.splice(index, 1);
                         this.$message({
                             type: 'success',
                             message: response.data.message
@@ -286,40 +246,6 @@
                 });
             });
             },
-            handleStart(index, row) {
-                console.log(index, row);
-                this.$confirm('Are you sure you want to start this task?', 'Time a task', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
-                    type: 'warning',
-                    center: true
-                }).then(() => {
-
-
-                    axios.post('/api/todolists/v1/tasks/' + row.id + '/start')
-                        .then(response => {
-                    Event.$emit('newTaskStarted',response);
-
-                this.$message({
-                    type: 'success',
-                    message: response.data.message
-                });
-            })
-            .catch(error => {
-                    this.$message({
-                    type: 'error',
-                    message: error.response.data.message ?error.response.data.message : 'Internal System Error. Please contact adminstrator.'
-                });
-            });
-
-
-            }).catch(() => {
-                    this.$message({
-                    type: 'info',
-                    message: 'Action Cancelled'
-                });
-            });
-            }
         }
     }
 </script>

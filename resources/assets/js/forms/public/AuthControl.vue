@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <el-container style="height: 600px; border: 1px solid #eee">
+        <el-container style="height: 700px;">
 
             <el-aside width="200px">
                 <FloatTimer></FloatTimer>
@@ -45,7 +45,7 @@
 
                     </el-submenu>
 
-                    <el-menu-item index="projects">
+                    <el-menu-item index="Projects">
                         <i class="far fa-folder-open fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Projects</span>
                     </el-menu-item>
@@ -107,6 +107,9 @@
                     case 'Todos':
                         this.$router.push('/todos');
                         break;
+                    case 'Projects':
+                        this.$router.push('/projects');
+                        break;
                     case 'TodosInbox':
                         this.$router.push('/todos/inbox');
                         break;
@@ -137,6 +140,9 @@
                         break;
                     case 'TodosToday':
                         this.activeIndex = 'TodosToday';
+                        break;
+                    case 'Projects':
+                        this.activeIndex = 'Projects';
                         break;
                     default:
                         break;

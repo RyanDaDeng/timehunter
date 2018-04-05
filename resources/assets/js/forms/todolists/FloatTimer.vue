@@ -17,7 +17,7 @@
 
     <el-row  style="text-align: center;">
         <el-col >
-            <el-card :body-style="{ padding: '0px' }">
+            <el-card  :body-style="{ padding: '0px' }">
 
 
                 <div style="padding: 14px;">

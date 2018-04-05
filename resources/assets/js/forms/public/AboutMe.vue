@@ -43,6 +43,14 @@
                     </div><!--//item-->
                 </div><!--//education-container-->
 
+                <div class="interests-container container-block">
+                    <h2 class="container-block-title">Awards</h2>
+                    <ul class="list-unstyled interests-list">
+                        <li>Bachelor with Honors</li>
+                        <li>Dean's List of Excellence in Academic Performance</li>
+                    </ul>
+                </div><!--//interests-->
+
                 <div class="languages-container container-block">
                     <h2 class="container-block-title">Languages</h2>
                     <ul class="list-unstyled interests-list">
@@ -63,6 +71,7 @@
                     </ul>
                 </div><!--//interests-->
 
+
             </div><!--//sidebar-wrapper-->
 
             <div class="main-wrapper">
@@ -72,8 +81,7 @@
                     <div class="summary">
                         <p>Be Creative. Be Smart. Be Patient.</p>
                         <p>Two-year commercial experiences with Laravel and PHP. Willing to find a
-                            position on
-                            Java/Python to gain valuable commercial knowledge of architectural level designs. Interested
+                            position to gain and learn more valuable knowledge of architectural level designs and new technologies. Interested
                             in object-oriented programming, algorithms and design patterns.</p>
                     </div><!--//summary-->
                 </section><!--//section-->
@@ -153,7 +161,7 @@
                             <p>Worked as a non-commercial developer during my spare time. </p>
 
                             <ul>
-                                <li> Working on a personal project called Tick-Tock, which is completely free software
+                                <li> Working on a personal project called Tick-Tock, which is a completely free software
                                     that allows people to track their time, todos and works easily.
                                 </li>
                                 <li> Created a fully automated booking script by using Selenium to help my friend to
@@ -180,7 +188,7 @@
                                 <h3 class="job-title">JAVA DEVELOPER INTERN</h3>
                                 <div class="time">November 2014 - January 2015</div>
                             </div><!--//upper-row-->
-                            <div class="company">5.5 DEGREES, Sydney</div>
+                            <div class="company">Nanjing  Linkage Technology, China</div>
                         </div><!--//meta-->
                         <div class="details">
                             <p>Worked as a three month full-time internship.</p>
