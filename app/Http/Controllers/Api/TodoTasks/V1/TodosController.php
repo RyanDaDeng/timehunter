@@ -58,7 +58,7 @@ class TodosController extends BaseController
         $todo->update(
             [
                 'description' => $request->description,
-                'due_date_time' => $request->due_date_time,
+                'due_date_time' => Carbon::parse($request->due_date_time)->format('Y-m-d H:i:s'),
                 'task_id' => $request->task_id,
                 'name' => $request->name,
                 'notes' => $request->notes,

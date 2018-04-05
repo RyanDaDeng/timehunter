@@ -26,10 +26,10 @@
                     </el-menu-item>
 
 
-                    <el-menu-item index="Tasks">
-                        <i class="fas fa-tasks fa-lg"></i>
-                        <span slot="title">&nbsp;&nbsp;&nbsp;Tasks</span>
-                    </el-menu-item>
+                    <!--<el-menu-item index="Tasks">-->
+                        <!--<i class="fas fa-tasks fa-lg"></i>-->
+                        <!--<span slot="title">&nbsp;&nbsp;&nbsp;Tasks</span>-->
+                    <!--</el-menu-item>-->
 
 
                     <el-submenu index="Todos">
