@@ -1,7 +1,7 @@
 <template>
     <div>
 
-        <el-container style="height: 700px;">
+        <el-container >
 
             <el-aside width="200px">
                 <FloatTimer></FloatTimer>

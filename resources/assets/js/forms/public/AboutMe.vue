@@ -14,18 +14,14 @@
 
                 <div class="contact-container container-block">
                     <ul class="list-unstyled contact-list">
-                        <li class="email"><i class="fa fa-envelope"></i><a href="mailto: yourname@email.com">&nbsp;&nbsp;&nbsp;me@ryandeng.com</a>
+                        <li class="email"><i class="fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;me@ryandeng.com
                         </li>
-                        <li class="phone"><i class="fa fa-phone"></i><a href="tel:0123 456 789">&nbsp;&nbsp;&nbsp;0404
-                            157 872</a></li>
-                        <li class="website"><i class="fa fa-globe"></i><a
-                                href="https://ryandeng.com/"
-                                target="_blank">&nbsp;&nbsp;&nbsp; ryandeng.com</a></li>
-                        <li class="linkedin"><i class="fab fa-linkedin-in"></i><a
-                                href="https://linkedin.com/in/ryandeng" target="_blank">&nbsp;&nbsp;linkedin.com/in/ryandeng</a>
+                        <li class="phone"><i class="fa fa-phone"></i>&nbsp;&nbsp;&nbsp;0404
+                            157 872</li>
+                        <li class="website"><i class="fa fa-globe"></i>&nbsp;&nbsp;&nbsp; ryandeng.com</li>
+                        <li class="linkedin"><i class="fab fa-linkedin-in"></i>&nbsp;&nbsp;linkedin.com/in/ryandeng
                         </li>
-                        <li class="github"><i class="fab fa-github"></i><a href="https://github.com/RyanDaDeng"
-                                                                           target="_blank">&nbsp;&nbsp;github.com/RyanDaDeng</a>
+                        <li class="github"><i class="fab fa-github"></i>&nbsp;&nbsp;github.com/RyanDaDeng
                         </li>
                     </ul>
                 </div><!--//contact-container-->

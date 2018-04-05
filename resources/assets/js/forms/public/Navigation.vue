@@ -2,7 +2,7 @@
 
     <div>
 
-        <el-header class="fixed-top">
+        <el-header>
             <el-menu :default-active="activeIndex" class="el-menu-demo fixed" mode="horizontal" @select="handleSelect"  background-color="#D94D44"  text-color="#FFFFFF"
                      active-text-color="#FFFFFF">
 
@@ -144,3 +144,7 @@
         }
     }
 </script>
+
+<style>
+
+</style>
