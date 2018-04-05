@@ -2,17 +2,15 @@
 
     <el-container>
         <!--<el-header >-->
-            <!--<span><h2>Todo Inbox</h2></span>-->
-            <!--<small>&nbsp;&nbsp;&nbsp;- &nbsp;&nbsp;&nbsp;A collection of all your todos.</small>-->
+            <!--<span><h2>Today's Todo</h2></span>-->
+            <!--<small>&nbsp;&nbsp;&nbsp;- &nbsp;&nbsp;&nbsp;A collection of all your today's todos.</small>-->
         <!--</el-header>-->
 
         <el-main >
-            <el-button type="success" round @click="handleCreate();">Create a new todo</el-button>
+            <el-button type="success" round @click="handleCreate();">Create a new todo for today</el-button>
             <el-table v-loading="loading"
                       :data="todos"
-                      style="width: 100%"
-                      :row-class-name="tableRowClassName"
-            >
+                      style="width: 100%">
 
                 <el-table-column
                         label="Name"
@@ -43,7 +41,7 @@
                         label="Due Date Time"
                 >
                     <template slot-scope="scope">
-                        <span style="margin-left: 10px">{{ scope.row.due_date_time |moment}}</span>
+                        <span style="margin-left: 10px">{{ scope.row.due_date_time |moment }}</span>
                     </template>
 
                 </el-table-column>
@@ -52,24 +50,27 @@
                         label="Frequency"
                 >
                     <template slot-scope="scope">
-                        <el-tag  v-if="scope.row.project!=null" size="mini"  type="warning">{{  scope.row.project.name}}</el-tag>
-                        <el-tag v-if="scope.row.frequency!=null" size="mini" type="info">{{ scope.row.frequency }}</el-tag>
-                        <el-tag v-if="scope.row.is_done != 1" size="mini" type="danger">NOT DONE</el-tag>
-                        <el-tag v-else type="success">DONE</el-tag>
+                        <span style="margin-left: 10px">{{ scope.row.frequency ? scope.row.frequency: "N/A"}}</span>
+                    </template>
+
+                </el-table-column>
+
+                <el-table-column
+                        label="Status"
+                >
+                    <template slot-scope="scope">
+                        <span style="margin-left: 10px">{{ scope.row.is_done}}</span>
                     </template>
 
                 </el-table-column>
 
 
-
-                <el-table-column fixed="right" label="Actions" width="180">
+                <el-table-column fixed="right" label="Actions">
                     <template slot-scope="scope">
-                        <el-button-group>
-                        <el-button size="small" type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.$index, scope.row)"></el-button>
-                        <el-button size="small" type="danger" icon="el-icon-delete" circle  @click="handleDelete(scope.$index, scope.row)"></el-button>
-                        <el-button size="small" type="success" icon="el-icon-check" circle  @click="handleDone(scope.$index, scope.row)"></el-button>
-                      <el-button size="small" type="warning" icon="el-icon-time" circle  @click="handleStart(scope.$index, scope.row)"></el-button>
-                            </el-button-group>
+                        <el-button type="primary" icon="el-icon-edit" circle @click="handleEdit(scope.$index, scope.row)"></el-button>
+                        <el-button type="danger" icon="el-icon-delete" circle  @click="handleDelete(scope.$index, scope.row)"></el-button>
+                        <el-button type="success" icon="el-icon-check" circle  @click="handleDone(scope.$index, scope.row)"></el-button>
+                      <el-button type="warning" icon="el-icon-caret-right" circle  @click="handleStart(scope.$index, scope.row)"></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -80,38 +81,17 @@
                     <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
                         <el-input v-model="form.name" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
-                        <el-col>
-                            <el-date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="form.due_date_time"></el-date-picker>
-                        </el-col>
-                    </el-form-item>
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="form.description" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
                         <el-input v-model="form.notes" auto-complete="off"></el-input>
                     </el-form-item>
-
-                    <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
-                        <el-select filterable v-model="form.project_id" placeholder="Please select your project.">
-
-                            <el-option
-                                    v-for="item in projects"
-                                    :label="item.name"
-                                    :key="item.id"
-                                    :value="item.id">
-                            </el-option>
-
-                        </el-select>
+                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
+                        <el-col>
+                            <el-date-picker type="datetime" placeholder="Select Date Time" v-model="form.due_date_time"></el-date-picker>
+                        </el-col>
                     </el-form-item>
-
-                    <el-form-item label="Frequency" :label-width="formLabelWidth">
-                        <el-radio-group v-model="form.frequency" size="medium">
-                            <el-radio border label="every day"  auto-complete="off"></el-radio>
-                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-
                 </el-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -125,36 +105,16 @@
                     <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
                         <el-input v-model="editForm.name" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
-                        <el-col>
-                            <el-date-picker type="datetime"  placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
-                        </el-col>
-                    </el-form-item>
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
                         <el-input v-model="editForm.description" auto-complete="off"></el-input>
                     </el-form-item>
                     <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
                         <el-input v-model="editForm.notes" auto-complete="off"></el-input>
                     </el-form-item>
-
-                    <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
-                        <el-select filterable v-model="editForm.project_id" placeholder="Please select your project.">
-
-                            <el-option
-                                    v-for="item in projects"
-                                    :label="item.name"
-                                    :key="item.id"
-                                    :value="item.id">
-                            </el-option>
-
-                        </el-select>
-                    </el-form-item>
-
-                    <el-form-item label="Frequency" :label-width="formLabelWidth">
-                        <el-radio-group v-model="editForm.frequency" size="medium">
-                            <el-radio border label="every day"  auto-complete="off"></el-radio>
-                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
-                        </el-radio-group>
+                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
+                        <el-col>
+                            <el-date-picker type="datetime" placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
+                        </el-col>
                     </el-form-item>
                 </el-form>
                 <div slot="footer" class="dialog-footer">
@@ -173,11 +133,10 @@
 
 
 <script>
-    import moment from 'moment'
+    import moment from 'moment';
     export default {
         data: function () {
             return {
-                projects: [],
                 editLoading: false,
                 createLoading: false,
                 editTodoTitle: '',
@@ -187,38 +146,33 @@
                 todos: [],
                 dialogFormVisible: false,
                 form: {
+                    due_date_time: new Date()
                 },
                 editForm:{
                 },
                 formLabelWidth: '120px',
                 rules2: {
-                    due_date_time: [
-                        { required: true, message: 'Due Date Time is required.', trigger: 'blur' }
+                    due_date: [
+                        { required: true, message: 'Date is required.', trigger: 'blur' }
                     ],
-                    name:[
-                        { required: true, message: 'Name is required.', trigger: 'blur' }
+                    due_time: [
+                        { required: true, message: 'Time is required.', trigger: 'blur' }
+                    ],
+                    description:[
+                        { required: true, message: 'Description is required.', trigger: 'blur' }
                     ]
                 }
             }
         },
-        filters: {
-            moment: function (date) {
-                return moment(date).format('HH:mm:ss A, MMMM Do');
-            }
-        },
         mounted() {
             this.getTodos();
-            this.getProjects();
+        },
+        filters: {
+            moment: function (date) {
+                return moment(date).format('hh:mm:ss A, MMMM Do YYYY');
+            }
         },
         methods: {
-            tableRowClassName({row, rowIndex}) {
-                console.log(row.name);
-                if (row.is_done != 1) {
-                    return 'warning-row';
-                }else{
-                    return 'success-row';
-                }
-            },
             /**
              * Create a new timer.
              */
@@ -241,29 +195,15 @@
 //                });
 
             },
-            getProjects(){
-                var app=this;
-                app.loading = true;
-                api.get('/api/todolists/v1/projects')
-                        .then(function (resp) {
-
-                            app.projects = resp.data.results;
-                            app.loading = false;
-                        })
-                        .catch(function (resp) {
-                            console.log(resp);
-                            app.$message({
-                                type: 'error',
-                                message: 'Projects cannot be retrieved.'
-                            });
-                            app.loading = false;
-                        });
-
-            },
             getTodos(){
                 var app=this;
                 app.loading = true;
-                api.get('/api/todolists/v1/todos')
+                api.get('/api/todolists/v1/todos',{
+                            params: {
+                                due_date_time_from: moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),
+                                due_date_time_to: moment().endOf('day').format("YYYY-MM-DD HH:mm:ss")
+                            }
+                        })
                         .then(function (resp) {
 
                             app.todos = resp.data.results;
@@ -281,7 +221,7 @@
             },
             handleCreate(){
                 this.createLoading = false;
-                this.dialogFormVisible = true
+                this.dialogFormVisible = true;
             },
             submitForm(formName) {
                 this.createLoading = true;
@@ -291,7 +231,12 @@
 
                         axios.post('/api/todolists/v1/todos',data)
                                 .then(response => {
-                            this.todos.push(response.data.results)
+
+                            let diff = moment().diff(data.due_date_time, 'days');
+                            if(diff ==0){
+                                this.todos.push(response.data.results)
+                            }
+
                         this.$message({
                             type: 'success',
                             message: response.data.message
@@ -345,10 +290,10 @@
                 console.log(index, row);
                 this.editLoading = false;
                 this.editFormVisible = false;
-                this.editTodoTitle = 'Edit '+'#'+row.id +' todo: '+row.description;
+                this.editTodoTitle = 'Edit '+'#'+row.id +' todo: '+row.name;
                 this.editFormVisible = true;
                 this.editForm = row;
-//                this.editForm.due_date_time = new Date(row.due_date_time);
+                console.log(this.todos[index])
             },
             handleDelete(index, row) {
                 console.log(index, row);
@@ -466,12 +411,5 @@
         margin-right: 0;
         margin-bottom: 0;
         width: 50%;
-    }
-    .el-table .warning-row {
-        background:#F9B6B7 ;
-    }
-
-    .el-table .success-row {
-        background: #f0f9eb;
     }
 </style>

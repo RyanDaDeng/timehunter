@@ -14,6 +14,7 @@ import AboutMe from '@/forms/public/AboutMe.vue';
 import DonateMe from '@/forms/public/Donate.vue';
 import TodoInbox from './forms/todolists/TodosInbox.vue';
 import TodosToday from './forms/todolists/TodosToday.vue';
+import Project from './forms/todolists/Project.vue';
 let routes = [
     {
         path: '/',
@@ -42,6 +43,11 @@ let routes = [
                 path: '/todos/today',
                 component: TodosToday,
                 name: 'TodosToday'
+            },
+            {
+                path: '/projects',
+                component: Project,
+                name: 'Projects'
             }
             // ...other sub routes
         ],

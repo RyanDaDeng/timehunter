@@ -17,7 +17,7 @@
 
     a,header,body{
         font-family: 'Proxima Nova', sans-serif;
-        backgroud-color:FAFAFA;
+        background:#F5F5F5;
     }
 
 </style>

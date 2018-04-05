@@ -24,7 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/todolists/v1', 'namespace' => 'Api\TodoTasks\V1', 'as' => 'todolists.api.'], function () {
-
+    Route::resource('projects', 'ProjectController', ['except' => ['create', 'edit']])->middleware('auth:api');;
     Route::resource('todos', 'TodosController', ['except' => ['create', 'edit']])->middleware('auth:api');;
     Route::resource('tasks', 'TasksController', ['except' => ['create', 'edit']])->middleware('auth:api');;
     Route::resource('timers', 'TimerController', ['except' => ['create', 'edit']])->middleware('auth:api');;

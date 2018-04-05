@@ -14,7 +14,7 @@ class TodosController extends BaseController
     {
         $user = Auth::user();
 
-        $todos = Todo::query();
+        $todos = Todo::with('project');
         $todos = $todos->where('user_id', $user->id);
 
         if ($request->due_date_time_from) {
@@ -58,10 +58,12 @@ class TodosController extends BaseController
         $todo->update(
             [
                 'description' => $request->description,
-                'due_date_time' => $request->due_date_time,
+                'due_date_time' => Carbon::parse($request->due_date_time)->format('Y-m-d H:i:s'),
                 'task_id' => $request->task_id,
                 'name' => $request->name,
-                'notes' => $request->notes
+                'notes' => $request->notes,
+                'project_id' => $request->project_id,
+                'frequency' => $request->frequency,
             ]
         );
 
@@ -78,7 +80,9 @@ class TodosController extends BaseController
             'due_date_time' => Carbon::parse($request->due_date_time)->format('Y-m-d H:i:s'),
             'task_id' => $request->task_id,
             'notes' => $request->notes,
-            'name' => $request->name
+            'name' => $request->name,
+            'project_id' => $request->project_id,
+            'frequency' => $request->frequency
         ]);
         $todo->save();
 
@@ -108,20 +112,20 @@ class TodosController extends BaseController
         if (!$todo) {
             return $this->sendBadRequest('Resource cannot be found.');
         }
+
+        if ($todo->is_done == true) {
+            return $this->sendBadRequest('Todo had already been finished!');
+        }
         $todo->is_done = true;
         $todo->save();
 
         if ($todo->frequency == 'every day') {
-            $todo = new Todo([
-                'user_id' => $user->id,
-                'name' => $todo->name,
-                'description' => $todo->description,
-                'due_date_time' => Carbon::parse($todo->due_date_time)->startOfDay()->addday()->addHours(7)->format('Y-m-d H:i:s'),
-                'task_id' => $todo->id,
-                'notes' => $todo->notes,
-                'frequency' => $todo->frequency
-            ]);
-            $todo->save();
+
+            $newTodo = new Todo($todo->toArray());
+            $newTodo->due_date_time = Carbon::parse($todo->due_date_time)->startOfDay()->addday()->addHours(7)->format('Y-m-d H:i:s');
+            $newTodo->id = null;
+            $newTodo->is_done = 0;
+            $newTodo->save();
         }
 
         return $this->sendOkResponse($todo->toArray(), 'Todo is marked as done.');

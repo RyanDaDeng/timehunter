@@ -2,7 +2,8 @@
 
 
     <div class="body">
-        <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,400italic,300italic,300,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,400italic,300italic,300,500italic,700,700italic,900,900italic'
+              rel='stylesheet' type='text/css'>
         <div class="wrapper">
             <div class="sidebar-wrapper">
                 <div class="profile-container">
@@ -13,16 +14,15 @@
 
                 <div class="contact-container container-block">
                     <ul class="list-unstyled contact-list">
-                        <li class="email"><i class="fa fa-envelope"></i><a href="mailto: yourname@email.com">&nbsp;&nbsp;&nbsp;me@ryandeng.com</a>
+                        <li class="email"><i class="fa fa-envelope"></i>&nbsp;&nbsp;&nbsp;me@ryandeng.com
                         </li>
-                        <li class="phone"><i class="fa fa-phone"></i><a href="tel:0123 456 789">&nbsp;&nbsp;&nbsp;0404 157 872</a></li>
-                        <li class="website"><i class="fa fa-globe"></i><a
-                                href="https://ryandeng.com/"
-                                target="_blank">&nbsp;&nbsp;&nbsp; ryandeng.com</a></li>
-                        <li class="linkedin"><i class="fab fa-linkedin-in"></i><a href="https://linkedin.com/in/ryandeng" target="_blank">&nbsp;&nbsp;linkedin.com/in/ryandeng</a>
+                        <li class="phone"><i class="fa fa-phone"></i>&nbsp;&nbsp;&nbsp;0404
+                            157 872</li>
+                        <li class="website"><i class="fa fa-globe"></i>&nbsp;&nbsp;&nbsp; ryandeng.com</li>
+                        <li class="linkedin"><i class="fab fa-linkedin-in"></i>&nbsp;&nbsp;linkedin.com/in/ryandeng
                         </li>
-                        <li class="github"><i class="fab fa-github"></i><a href="https://github.com/RyanDaDeng"
-                                                                          target="_blank">&nbsp;&nbsp;github.com/RyanDaDeng</a></li>
+                        <li class="github"><i class="fab fa-github"></i>&nbsp;&nbsp;github.com/RyanDaDeng
+                        </li>
                     </ul>
                 </div><!--//contact-container-->
                 <div class="education-container container-block">
@@ -33,11 +33,19 @@
                         <div class="time">2016 - 2016</div>
                     </div><!--//item-->
                     <div class="item">
-                        <h4 class="degree">Software Engineering</h4>
+                        <h4 class="degree">Software Engineering (Honours)</h4>
                         <h5 class="meta">University of Sydney</h5>
                         <div class="time">2012 - 2015</div>
                     </div><!--//item-->
                 </div><!--//education-container-->
+
+                <div class="interests-container container-block">
+                    <h2 class="container-block-title">Awards</h2>
+                    <ul class="list-unstyled interests-list">
+                        <li>Bachelor with Honors</li>
+                        <li>Dean's List of Excellence in Academic Performance</li>
+                    </ul>
+                </div><!--//interests-->
 
                 <div class="languages-container container-block">
                     <h2 class="container-block-title">Languages</h2>
@@ -51,13 +59,14 @@
                     <h2 class="container-block-title">Interests</h2>
                     <ul class="list-unstyled interests-list">
                         <li>Magical Tricks</li>
-                        <li>Starups</li>
-                        <li>Gaming</li>
+                        <li>Start-ups</li>
+                        <li>Video Games</li>
                         <li>Dancing</li>
                         <li>Movies</li>
                         <li>Animes</li>
                     </ul>
                 </div><!--//interests-->
+
 
             </div><!--//sidebar-wrapper-->
 
@@ -66,7 +75,10 @@
                 <section class="section summary-section">
                     <h2 class="section-title"><i class="fa fa-user"></i>&nbsp;&nbsp;&nbsp;Career Profile</h2>
                     <div class="summary">
-                        <p>Be Crative. Be Smart. Be Patient.</p>
+                        <p>Be Creative. Be Smart. Be Patient.</p>
+                        <p>Two-year commercial experiences with Laravel and PHP. Willing to find a
+                            position to gain and learn more valuable knowledge of architectural level designs and new technologies. Interested
+                            in object-oriented programming, algorithms and design patterns.</p>
                     </div><!--//summary-->
                 </section><!--//section-->
 
@@ -76,39 +88,38 @@
                     <div class="item">
                         <div class="meta">
                             <div class="upper-row">
-                                <h3 class="job-title">SOFTWARE ENGINEER</h3>
-                                <div class="time">March 2015 - Present</div>
+                                <h3 class="job-title">PHP SOFTWARE ENGINEER</h3>
+                                <div class="time">March 2016 - Present</div>
                             </div><!--//upper-row-->
                             <div class="company">5.5 DEGREES, Sydney</div>
                         </div><!--//meta-->
                         <div class="details">
-                            <p> Worked as a full-time developer. The work mainly contains back-end integration services,
+                            <p> Worked as a full-time PHP developer. The work mainly contains back-end integration
+                                services,
                                 reporting services and other third-party projects. </p>
 
                             <ul>
 
 
-                                <li>Implemented a lot of integration services between different third-party APIs, e.g.
-                                    Revel POS
-                                    <-> Deputy, Revel <-> SAP, imPOS <-> Xero, Revel <-> Xero etc.
+                                <li>Implemented integration services e.g.Revel POS <-> Deputy, Revel <-> SAP, imPOS <->
+                                    Xero, Revel <-> Xero etc.
                                 </li>
 
                                 <li>Worked as one of core developers for a project Integration Platform as a Service
                                     (iPaaS).
                                     The project is built by micro-services, google app engine, Laravel, MySQL, vue.js,
                                     Redis,
-                                    WebSocket etc. Not only implemented core back-end services but also implemented
-                                    creative
-                                    stuff which is very useful to the project such as dynamic JSON UI form, QA
-                                    dashboard,
-                                    factory design pattern and adapter design pattern.
+                                    WebSocket etc. Implemented core integration services, dynamic JSON UI form, QA
+                                    dashboard and applied factory
+                                    design pattern and adapter design pattern.
                                 </li>
 
                                 <li>Completed a third-party project for a company – Envirobank, which is a project that
                                     receives
                                     data from physical recycling machine then converting them into NDB. The project is
                                     built by
-                                    Flask, GAE, NDB and WordPress. Mainly responsible for all back-end related logic.
+                                    Flask, GAE, NDB and WordPress. Mainly responsible for all back-end related logic and
+                                    APIs.
                                 </li>
 
                                 <li>Worked as a core back-end developer for a third-party company - The Grounds of
@@ -138,7 +149,7 @@
                         <div class="meta">
                             <div class="upper-row">
                                 <h3 class="job-title">Developer</h3>
-                                <div class="time">March 2015 - present</div>
+                                <div class="time">March 2016 - present</div>
                             </div><!--//upper-row-->
                             <div class="company">SELF</div>
                         </div><!--//meta-->
@@ -146,6 +157,9 @@
                             <p>Worked as a non-commercial developer during my spare time. </p>
 
                             <ul>
+                                <li> Working on a personal project called Tick-Tock, which is a completely free software
+                                    that allows people to track their time, todos and works easily.
+                                </li>
                                 <li> Created a fully automated booking script by using Selenium to help my friend to
                                     book a test
                                     seat fast.
@@ -170,7 +184,7 @@
                                 <h3 class="job-title">JAVA DEVELOPER INTERN</h3>
                                 <div class="time">November 2014 - January 2015</div>
                             </div><!--//upper-row-->
-                            <div class="company">5.5 DEGREES, Sydney</div>
+                            <div class="company">Nanjing  Linkage Technology, China</div>
                         </div><!--//meta-->
                         <div class="details">
                             <p>Worked as a three month full-time internship.</p>
@@ -188,77 +202,84 @@
                 </section><!--//section-->
 
                 <!--<section class="section projects-section">-->
-                    <!--<h2 class="section-title"><i class="fa fa-archive"></i>PersonalProjects</h2>-->
-                    <!--<div class="intro">-->
-                    <!--</div>&lt;!&ndash;//intro&ndash;&gt;-->
-                    <!--<div class="item">-->
-                        <!--<span class="project-title"><a href="#hook">Booking Script</a></span> - <span class="project-tagline">A script to help students to book test fast.</span>-->
+                <!--<h2 class="section-title"><i class="fa fa-archive"></i>&nbsp;&nbsp;&nbsp;Projects</h2>-->
+                <!--<div class="intro">-->
+                <!--</div>&lt;!&ndash;//intro&ndash;&gt;-->
+                <!--<div class="item">-->
+                <!--<span class="project-title"><a href="#hook">Tick-Tock</a></span> - <span class="project-tagline">A script to help students to book test fast.</span>-->
 
-                    <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
-                    <!--<div class="item">-->
-                        <!--<span class="project-title"><a-->
-                                <!--href="http://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-web-development-agencies-devstudio/"-->
-                                <!--target="_blank">Tick-Tock</a></span> - -->
-                        <!--<span class="project-tagline">A responsive website template designed to help web developers/designers market their services. </span>-->
-                    <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
-                    <!--<div class="item">-->
-                        <!--<span class="project-title"><a-->
-                                <!--href="http://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-for-startups-tempo/"-->
-                                <!--target="_blank">Tempo</a></span> - <span class="project-tagline">A responsive website template designed to help startups promote their products or services and to attract users &amp; investors</span>-->
-                    <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
-                    <!--<div class="item">-->
-                        <!--<span class="project-title"><a-->
-                                <!--href="hhttp://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-mobile-apps-atom/"-->
-                                <!--target="_blank">Atom</a></span> - <span class="project-tagline">A comprehensive website template solution for startups/developers to market their mobile apps. </span>-->
-                    <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
-                    <!--<div class="item">-->
-                        <!--<span class="project-title"><a-->
-                                <!--href="http://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-for-mobile-apps-delta/"-->
-                                <!--target="_blank">Delta</a></span> - <span class="project-tagline">A responsive Bootstrap one page theme designed to help app developers promote their mobile apps</span>-->
-                    <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
+                <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
+                <!--<div class="item">-->
+                <!--<span class="project-title"><a-->
+                <!--href="http://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-web-development-agencies-devstudio/"-->
+                <!--target="_blank">Tick-Tock</a></span> - -->
+                <!--<span class="project-tagline">A responsive website template designed to help web developers/designers market their services. </span>-->
+                <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
+                <!--<div class="item">-->
+                <!--<span class="project-title"><a-->
+                <!--href="http://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-for-startups-tempo/"-->
+                <!--target="_blank">Tempo</a></span> - <span class="project-tagline">A responsive website template designed to help startups promote their products or services and to attract users &amp; investors</span>-->
+                <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
+                <!--<div class="item">-->
+                <!--<span class="project-title"><a-->
+                <!--href="hhttp://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-mobile-apps-atom/"-->
+                <!--target="_blank">Atom</a></span> - <span class="project-tagline">A comprehensive website template solution for startups/developers to market their mobile apps. </span>-->
+                <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
+                <!--<div class="item">-->
+                <!--<span class="project-title"><a-->
+                <!--href="http://themes.3rdwavemedia.com/website-templates/responsive-bootstrap-theme-for-mobile-apps-delta/"-->
+                <!--target="_blank">Delta</a></span> - <span class="project-tagline">A responsive Bootstrap one page theme designed to help app developers promote their mobile apps</span>-->
+                <!--</div>&lt;!&ndash;//item&ndash;&gt;-->
                 <!--</section>&lt;!&ndash;//section&ndash;&gt;-->
 
                 <section class="skills-section section">
-                    <h2 class="section-title"><i class="fa fa-rocket"></i>&nbsp;&nbsp;&nbsp;Skills &amp; Proficiency</h2>
+                    <h2 class="section-title"><i class="fa fa-rocket"></i>&nbsp;&nbsp;&nbsp;Skills &amp; Proficiency
+                    </h2>
                     <div class="skillset">
                         <div class="item">
                             <h3 class="level-title">PHP &amp; Laravel</h3>
                             <div class="level-bar">
-                                <el-progress :show-text="false" :stroke-width="10" :percentage="90" color="#42A8C0"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="10" :percentage="90"
+                                             color="#42A8C0"></el-progress>
                             </div><!--//level-bar-->
                         </div><!--//item-->
 
                         <div class="item">
                             <h3 class="level-title">Mysql &amp; No-Sql</h3>
                             <div class="level-bar">
-                                <el-progress :show-text="false" :stroke-width="10" :percentage="90"  color="#42A8C0"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="10" :percentage="90"
+                                             color="#42A8C0"></el-progress>
                             </div><!--//level-bar-->
                         </div><!--//item-->
                         <div class="item">
                             <h3 class="level-title">Javascript &amp; jQuery</h3>
                             <div class="level-bar">
-                                <el-progress :show-text="false" :stroke-width="10" :percentage="80" color="#42A8C0"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="10" :percentage="80"
+                                             color="#42A8C0"></el-progress>
                             </div><!--//level-bar-->
                         </div><!--//item-->
 
                         <div class="item">
                             <h3 class="level-title">Vue.js</h3>
                             <div class="level-bar">
-                                <el-progress :show-text="false" :stroke-width="10" :percentage="50" color="#42A8C0"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="10" :percentage="50"
+                                             color="#42A8C0"></el-progress>
                             </div><!--//level-bar-->
                         </div><!--//item-->
 
                         <div class="item">
                             <h3 class="level-title">Python &amp; Django</h3>
                             <div class="level-bar">
-                                <el-progress :show-text="false" :stroke-width="10" :percentage="50" color="#42A8C0"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="10" :percentage="50"
+                                             color="#42A8C0"></el-progress>
                             </div><!--//level-bar-->
                         </div><!--//item-->
 
                         <div class="item">
                             <h3 class="level-title">Java &amp; J2EE &amp; Spring</h3>
                             <div class="level-bar">
-                                <el-progress :show-text="false" :stroke-width="10" :percentage="50" color="#42A8C0"></el-progress>
+                                <el-progress :show-text="false" :stroke-width="10" :percentage="40"
+                                             color="#42A8C0"></el-progress>
                             </div><!--//level-bar-->
                         </div><!--//item-->
 

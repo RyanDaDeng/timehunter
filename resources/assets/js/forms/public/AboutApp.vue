@@ -21,6 +21,13 @@
                             <!--<i class="fas fa-clock fa-8x" style="color: red;"></i>-->
                         </div>
                         <div>
+                            <p><b style="color:blue;">v0.2.1</b> - 3rd April 2018</p>
+
+                            <ul>- Supported CRUD on TODO</ul>
+                            <ul> - Supported Frequency on task.</ul>
+                            <ul> - Supported Frequency on todo.</ul>
+                            <ul> - Supported Today's view for todo.</ul>
+                            <ul> - Integrated Todo with Timers and Tasks.</ul>
 
                             <p><b style="color:blue;">v0.1.2</b> - 1st April 2018</p>
 
