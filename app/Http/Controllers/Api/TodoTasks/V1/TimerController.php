@@ -25,6 +25,29 @@ class TimerController extends BaseController
     }
 
 
+    public function startTimerByTimerId($timerId)
+    {
+        $user = Auth::user();
+
+        $copyTimer = Timer::findOrFail($timerId);
+        // stop all running task
+        $this->stopTimerByUserId($user->id);
+
+        $now = new Carbon();
+        $timer = new Timer([
+            'user_id' => $user->id,
+            'started_at' => $now,
+            'date' => $now->format('Y-m-d'),
+            'name' => $copyTimer->name,
+            'description' => $copyTimer->description
+        ]);
+        $timer->save();
+        $timer = Timer::where('id', $timer->id)->first();
+
+        $timer = $timer ? $timer->toArray() : [];
+        return $this->sendOkResponse($timer, "Task: {$timer['name']} started.");
+    }
+
     public function startTimerByTodoId($todoId)
     {
         $user = Auth::user();
@@ -39,13 +62,13 @@ class TimerController extends BaseController
             'started_at' => $now,
             'date' => $now->format('Y-m-d'),
             'name' => $todo->name,
-            'todo_id'=>$todo->id,
+            'todo_id' => $todo->id,
             'description' => $todo->description
         ]);
         $timer->save();
         $timer = Timer::where('id', $timer->id)->first();
 
-        $timer = $timer?$timer->toArray():[];
+        $timer = $timer ? $timer->toArray() : [];
         return $this->sendOkResponse($timer, "Task: {$timer['name']} started.");
     }
 
@@ -64,18 +87,19 @@ class TimerController extends BaseController
             'started_at' => $now,
             'date' => $now->format('Y-m-d'),
             'name' => $task->name,
-            'task_id'=>$task->id,
+            'task_id' => $task->id,
             'description' => $task->description
         ]);
         $timer->save();
         $timer = Timer::where('id', $timer->id)->first();
 
-        $timer = $timer?$timer->toArray():[];
+        $timer = $timer ? $timer->toArray() : [];
         return $this->sendOkResponse($timer, "Task: {$timer['name']} started.");
     }
 
-    public function stopTimerByUserId($userId){
-
+    public function stopTimerByUserId($userId)
+    {
+        $user = Auth::user();
         if ($timer = Timer::where('user_id', $userId)->whereNull('stopped_at')->first()) {
             $now = new Carbon();
             $start = Carbon::parse($timer->started_at);
@@ -88,13 +112,20 @@ class TimerController extends BaseController
                     'total_duration' => gmdate("H:i:s", $totalSeconds)
                 ]
             );
+            $timer->date = Carbon::parse($timer->started_at, 'UTC')->timezone($user->timezone)->format('Y-m-d');
+            $timer->started_at = Carbon::parse($timer->started_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $timer->stopped_at = Carbon::parse($timer->stopped_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
             return $timer;
         }
         return null;
 
     }
-    public function stopTimerById($id){
 
+    public function stopTimerById($id)
+    {
+        $user = Auth::user();
         if ($timer = Timer::where('id', $id)->first()) {
             $now = new Carbon();
             $start = Carbon::parse($timer->started_at);
@@ -107,6 +138,11 @@ class TimerController extends BaseController
                     'total_duration' => gmdate("H:i:s", $totalSeconds)
                 ]
             );
+            $timer->date = Carbon::parse($timer->started_at, 'UTC')->timezone($user->timezone)->format('Y-m-d');
+            $timer->started_at = Carbon::parse($timer->started_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $timer->stopped_at = Carbon::parse($timer->stopped_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
             return $timer;
         }
         return null;
@@ -115,7 +151,14 @@ class TimerController extends BaseController
 
     public function stopTimer($id)
     {
-        if($timer = $this->stopTimerById($id) != null){
+        $user = Auth::user();
+        $timer = $this->stopTimerById($id);
+        if ($timer != null) {
+            $timer->date = Carbon::parse($timer->started_at, 'UTC')->timezone($user->timezone)->format('Y-m-d');
+            $timer->started_at = Carbon::parse($timer->started_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $timer->stopped_at = Carbon::parse($timer->stopped_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
             return $this->sendOkResponse($timer, 'Running timer stopped successfully.');
         }
         return $this->sendBadRequest(null, 'Timer is not found.');
@@ -140,13 +183,43 @@ class TimerController extends BaseController
         }
         $timers = $timers->orderBy('date', 'desc')->orderBy('stopped_at', 'desc')->get();
 
+        foreach ($timers as $timer) {
+            $timer->date = Carbon::parse($timer->started_at, 'UTC')->timezone($user->timezone)->format('Y-m-d');
+            $timer->started_at = Carbon::parse($timer->started_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $timer->stopped_at = Carbon::parse($timer->stopped_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+        }
+
+        return $this->sendOkResponse($timers->toArray(), 'Timers retrieved successfully.');
+    }
+
+    public function index_2(Request $request)
+    {
+        $user = Auth::user();
+        $now = new Carbon();
+        $timers = Timer::query();
+        $timers = $timers->where('user_id', $user->id)
+            ->whereNotNull('stopped_at')
+            ->where('started_at', '<=', $now->format('Y-m-d H:i:s'));
+
+        if ($request->limit) {
+            $timers = $timers->limit($this->limit);
+        }
+        if ($request->offset) {
+            $timers = $timers->offset($this->offset);
+        }
+        $timers = $timers->orderBy('date', 'desc')->orderBy('stopped_at', 'desc')->get();
+
 
         $result = [];
         foreach ($timers as $timer) {
-            $timer->date = Carbon::parse($timer->date,'UTC')->timezone($user->timezone)->formatLocalized('%a,%d %B');
-            $timer->started_at = Carbon::parse($timer->started_at,'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
-            $timer->stopped_at = Carbon::parse($timer->stopped_at,'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
-            $dateName = Carbon::parse($timer->date,'UTC')->timezone($user->timezone)->formatLocalized('%a,%d %B');
+            $timer->date = Carbon::parse($timer->date, 'UTC')->timezone($user->timezone)->formatLocalized('%a,%d %B');
+            $timer->started_at = Carbon::parse($timer->started_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $timer->stopped_at = Carbon::parse($timer->stopped_at,
+                'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $dateName = Carbon::parse($timer->date, 'UTC')->timezone($user->timezone)->formatLocalized('%a,%d %B');
 
             if (!isset($result[$timer->date])) {
                 $result[$timer->date] = [
@@ -217,16 +290,29 @@ class TimerController extends BaseController
 
     public function update(Request $request, $id)
     {
-        $task = Timer::findOrFail($id);
-        $task->update($request->all());
+        $timer = Timer::findOrFail($id);
 
-        return $task;
+        $stop = Carbon::parse($request->stopped_at);
+        $start = Carbon::parse($request->started_at);
+
+        $totalSeconds = $stop->diffInSeconds($start);
+
+        $timer->update([
+            'name' => $request->name,
+            'date' => Carbon::parse($request->started_at)->format('Y-m-d'),
+            'started_at' => $start->format('Y-m-d H:i:s'),
+            'stopped_at' => $stop->format('Y-m-d H:i:s'),
+            'total_seconds' => $totalSeconds,
+            'total_duration' => gmdate("H:i:s", $totalSeconds)
+        ]);
+
+        return $this->sendOkResponse($timer->toArray(), 'Timer updated successfully.');
     }
 
     public function destroy($id)
     {
         $task = Timer::findOrFail($id);
         $task->delete();
-        return '';
+        return $this->sendOkResponse($task->toArray(), 'Timer successfully deleted.');
     }
 }
