@@ -40,14 +40,14 @@
             top: 0;
             left: 0;
             z-index: 1;
-            animation: item-1_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+            animation: loading-item-1_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
         }
 
         .loading-item-2 {
             background-color: #7A45E5;
             top: 0;
             right: 0;
-            animation: item-2_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+            animation: loading-item-2_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
         }
 
         .loading-item-3 {
@@ -55,14 +55,14 @@
             bottom: 0;
             right: 0;
             z-index: 1;
-            animation: item-3_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+            animation: loading-item-3_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
         }
 
         .loading-item-4 {
             background-color: #FAC24C;
             bottom: 0;
             left: 0;
-            animation: item-4_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+            animation: loading-item-4_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
         }
 
         @keyframes loading-item-1_move {
