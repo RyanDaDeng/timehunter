@@ -30,7 +30,7 @@
     </div>
 
 </div>
-<script src="/js/app.js"></script>
+
 </body>
 
 
@@ -511,4 +511,6 @@
 
 
 </style>
+
+{{--<script src="/js/app.js"></script>--}}
 </html>
