@@ -34,6 +34,7 @@ Route::group(['prefix' => '/todolists/v1', 'namespace' => 'Api\TodoTasks\V1', 'a
     Route::get('runningtasktimer', 'TimerController@getRunningTimer')->middleware('auth:api');;
     Route::post('todos/{id}/done', 'TodosController@done')->middleware('auth:api');;
     Route::post('todos/{todoId}/start', 'TimerController@startTimerByTodoId')->middleware('auth:api');;
-    Route::post('timers/{id}/stop', 'TimerController@stopTimer')->middleware('auth:api');;
+    Route::post('timers/{timerId}/start', 'TimerController@startTimerByTimerId')->middleware('auth:api');;
+//    Route::post('timers/{id}/stop', 'TimerController@stopTimer')->middleware('auth:api');;
 });
 

@@ -160,7 +160,10 @@
                         message: resp.data.message
                     });
 
-                    Event.$emit('timerStopped');
+                    console.log('sss');
+                    console.log(resp.data.results);
+                    console.log('ssss');
+                    Event.$emit('timerStopped',resp.data.results);
 
                 }).catch(function (resp) {
                     console.log(resp);

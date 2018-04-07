@@ -347,7 +347,7 @@
                 this.editFormVisible = false;
                 this.editTodoTitle = 'Edit '+'#'+row.id +' todo: '+row.description;
                 this.editFormVisible = true;
-                this.editForm = row;
+                this.editForm = JSON.parse(JSON.stringify(row));;
 //                this.editForm.due_date_time = new Date(row.due_date_time);
             },
             handleDelete(index, row) {
