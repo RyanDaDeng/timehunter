@@ -39,6 +39,7 @@ class TimerController extends BaseController
             'started_at' => $now,
             'date' => $now->format('Y-m-d'),
             'name' => $copyTimer->name,
+            'todo_id' => $copyTimer->todo_id,
             'description' => $copyTimer->description
         ]);
         $timer->save();
