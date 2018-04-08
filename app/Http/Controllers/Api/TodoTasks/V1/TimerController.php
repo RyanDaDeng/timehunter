@@ -290,10 +290,11 @@ class TimerController extends BaseController
 
     public function update(Request $request, $id)
     {
+        $user = Auth::user();
         $timer = Timer::findOrFail($id);
 
-        $stop = Carbon::parse($request->stopped_at);
-        $start = Carbon::parse($request->started_at);
+        $stop = Carbon::parse($request->stopped_at,$user->timezone)->timezone('UTC');
+        $start = Carbon::parse($request->started_at,$user->timezone)->timezone('UTC');
 
         $totalSeconds = $stop->diffInSeconds($start);
 
@@ -305,6 +306,12 @@ class TimerController extends BaseController
             'total_seconds' => $totalSeconds,
             'total_duration' => gmdate("H:i:s", $totalSeconds)
         ]);
+
+        $timer->date = Carbon::parse($timer->started_at, 'UTC')->timezone($user->timezone)->format('Y-m-d');
+        $timer->started_at = Carbon::parse($timer->started_at,
+            'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+        $timer->stopped_at = Carbon::parse($timer->stopped_at,
+            'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
 
         return $this->sendOkResponse($timer->toArray(), 'Timer updated successfully.');
     }

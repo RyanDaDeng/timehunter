@@ -60,16 +60,13 @@
                     <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
                         <el-input v-model="editForm.name" auto-complete="off"></el-input>
                     </el-form-item>
-                    <el-form-item label="Started At" prop="started_at" :label-width="formLabelWidth">
+                    <el-form-item label="Datetime Range" prop="started_at" :label-width="formLabelWidth">
                         <el-col>
-                            <el-date-picker type="datetime"  placeholder="Select Date Time" v-model="editForm.started_at"></el-date-picker>
+                            <el-date-picker type="datetimerange" range-separator="to"
+                                            start-placeholder="Started At"
+                                            end-placeholder="Stopped At" value-format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="dateTimeRange"></el-date-picker>
                         </el-col>
-                    </el-form-item>
 
-                    <el-form-item label="Stopped At" prop="stopped_at" :label-width="formLabelWidth">
-                        <el-col>
-                            <el-date-picker type="datetime"  placeholder="Select Date Time" v-model="editForm.stopped_at"></el-date-picker>
-                        </el-col>
                     </el-form-item>
 
                 </el-form>
@@ -106,6 +103,7 @@
         },
         data: function () {
             return {
+                dateTimeRange:'',
                 editForm:{},
                 editLoading: false,
                 editFormVisible:false,
@@ -172,6 +170,8 @@
                 this.editTodoTitle = 'Edit '+'#'+row.id +' todo: '+row.name;
                 this.editFormVisible = true;
                 this.editForm = JSON.parse(JSON.stringify(row));
+
+                this.dateTimeRange = [this.editForm.started_at, this.editForm.stopped_at];
 //                this.editForm.due_date_time = new Date(row.due_date_time);
             },
             submitEditForm(formName) {
@@ -180,7 +180,8 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data = this.editForm;
-
+                        this.editForm.started_at = this.dateTimeRange[0];
+                        this.editForm.stopped_at = this.dateTimeRange[1];
                         axios.put('/api/todolists/v1/timers/'+this.editForm.id,data)
                                 .then(response => {
                             console.log(response.data.results);

@@ -127,7 +127,7 @@
                     </el-form-item>
                     <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
                         <el-col>
-                            <el-date-picker type="datetime"  placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
+                            <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
                         </el-col>
                     </el-form-item>
                     <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
