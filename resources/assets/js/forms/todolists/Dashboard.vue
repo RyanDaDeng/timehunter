@@ -131,10 +131,7 @@
 
 
 <style scoped>
-    .{
-        margin:0;
-        padding:0;
-    }
+
     body{
         font-family:arial,sans-serif;
         font-size:100%;
