@@ -15,6 +15,7 @@ import DonateMe from '@/forms/public/Donate.vue';
 import TodoInbox from './forms/todolists/TodosInbox.vue';
 import TodosToday from './forms/todolists/TodosToday.vue';
 import Project from './forms/todolists/Project.vue';
+import Timeline from './forms/todolists/Timeline.vue';
 let routes = [
     {
         path: '/',
@@ -33,6 +34,11 @@ let routes = [
                 path: '/reports',
                 component: Reports,
                 name: 'Reports'
+            },
+            {
+                path: '/timeline',
+                component: Timeline,
+                name: 'Timeline'
             },
             {
                 path: '/todos/inbox',

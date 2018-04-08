@@ -25,6 +25,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => '/todolists/v1', 'namespace' => 'Api\TodoTasks\V1', 'as' => 'todolists.api.'], function () {
     Route::get('todos/notdone', 'TodosController@getNotDone')->middleware('auth:api');
+    Route::get('timeline/alldone', 'TodosController@getDoneForTimeline')->middleware('auth:api');
     Route::resource('projects', 'ProjectController', ['except' => ['create', 'edit']])->middleware('auth:api');;
     Route::resource('todos', 'TodosController', ['except' => ['create', 'edit']])->middleware('auth:api');;
     Route::resource('tasks', 'TasksController', ['except' => ['create', 'edit']])->middleware('auth:api');;
@@ -36,6 +37,7 @@ Route::group(['prefix' => '/todolists/v1', 'namespace' => 'Api\TodoTasks\V1', 'a
     Route::post('todos/{id}/done', 'TodosController@done')->middleware('auth:api');;
     Route::post('todos/{todoId}/start', 'TimerController@startTimerByTodoId')->middleware('auth:api');;
     Route::post('timers/{timerId}/start', 'TimerController@startTimerByTimerId')->middleware('auth:api');;
+
 //    Route::post('timers/{id}/stop', 'TimerController@stopTimer')->middleware('auth:api');;
 });
 

@@ -54,6 +54,11 @@
                         <i class="fas fa-chart-bar fa-lg"></i>
                         <span slot="title">&nbsp;&nbsp;&nbsp;Reports</span>
                     </el-menu-item>
+
+                    <el-menu-item index="Timeline">
+                        <i class="fas fa-chart-bar fa-lg"></i>
+                        <span slot="title">&nbsp;&nbsp;&nbsp;Timeline</span>
+                    </el-menu-item>
                 </el-menu>
             </el-aside>
 
@@ -116,6 +121,9 @@
                     case 'TodosToday':
                         this.$router.push('/todos/today');
                         break;
+                    case 'Timeline':
+                        this.$router.push('/timeline');
+                        break;
                     default:
                         break;
                 }
@@ -143,6 +151,9 @@
                         break;
                     case 'Projects':
                         this.activeIndex = 'Projects';
+                        break;
+                    case 'Timeline':
+                        this.activeIndex = 'Timeline';
                         break;
                     default:
                         break;

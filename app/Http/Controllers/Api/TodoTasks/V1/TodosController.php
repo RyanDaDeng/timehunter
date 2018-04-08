@@ -30,7 +30,7 @@ class TodosController extends BaseController
             $todos = $todos->where('due_date_time', '<=', $dateTo);
         }
 
-        $todos = $todos->orderBy('due_date_time','asc')->get();
+        $todos = $todos->orderBy('due_date_time', 'asc')->get();
 
 
         foreach ($todos as $todo) {
@@ -165,7 +165,7 @@ class TodosController extends BaseController
         $now->setTimezone('UTC')->timezone($user->timezone);
 
         $todos = Todo::where('user_id', $user->id)->where('is_done', 0)->where('due_date_time', '<=',
-            $now->format('Y-m-d H:i:s'))->orderBy('due_date_time','desc')->get();
+            $now->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'desc')->get();
 
         foreach ($todos as $todo) {
             $todo->due_date_time = Carbon::parse($todo->due_date_time,
@@ -173,6 +173,32 @@ class TodosController extends BaseController
         }
 
         return $this->sendOkResponse($todos->toArray(), 'Incomplete Todo retrieved.');
+    }
+
+
+    public function getDoneForTimeline()
+    {
+        $user = Auth::user();
+        $now = new Carbon();
+        $now->setTimezone('UTC')->timezone($user->timezone);
+
+        $todos = Todo::where('user_id', $user->id)->where('is_done', 1)->orderBy('due_date_time', 'desc')->get();
+
+        $result = [];
+        foreach ($todos as $todo) {
+            $dueDateTime = $todo->due_date_time = Carbon::parse($todo->due_date_time,
+                'UTC')->timezone($user->timezone);
+            if (!isset($result[$dueDateTime->year])) {
+                $result[$dueDateTime->year] = [];
+            }
+
+            $result[$dueDateTime->year][] = [
+                'name' => $todo->name,
+                'time' => $dueDateTime->copy()->format('l jS F H:i:s')
+            ];
+        }
+
+        return $this->sendOkResponse($result, 'All done Todo retrieved.');
     }
 
 }

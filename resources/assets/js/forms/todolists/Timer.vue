@@ -96,7 +96,6 @@
 <script>
     import moment from 'moment';
     import infiniteScroll from 'vue-infinite-scroll';
-
     export default {
         directives:{
             infiniteScroll
