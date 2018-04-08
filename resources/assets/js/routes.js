@@ -52,7 +52,7 @@ let routes = [
             // ...other sub routes
         ],
         name: 'App',
-        redirect: '/timers',
+        redirect: '/dashboard',
         meta: { requiresAuth: true }
     },
     {
