@@ -25,7 +25,7 @@
 
                             <ul>- Added Timerline</ul>
                             <ul>- Added Loading animation</ul>
-                            
+
                             <p><b style="color:blue;">v0.3.1</b> - 7th April 2018</p>
 
                             <ul>- Timer page supported CRUD</ul>

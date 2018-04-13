@@ -71,7 +71,6 @@ class TodosController extends BaseController
 
         $todo->update(
             [
-                'description' => $request->description,
                 'due_date_time' => Carbon::parse($request->due_date_time,
                     $user->timezone)->timezone('UTC')->format('Y-m-d H:i:s'),
                 'task_id' => $request->task_id,
@@ -79,6 +78,7 @@ class TodosController extends BaseController
                 'notes' => $request->notes,
                 'project_id' => $request->project_id,
                 'frequency' => $request->frequency,
+                'priority_level' => $request->priority_level
             ]
         );
 
@@ -94,16 +94,17 @@ class TodosController extends BaseController
         $user = Auth::user();
         $todo = new Todo([
             'user_id' => $user->id,
-            'description' => $request->description,
             'due_date_time' => Carbon::parse($request->due_date_time,
                 $user->timezone)->timezone('UTC')->format('Y-m-d H:i:s'),
             'task_id' => $request->task_id,
             'notes' => $request->notes,
             'name' => $request->name,
             'project_id' => $request->project_id,
-            'frequency' => $request->frequency
+            'frequency' => $request->frequency,
+            'priority_level' => $request->priority_level
         ]);
         $todo->save();
+
 
         $todo->due_date_time = Carbon::parse($todo->due_date_time,
             'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
@@ -167,12 +168,20 @@ class TodosController extends BaseController
         $todos = Todo::where('user_id', $user->id)->where('is_done', 0)->where('due_date_time', '<=',
             $now->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'desc')->get();
 
+        $result = [
+            1 => [],
+            2 => [],
+            3 => [],
+            4 => []
+        ];
         foreach ($todos as $todo) {
             $todo->due_date_time = Carbon::parse($todo->due_date_time,
                 'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
+            $result[$todo->priority_level][] = $todo->toArray();
+
         }
 
-        return $this->sendOkResponse($todos->toArray(), 'Incomplete Todo retrieved.');
+        return $this->sendOkResponse($result, 'Incomplete Todo retrieved.');
     }
 
 
@@ -200,5 +209,24 @@ class TodosController extends BaseController
 
         return $this->sendOkResponse($result, 'All done Todo retrieved.');
     }
+
+
+
+    public function updatePriority(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        $todo = Todo::where('user_id', $user->id)->where('id', $id)->first();
+        if (!$todo) {
+            return $this->sendBadRequest('Resource cannot be found.');
+        }
+
+        $todo->priority_level = $request->priority_level;
+        $todo->save();
+
+        return $this->sendOkResponse($todo->toArray(), 'Todo is marked as done.');
+    }
+
+
 
 }

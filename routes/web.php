@@ -11,6 +11,13 @@
 |
 */
 
+
+Route::get('/cc', function () {
+
+    $cart = new \App\Http\Controllers\Discount\Client();
+    $cart->run();
+dd(1);
+})->name('AboutMe2');;
 Route::get('/', 'Vue\VueHomeController@index')->name('home');
 Route::get('/home', 'Vue\VueHomeController@index')->name('vue.home');
 

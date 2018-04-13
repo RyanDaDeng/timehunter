@@ -24,6 +24,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => '/todolists/v1', 'namespace' => 'Api\TodoTasks\V1', 'as' => 'todolists.api.'], function () {
+    Route::post('todos/{id}/updatePriority', 'TodosController@updatePriority')->middleware('auth:api');
     Route::get('todos/notdone', 'TodosController@getNotDone')->middleware('auth:api');
     Route::get('timeline/alldone', 'TodosController@getDoneForTimeline')->middleware('auth:api');
     Route::resource('projects', 'ProjectController', ['except' => ['create', 'edit']])->middleware('auth:api');;

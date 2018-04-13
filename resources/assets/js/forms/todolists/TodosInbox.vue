@@ -18,16 +18,14 @@
                         label="Name"
                 >
                     <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.name }}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
-                        label="Description"
+                        label="Priority"
                 >
                     <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
-                        <span style="margin-left: 10px">{{ scope.row.description }}</span>
+                        <span style="margin-left: 10px">{{ scope.row.priority_level | priority}}</span>
                     </template>
                 </el-table-column>
                 <el-table-column
@@ -85,9 +83,7 @@
                             <el-date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="form.due_date_time"></el-date-picker>
                         </el-col>
                     </el-form-item>
-                    <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
-                        <el-input v-model="form.description" auto-complete="off"></el-input>
-                    </el-form-item>
+
                     <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
                         <el-input v-model="form.notes" auto-complete="off"></el-input>
                     </el-form-item>
@@ -104,6 +100,16 @@
 
                         </el-select>
                     </el-form-item>
+
+                    <el-form-item label="Priority" :label-width="formLabelWidth">
+                        <el-radio-group v-model="form.priority_level" size="medium">
+                            <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
+                            <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
+                            <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
+                            <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+
 
                     <el-form-item label="Frequency" :label-width="formLabelWidth">
                         <el-radio-group v-model="form.frequency" size="medium">
@@ -130,9 +136,7 @@
                             <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
                         </el-col>
                     </el-form-item>
-                    <el-form-item prop="description" label="Description" :label-width="formLabelWidth">
-                        <el-input v-model="editForm.description" auto-complete="off"></el-input>
-                    </el-form-item>
+
                     <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
                         <el-input v-model="editForm.notes" auto-complete="off"></el-input>
                     </el-form-item>
@@ -150,6 +154,14 @@
                         </el-select>
                     </el-form-item>
 
+                    <el-form-item label="Priority" :label-width="formLabelWidth">
+                        <el-radio-group v-model="editForm.priority_level" size="medium">
+                            <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
+                            <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
+                            <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
+                            <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
                     <el-form-item label="Frequency" :label-width="formLabelWidth">
                         <el-radio-group v-model="editForm.frequency" size="medium">
                             <el-radio border label="every day"  auto-complete="off"></el-radio>
@@ -197,11 +209,28 @@
                     ],
                     name:[
                         { required: true, message: 'Name is required.', trigger: 'blur' }
+                    ],
+                    priority_level:[
+                        { required: true, message: 'Name is required.', trigger: 'blur' }
                     ]
                 }
             }
         },
         filters: {
+            priority: function(data){
+                switch(data) {
+                    case 1:
+                        return "Important and urgent";
+                    case 2:
+                        return "Important not urgent";
+                    case 3:
+                        return "Not important but urgent";
+                    case 4:
+                        return "Not important not urgent";
+                    default:
+                        return 'N/A';
+                }
+            },
             moment: function (date) {
                 return moment(date).format('HH:mm:ss A, MMMM Do');
             }
