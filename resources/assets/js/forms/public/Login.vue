@@ -67,7 +67,7 @@
         </div>
 
         <div v-if="signup == true">
-            <router-view to="/signup"></router-view>
+            <router-view to="/app/signup"></router-view>
         </div>
     </div>
 </template>
@@ -104,7 +104,7 @@
         },
         methods: {
             showSignup(){
-              this.$router.push('/signup');
+              this.$router.push({name:'Signup'});
             },
             showForgotPassword(){
                 this.$notify({
