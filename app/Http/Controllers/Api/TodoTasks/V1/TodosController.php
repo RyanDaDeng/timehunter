@@ -148,6 +148,7 @@ class TodosController extends BaseController
         }
 
 
+
         if ($todo->frequency == 'every day') {
 
             $newTodo = new Todo($todo->toArray());
@@ -156,7 +157,9 @@ class TodosController extends BaseController
             $newTodo->is_done = 0;
             $newTodo->save();
         }
-
+        $todo->is_done = true;
+        $todo->frequency = null;
+        $todo->save();
         return $this->sendOkResponse($todo->toArray(), 'Todo is marked as done.');
     }
 
