@@ -596,7 +596,7 @@
                 array.sort(function(a,b){
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.
-                    return new Date(b.due_date_time) - new Date(a.due_date_time);
+                    return new Date(a.due_date_time) - new Date(b.due_date_time);
                 });
             },
             updateOne(e){
