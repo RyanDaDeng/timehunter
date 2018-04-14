@@ -192,6 +192,9 @@
                 return moment(date).format('MMMM Do YYYY, h:mm a');
             },
             truncate(str){
+                if(str === null || str === ''){
+                    return str;
+                }
                 var maxLength = 40;
                 var suffix ='......';
                 if(str.length > maxLength)
@@ -311,6 +314,7 @@
                 app.loading = true;
                 api.get('/api/todolists/v1/todos/notdone')
                         .then(function (resp) {
+
                             app.importantAndUrgent = resp.data.results[1];
                             app.importantNotUrgent = resp.data.results[2];
                             app.notImportantButUrgent = resp.data.results[3];
@@ -379,8 +383,8 @@
         padding-bottom:5px;
     }
     ul li p{
-        font-family:"Reenie Beanie",arial,sans-serif;
-        font-size:180%;
+        /*font-family:"Reenie Beanie",arial,sans-serif;*/
+        font-size:120%;
     }
     /*ul li:nth-child(even) a{*/
         /*-o-transform:rotate(4deg);*/
