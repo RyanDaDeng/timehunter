@@ -5,7 +5,7 @@
         <el-header  style="">
             <el-row :gutter="20">
                 <el-col :span="6">
-                    <el-button type="success" round >Create a new todo</el-button>
+                    <el-button type="success" round @click="handleCreate();" >Create a new todo</el-button>
 
                 </el-col>
                 <el-col :span="10">
@@ -29,19 +29,73 @@
             <el-dialog
                     title="Todo Details"
                     :visible.sync="centerDialogVisible"
-                    width="30%"
+                    width="40%"
                     center>
                 <p>Due Date: {{details.due_date_time|dateName}}</p>
                 <p>Name: {{details.name}}</p>
-                <p>Description: {{details.description}}</p>
                 <p>Notes: {{details.notes}}</p>
 
                   <span slot="footer" class="dialog-footer">
-                        <el-button type="info"  @click="centerDialogVisible = false" icon="el-icon-close" circle></el-button>
-  <el-button type="success" @click="complete(details)" icon="el-icon-check" circle></el-button>
-  <el-button type="danger" icon="el-icon-delete" circle></el-button>
-
+                           <el-button-group>
+                               <el-button type="danger" @click="handleDelete(details)" >Delete</el-button>
+  <el-button v-if="details.is_done == 0" type="success" @click="complete(details)" >Mark it as Completed</el-button>
+      <el-button v-else type="success" @click="complete(details)" >Mark it as Uncomplete</el-button>
+      <el-button type="warning"   @click="handleStart(details)">Start timer</el-button>
+                               <el-button type="info"  @click="centerDialogVisible = false" >Close</el-button>
+                               </el-button-group>
                   </span>
+            </el-dialog>
+
+
+
+            <el-dialog  title="Create a new todo" :visible.sync="dialogFormVisible">
+                <el-form :model="form" status-icon :rules="rules2" ref="form" label-width="100px" class="demo-ruleForm">
+                    <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
+                        <el-input v-model="form.name" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
+                        <el-col>
+                            <el-date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="form.due_date_time"></el-date-picker>
+                        </el-col>
+                    </el-form-item>
+                    <el-form-item prop="priority_level"  label="Priority" :label-width="formLabelWidth">
+                        <el-radio-group v-model="form.priority_level" size="medium">
+                            <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
+                            <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
+                            <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
+                            <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
+                        <el-input v-model="form.notes" auto-complete="off"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
+                        <el-select filterable v-model="form.project_id" placeholder="Please select your project.">
+
+                            <el-option
+                                    v-for="item in projects"
+                                    :label="item.name"
+                                    :key="item.id"
+                                    :value="item.id">
+                            </el-option>
+
+                        </el-select>
+                    </el-form-item>
+
+
+                    <el-form-item label="Frequency" :label-width="formLabelWidth">
+                        <el-radio-group v-model="form.frequency" size="medium">
+                            <el-radio border label="every day"  auto-complete="off"></el-radio>
+                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="submitForm('form')" :loading="createLoading">Submit</el-button>
+                </div>
             </el-dialog>
 
         </el-header>
@@ -67,21 +121,31 @@
 
                         <div >
                             <ul >
-                                <draggable v-model="importantAndUrgent" class="dragArea" :options="{animation:200,group:'due_date_time'}"    @change="updateOne">
 
-                                <li class="page-gap" v-for="v in importantAndUrgent " :key="v.id">
-                                <a  @click="handleDetails(v)">
+                                <draggable v-model="results[1]" class="dragArea" :options="{animation:200,group:'due_date_time'}"    @change="updateOne">
+
+                                <li class="page-gap" v-for="v,x in results[1] " :key="v.id">
+                                    <div v-if="v.is_done == 0">
+                                <a  @click="handleDetails(v,x)">
 
                                 <h2>{{v.due_date_time | dateName}}</h2>
 
-                                    <div v-if="v.is_done == 0">
                                         <p>{{v.name | truncate}}</p>
-                                    </div>
-                                    <div v-else>
-                                        <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-                                    </div>
+
 
                                 </a>
+                                </div>
+
+                                    <div v-else>
+                                        <a  @click="handleDetails(v,x)" style="background:#cfc;">
+
+                                            <h2>{{v.due_date_time | dateName}}</h2>
+
+                                            <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
+
+                                        </a>
+                                </div>
+
                                 </li>
 
                                 </draggable>
@@ -97,19 +161,30 @@
                         <div class="grid-content bg-yellow" v-loading="loadingTwo" >
                         <div >
                             <ul >
-                        <draggable v-model="importantNotUrgent" class="dragArea"  :options="{animation:200,group:'due_date_time'}" @change="updateTwo" >
+                        <draggable v-model="results[2]" class="dragArea"  :options="{animation:200,group:'due_date_time'}" @change="updateTwo" >
 
-                            <li class="page-gap" v-for="v in importantNotUrgent " :key="v.id">
-                                <a  @click="handleDetails(v)">
+                            <li class="page-gap" v-for="v,x in results[2] " :key="v.id">
+                                <div v-if="v.is_done == 0">
+                                    <a  @click="handleDetails(v,x)">
 
-                                    <h2>{{v.due_date_time | dateName}}</h2>
-                                    <div v-if="v.is_done == 0">
+                                        <h2>{{v.due_date_time | dateName}}</h2>
+
                                         <p>{{v.name | truncate}}</p>
-                                    </div>
-                                    <div v-else>
+
+
+                                    </a>
+                                </div>
+
+                                <div v-else>
+                                    <a  @click="handleDetails(v,x)" style="background:#cfc;">
+
+                                        <h2>{{v.due_date_time | dateName}}</h2>
+
                                         <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-                                    </div>
-                                </a>
+
+                                    </a>
+                                </div>
+
                             </li>
 
                         </draggable>
@@ -121,19 +196,30 @@
                         <div class="grid-content bg-blue" v-loading="loadingThree">
                         <div >
                             <ul >
-                                <draggable v-model="notImportantButUrgent" class="dragArea":options="{animation:200,group:'due_date_time'}" @change="updateThree">
+                                <draggable v-model="results[3]" class="dragArea":options="{animation:200,group:'due_date_time'}" @change="updateThree">
 
-                                    <li class="page-gap" v-for="v in notImportantButUrgent ">
-                                        <a  @click="handleDetails(v)">
+                                    <li class="page-gap" v-for="v,x in results[3] ">
+                                        <div v-if="v.is_done == 0">
+                                            <a  @click="handleDetails(v,x)">
 
-                                            <h2>{{v.due_date_time | dateName}}</h2>
-                                            <div v-if="v.is_done == 0">
+                                                <h2>{{v.due_date_time | dateName}}</h2>
+
                                                 <p>{{v.name | truncate}}</p>
-                                            </div>
-                                            <div v-else>
+
+
+                                            </a>
+                                        </div>
+
+                                        <div v-else>
+                                            <a  @click="handleDetails(v,x)" style="background:#cfc;">
+
+                                                <h2>{{v.due_date_time | dateName}}</h2>
+
                                                 <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-                                            </div>
-                                        </a>
+
+                                            </a>
+                                        </div>
+
                                     </li>
 
                                 </draggable>
@@ -145,20 +231,31 @@
                         <div class="grid-content bg-green" v-loading="loadingFour">
                         <div >
                             <ul >
-                                <draggable v-model="notImportantNotUrgent" class="dragArea" :options="{animation:200,group:'due_date_time'}" @change="updateFour">
+                                <draggable v-model="results[4]" class="dragArea" :options="{animation:200,group:'due_date_time'}" @change="updateFour">
 
-                                    <div v-for="v in notImportantNotUrgent ">
+                                    <div v-for="v,x in results[4] ">
                                         <li class="page-gap" >
-                                            <a  @click="handleDetails(v)">
+                                            <div v-if="v.is_done == 0">
+                                                <a  @click="handleDetails(v,x)">
 
-                                                <h2>{{v.due_date_time | dateName}}</h2>
-                                                <div v-if="v.is_done == 0">
+                                                    <h2>{{v.due_date_time | dateName}}</h2>
+
                                                     <p>{{v.name | truncate}}</p>
-                                                </div>
-                                                <div v-else>
+
+
+                                                </a>
+                                            </div>
+
+                                            <div v-else>
+                                                <a  @click="handleDetails(v,x)" style="background:#cfc;">
+
+                                                    <h2>{{v.due_date_time | dateName}}</h2>
+
                                                     <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-                                                </div>
-                                            </a>
+
+                                                </a>
+                                            </div>
+
                                         </li>
                                     </div>
 
@@ -215,25 +312,52 @@
         data: function () {
 
             return {
+                projects: [],
+                dialogFormVisible: false,
                 value6: [
                         new Date(),
                         new Date()
                 ],
+                form: {
+                    due_date_time: new Date()
+                },
                 loadingOne:false,
+                createLoading:false,
                 loadingTwo:false,
                 loadingThree:false,
                 loadingFour:false,
+                results: {
+                    1:[],
+                    2:[],
+                    3:[],
+                    4:[]
+                },
                 importantAndUrgent:[],
                 importantNotUrgent:[],
                 notImportantButUrgent:[],
                 notImportantNotUrgent:[],
                 loading:false,
                 centerDialogVisible:false,
-                details:{}
+                formLabelWidth: '120px',
+                index:null,
+                details:{},
+                rules2: {
+                    due_date_time: [
+                        { required: true, message: 'Due Date Time is required.', trigger: 'blur' }
+                    ],
+                    name:[
+                        { required: true, message: 'Name is required.', trigger: 'blur' }
+                    ],
+                    priority_level:[
+                        { required: true, message: 'Priroity is required.', trigger: 'blur' }
+                    ]
+                }
             };
 
         },
         mounted () {
+            this.getProjects();
+
             this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().endOf('day').format("YYYY-MM-DD HH:mm:ss"));
             console.log(this.importantAndUrgent);
             this.today = moment();
@@ -258,21 +382,41 @@
                 return moment(date).format('MMMM Do YYYY, h:mm a');
             },
             truncate(str){
-                if(str === null || str === ''){
-                    return str;
-                }
-                var maxLength = 40;
+//                if(str === null || str === ''){
+//                    return str;
+//                }
+                var maxLength = 35;
                 var suffix ='......';
                 if(str.length > maxLength)
                 {
                     str = str.substring(0, maxLength + 1);
-                    str = str.substring(0, Math.min(str.length, str.lastIndexOf(" ")));
+                    str = str.substring(0, Math.min(str.length, str.lastIndexOf("")));
                     str = str + suffix;
                 }
                 return str;
             }
         },
         methods: {
+            getProjects(){
+                var app = this;
+                api.get('/api/todolists/v1/projects')
+                        .then(function (resp) {
+
+                            app.projects = resp.data.results;
+                        })
+                        .catch(function (resp) {
+                            console.log(resp);
+                            app.$message({
+                                type: 'error',
+                                message: 'Projects cannot be retrieved.'
+                            });
+                        });
+
+            },
+            handleCreate(){
+                this.createLoading = false;
+                this.dialogFormVisible = true
+            },
             complete(details){
                 const loading = this.$loading({
                     lock: true,
@@ -283,7 +427,7 @@
 
                 axios.post('/api/todolists/v1/todos/' + details.id+'/done')
                         .then(response => {
-                    details.is_done = 1;
+                    details.is_done = !(details.is_done);
                 this.$message({
                     type: 'success',
                     message: response.data.message
@@ -301,7 +445,7 @@
             changeDate(){
                 this.getNotDoneTodos(moment(this.value6[0]).startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment(this.value6[1]).endOf('day').format("YYYY-MM-DD HH:mm:ss"))
             },
-            openFullScreen2(todoId,newPriorityLevel) {
+            updatePriority(todoId,newPriorityLevel) {
 //                const loading = this.$loading({
 //                    lock: true,
 //                    text: 'Syncing',
@@ -309,6 +453,22 @@
 //                    background: 'rgba(0, 0, 0, 0.7)'
 //                });
                 var app=this;
+
+                switch(newPriorityLevel){
+                    case 1:
+                        app.loadingOne = true;
+                        break;
+                    case 2:
+                        app.loadingTwo = true;
+                        break;
+                    case 3:
+                        app.loadingThree = true;
+                        break;
+                    case 4:
+                        app.loadingFour = true;
+                        break;
+                }
+
                 api.post('/api/todolists/v1/todos/'+todoId +'/updatePriority',{
                     priority_level:newPriorityLevel
                 })
@@ -317,7 +477,20 @@
                                 message: "It's updated!",
                                 type: 'success'
                             });
-                            console.log('222');
+                            switch(newPriorityLevel){
+                                case 1:
+                                    app.loadingOne = false;
+                                    break;
+                                case 2:
+                                    app.loadingTwo = false;
+                                    break;
+                                case 3:
+                                    app.loadingThree = false;
+                                    break;
+                                case 4:
+                                    app.loadingFour = false;
+                                    break;
+                            }
                         })
                         .catch(function (resp) {
                             console.log(resp);
@@ -325,57 +498,60 @@
                                 type: 'error',
                                 message: 'The todo cannot be synced.'
                             });
-
+                            switch(newPriorityLevel){
+                                case 1:
+                                    app.loadingOne = false;
+                                    break;
+                                case 2:
+                                    app.loadingTwo = false;
+                                    break;
+                                case 3:
+                                    app.loadingThree = false;
+                                    break;
+                                case 4:
+                                    app.loadingFour = false;
+                                    break;
+                            }
                         });
 
+
+//                this.loadingOne = false;
 //                loading.close();
 
 //                setTimeout(() => {
 //                    loading.close();
 //            }, 2000);
             },
-            updateOne(e){
-                if(e.added){
-                    this.loadingOne = true;
-                    this.openFullScreen2(e.added.element.id,1);
-                    this.loadingOne = false;
-
-                }
-                this.importantAndUrgent.sort(function(a,b){
+            sortArray(array){
+                array.sort(function(a,b){
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.
                     return new Date(b.due_date_time) - new Date(a.due_date_time);
                 });
+            },
+            updateOne(e){
+                if(e.added){
+                    this.updatePriority(e.added.element.id,1);
+                }
+                this.sortArray(this.results[1]);
             },
             updateTwo(e){
                 if(e.added){
-                    this.openFullScreen2(e.added.element.id,2);
+                    this.updatePriority(e.added.element.id,2);
                 }
-                this.importantNotUrgent.sort(function(a,b){
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(b.due_date_time) - new Date(a.due_date_time);
-                });
+                this.sortArray(this.results[2]);
             },
             updateThree(e){
                 if(e.added){
-                    this.openFullScreen2(e.added.element.id,3);
+                    this.updatePriority(e.added.element.id,3);
                 }
-                this.notImportantButUrgent.sort(function(a,b){
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(b.due_date_time) - new Date(a.due_date_time);
-                });
+                this.sortArray(this.results[3]);
             },
             updateFour(e){
                 if(e.added){
-                    this.openFullScreen2(e.added.element.id,4);
+                    this.updatePriority(e.added.element.id,4);
                 }
-                this.notImportantNotUrgent.sort(function(a,b){
-                    // Turn your strings into dates, and then subtract them
-                    // to get a value that is either negative, positive, or zero.
-                    return new Date(b.due_date_time) - new Date(a.due_date_time);
-                });
+                this.sortArray(this.results[4]);
             },
             onMove ({relatedContext, draggedContext}) {
                 const relatedElement = relatedContext.element;
@@ -402,9 +578,112 @@
                     }
                 };
             },
-            handleDetails(v){
+            submitForm(formName) {
+                this.createLoading = true;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        let data = this.form;
+
+                        axios.post('/api/todolists/v1/todos',data)
+                                .then(response => {
+                            console.log(response.data.results)
+                        var dueDate = moment(response.data.results.due_date_time).startOf('day');
+                        if(moment(this.value6[0]).startOf('day') <= dueDate && moment(this.value6[1]).startOf('day') >= dueDate){
+                            this.results[response.data.results.priority_level].push(response.data.results)
+                            this.sortArray(this.results[response.data.results.priority_level]);
+                        }
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        });
+                        this.dialogFormVisible = false;
+                        this.$refs['form'].resetFields()
+                    })
+                    .catch(error => {
+                            this.$message({
+                            type: 'error',
+                            message: error.response.data.message
+                        });
+                        this.createLoading = false;
+                    });
+                    } else {
+                        console.log('error submit!!');
+                this.createLoading = false;
+                return false;
+            }
+            });
+            },
+            handleDelete(row) {
+                console.log(row);
+                this.$confirm('Are you sure you want to delete this todo?', 'Delete a todo', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+
+                    axios.delete('/api/todolists/v1/todos/' + row.id)
+                        .then(response => {
+                    this.results[row.priority_level].splice(this.index, 1);
+                this.$message({
+                    type: 'success',
+                    message: response.data.message
+                });
+            })
+            .catch(error => {
+                    this.$message({
+                    type: 'error',
+                    message: error.response.data.message
+                });
+            });
+
+                this.centerDialogVisible = false;
+            }).catch(() => {
+                    this.$message({
+                    type: 'info',
+                    message: 'Action Cancelled'
+                });
+            });
+            },
+            handleStart(row) {
+                console.log(row);
+                this.$confirm('Are you sure you want to start this todo?', 'Time a todo', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+
+
+                    axios.post('/api/todolists/v1/todos/' + row.id + '/start')
+                        .then(response => {
+                    Event.$emit('newTaskStarted',response);
+
+                this.$message({
+                    type: 'success',
+                    message: response.data.message
+                });
+                this.centerDialogVisible = false;
+            })
+            .catch(error => {
+                    this.$message({
+                    type: 'error',
+                    message: error.response.data.message ?error.response.data.message : 'Internal System Error. Please contact adminstrator.'
+                });
+            });
+
+
+            }).catch(() => {
+                    this.$message({
+                    type: 'info',
+                    message: 'Action Cancelled'
+                });
+            });
+            },
+            handleDetails(v,index){
                 this.centerDialogVisible = true;
                 this.details = v;
+                this.index = index;
             },
             getNotDoneTodos(dateFrom,dateTo){
                 var app=this;
@@ -417,10 +696,7 @@
                 })
                         .then(function (resp) {
 
-                            app.importantAndUrgent = resp.data.results[1];
-                            app.importantNotUrgent = resp.data.results[2];
-                            app.notImportantButUrgent = resp.data.results[3];
-                            app.notImportantNotUrgent = resp.data.results[4];
+                            app.results = resp.data.results;
                             app.loading = false;
                         })
                         .catch(function (resp) {
@@ -487,6 +763,7 @@
     ul li p{
         /*font-family:"Reenie Beanie",arial,sans-serif;*/
         font-size:120%;
+        word-wrap: break-word;
     }
     /*ul li:nth-child(even) a{*/
         /*-o-transform:rotate(4deg);*/

@@ -97,6 +97,7 @@ class TodosController extends BaseController
             'due_date_time' => Carbon::parse($request->due_date_time,
                 $user->timezone)->timezone('UTC')->format('Y-m-d H:i:s'),
             'task_id' => $request->task_id,
+            'is_done'=>false,
             'notes' => $request->notes,
             'name' => $request->name,
             'project_id' => $request->project_id,
@@ -141,10 +142,11 @@ class TodosController extends BaseController
         }
 
         if ($todo->is_done == true) {
-            return $this->sendBadRequest('Todo had already been finished!');
+            $todo->is_done = false;
+            $todo->save();
+            return $this->sendOkResponse($todo->toArray(), 'Todo is marked as Uncompleted.');
         }
-        $todo->is_done = true;
-        $todo->save();
+
 
         if ($todo->frequency == 'every day') {
 
