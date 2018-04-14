@@ -2,6 +2,49 @@
 
     <el-container>
 
+        <el-header  style="">
+            <el-row :gutter="20">
+                <el-col :span="6">
+                    <el-button type="success" round >Create a new todo</el-button>
+
+                </el-col>
+                <el-col :span="10">
+                    <div class="grid-content bg-purple"></div>
+                </el-col>
+
+                <div class="block" style="position:absolute;
+  right:0;">
+                    <el-date-picker
+                            @change="changeDate()"
+                            v-model="value6"
+                            type="daterange"
+                            range-separator="-"
+                            start-placeholder="Start Date"
+                            end-placeholder="End Date">
+                    </el-date-picker>
+                </div>
+
+            </el-row>
+
+            <el-dialog
+                    title="Todo Details"
+                    :visible.sync="centerDialogVisible"
+                    width="30%"
+                    center>
+                <p>Due Date: {{details.due_date_time|dateName}}</p>
+                <p>Name: {{details.name}}</p>
+                <p>Description: {{details.description}}</p>
+                <p>Notes: {{details.notes}}</p>
+
+                  <span slot="footer" class="dialog-footer">
+                        <el-button type="info"  @click="centerDialogVisible = false" icon="el-icon-close" circle></el-button>
+  <el-button type="success" @click="complete(details)" icon="el-icon-check" circle></el-button>
+  <el-button type="danger" icon="el-icon-delete" circle></el-button>
+
+                  </span>
+            </el-dialog>
+
+        </el-header>
         <el-main>
 
             <!--<div  class="list-group col-md-3">-->
@@ -12,48 +55,12 @@
             <!--</div>-->
 
 
-            <el-header  style="">
-                <el-row :gutter="20">
-                    <el-col :span="6">
-                        <el-button type="success" round >Create a new todo</el-button>
-
-                    </el-col>
-                    <el-col :span="10">
-                        <div class="grid-content bg-purple"></div>
-                    </el-col>
-
-                        <div class="block" style="position:absolute;
-  right:0;">
-                            <el-date-picker
-                                    v-model="value6"
-                                    type="daterange"
-                                    range-separator="-"
-                                    start-placeholder="Start Date"
-                                    end-placeholder="End Date">
-                            </el-date-picker>
-                        </div>
-
-                    </el-row>
+            <div  v-loading="loading">
 
 
+                <el-row >
 
-                <el-dialog
-                        title="Todo Details"
-                        :visible.sync="centerDialogVisible"
-                        width="30%"
-                        center>
-                    <p>Name: {{details.name}}</p>
-                    <p>Description: {{details.description}}</p>
-                    <p>Notes: {{details.notes}}</p>
 
-                  <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="centerDialogVisible = false">Close</el-button>
-                  </span>
-                </el-dialog>
-            </el-header>
-            <div class="drag" >
-
-                <el-row :gutter="20">
                     <el-col :span="6">
                         <div class="div-middle"><span class="attribution">Important and urgent</span></div>
                         <div class="grid-content bg-pink">
@@ -66,7 +73,14 @@
                                 <a  @click="handleDetails(v)">
 
                                 <h2>{{v.due_date_time | dateName}}</h2>
-                                <p>{{v.name | truncate}}</p>
+
+                                    <div v-if="v.is_done == 0">
+                                        <p>{{v.name | truncate}}</p>
+                                    </div>
+                                    <div v-else>
+                                        <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
+                                    </div>
+
                                 </a>
                                 </li>
 
@@ -89,7 +103,12 @@
                                 <a  @click="handleDetails(v)">
 
                                     <h2>{{v.due_date_time | dateName}}</h2>
-                                    <p>{{v.name | truncate}}</p>
+                                    <div v-if="v.is_done == 0">
+                                        <p>{{v.name | truncate}}</p>
+                                    </div>
+                                    <div v-else>
+                                        <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
+                                    </div>
                                 </a>
                             </li>
 
@@ -108,7 +127,12 @@
                                         <a  @click="handleDetails(v)">
 
                                             <h2>{{v.due_date_time | dateName}}</h2>
-                                            <p>{{v.name | truncate}}</p>
+                                            <div v-if="v.is_done == 0">
+                                                <p>{{v.name | truncate}}</p>
+                                            </div>
+                                            <div v-else>
+                                                <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
+                                            </div>
                                         </a>
                                     </li>
 
@@ -128,7 +152,12 @@
                                             <a  @click="handleDetails(v)">
 
                                                 <h2>{{v.due_date_time | dateName}}</h2>
-                                                <p>{{v.name | truncate}}</p>
+                                                <div v-if="v.is_done == 0">
+                                                    <p>{{v.name | truncate}}</p>
+                                                </div>
+                                                <div v-else>
+                                                    <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
+                                                </div>
                                             </a>
                                         </li>
                                     </div>
@@ -164,7 +193,6 @@
 
 
 
-
     </el-container>
 
 
@@ -187,7 +215,10 @@
         data: function () {
 
             return {
-                value6: '',
+                value6: [
+                        new Date(),
+                        new Date()
+                ],
                 loading2: true,
                 importantAndUrgent:[],
                 importantNotUrgent:[],
@@ -200,7 +231,7 @@
 
         },
         mounted () {
-            this.getNotDoneTodos();
+            this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().endOf('day').format("YYYY-MM-DD HH:mm:ss"));
             console.log(this.importantAndUrgent);
             this.today = moment();
         },
@@ -239,6 +270,34 @@
             }
         },
         methods: {
+            complete(details){
+                const loading = this.$loading({
+                    lock: true,
+                    text: 'Syncing',
+                    spinner: 'el-icon-loading',
+                    background: 'rgba(0, 0, 0, 0.7)'
+                });
+
+                axios.post('/api/todolists/v1/todos/' + details.id+'/done')
+                        .then(response => {
+                    details.is_done = 1;
+                this.$message({
+                    type: 'success',
+                    message: response.data.message
+                });
+            })
+            .catch(error => {
+                    this.$message({
+                    type: 'error',
+                    message: error.response.data.message
+                });
+            });
+                this.centerDialogVisible = false;
+                loading.close();
+            },
+            changeDate(){
+                this.getNotDoneTodos(moment(this.value6[0]).startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment(this.value6[1]).endOf('day').format("YYYY-MM-DD HH:mm:ss"))
+            },
             openFullScreen2(todoId,newPriorityLevel) {
                 const loading = this.$loading({
                     lock: true,
@@ -341,10 +400,15 @@
                 this.centerDialogVisible = true;
                 this.details = v;
             },
-            getNotDoneTodos(){
+            getNotDoneTodos(dateFrom,dateTo){
                 var app=this;
                 app.loading = true;
-                api.get('/api/todolists/v1/todos/notdone')
+                api.get('/api/todolists/v1/todos/notdone',{
+                    params:{
+                        due_date_time_from: dateFrom,
+                        due_date_time_to: dateTo
+                    }
+                })
                         .then(function (resp) {
 
                             app.importantAndUrgent = resp.data.results[1];
@@ -465,7 +529,7 @@
         /*top:-10px;*/
     /*}*/
     .bg-green {
-        position:relative;
+        /*position:relative;*/
         /*-o-transform:rotate(4deg);*/
         /*-webkit-transform:rotate(4deg);*/
         /*-moz-transform:rotate(4deg);*/
@@ -473,30 +537,25 @@
     }
 
     .bg-pink{
-        position:relative;
+        /*position:relative;*/
         /*-o-transform:rotate(-4deg);*/
         /*-webkit-transform:rotate(-4deg);*/
         /*-moz-transform:rotate(-4deg);*/
         background:#FEDEDE;
     }
     .bg-blue{
-        position:relative;
+        /*position:relative;*/
         /*-o-transform:rotate(-2deg);*/
         /*-webkit-transform:rotate(-2deg);*/
         /*-moz-transform:rotate(-2deg);*/
         background:#CBEFFE;
     }
     .bg-yellow{
-        position:relative;
+        /*position:relative;*/
         /*-o-transform:rotate(3deg);*/
         /*-webkit-transform:rotate(3deg);*/
         /*-moz-transform:rotate(-6deg);*/
         background:#FEF3C6;
-    },
-    .level-4{
-        position:relative;
-
-
     }
     ul li a:hover,ul li a:focus{
         box-shadow:10px 10px 7px rgba(0,0,0,.7);
