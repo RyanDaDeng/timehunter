@@ -63,7 +63,7 @@
 
                     <el-col :span="6">
                         <div class="div-middle"><span class="attribution">Important and urgent</span></div>
-                        <div class="grid-content bg-pink">
+                        <div class="grid-content bg-pink" v-loading="loadingOne">
 
                         <div >
                             <ul >
@@ -94,7 +94,7 @@
                     </div></el-col>
                     <el-col :span="6">
                         <div class="div-middle"><span class="attribution">Important but not urgent</span></div>
-                        <div class="grid-content bg-yellow">
+                        <div class="grid-content bg-yellow" v-loading="loadingTwo" >
                         <div >
                             <ul >
                         <draggable v-model="importantNotUrgent" class="dragArea"  :options="{animation:200,group:'due_date_time'}" @change="updateTwo" >
@@ -118,7 +118,7 @@
                     </div></el-col>
                     <el-col :span="6" >
                         <div class="div-middle"><span class="attribution">Not important but urgent</span></div>
-                        <div class="grid-content bg-blue">
+                        <div class="grid-content bg-blue" v-loading="loadingThree">
                         <div >
                             <ul >
                                 <draggable v-model="notImportantButUrgent" class="dragArea":options="{animation:200,group:'due_date_time'}" @change="updateThree">
@@ -142,7 +142,7 @@
                     </div></el-col>
                     <el-col :span="6" >
                         <div class="div-middle"><span class="attribution">Not important not urgent</span></div>
-                        <div class="grid-content bg-green">
+                        <div class="grid-content bg-green" v-loading="loadingFour">
                         <div >
                             <ul >
                                 <draggable v-model="notImportantNotUrgent" class="dragArea" :options="{animation:200,group:'due_date_time'}" @change="updateFour">
@@ -219,7 +219,10 @@
                         new Date(),
                         new Date()
                 ],
-                loading2: true,
+                loadingOne:false,
+                loadingTwo:false,
+                loadingThree:false,
+                loadingFour:false,
                 importantAndUrgent:[],
                 importantNotUrgent:[],
                 notImportantButUrgent:[],
@@ -299,12 +302,12 @@
                 this.getNotDoneTodos(moment(this.value6[0]).startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment(this.value6[1]).endOf('day').format("YYYY-MM-DD HH:mm:ss"))
             },
             openFullScreen2(todoId,newPriorityLevel) {
-                const loading = this.$loading({
-                    lock: true,
-                    text: 'Syncing',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                });
+//                const loading = this.$loading({
+//                    lock: true,
+//                    text: 'Syncing',
+//                    spinner: 'el-icon-loading',
+//                    background: 'rgba(0, 0, 0, 0.7)'
+//                });
                 var app=this;
                 api.post('/api/todolists/v1/todos/'+todoId +'/updatePriority',{
                     priority_level:newPriorityLevel
@@ -325,7 +328,7 @@
 
                         });
 
-                loading.close();
+//                loading.close();
 
 //                setTimeout(() => {
 //                    loading.close();
@@ -333,7 +336,10 @@
             },
             updateOne(e){
                 if(e.added){
+                    this.loadingOne = true;
                     this.openFullScreen2(e.added.element.id,1);
+                    this.loadingOne = false;
+
                 }
                 this.importantAndUrgent.sort(function(a,b){
                     // Turn your strings into dates, and then subtract them
