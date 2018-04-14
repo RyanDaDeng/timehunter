@@ -174,7 +174,7 @@ class TodosController extends BaseController
 
         $todos = Todo::where('user_id', $user->id)->where('due_date_time', '>=',
             $dateFrom->format('Y-m-d H:i:s'))->where('due_date_time', '<=',
-            $dateTo->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'desc')->get();
+            $dateTo->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'asc')->get();
 
         $result = [
             1 => [],
