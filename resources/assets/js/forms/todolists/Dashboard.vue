@@ -12,7 +12,31 @@
             <!--</div>-->
 
 
-            <el-header  >
+            <el-header  style="">
+                <el-row :gutter="20">
+                    <el-col :span="6">
+                        <el-button type="success" round >Create a new todo</el-button>
+
+                    </el-col>
+                    <el-col :span="10">
+                        <div class="grid-content bg-purple"></div>
+                    </el-col>
+
+                        <div class="block" style="position:absolute;
+  right:0;">
+                            <el-date-picker
+                                    v-model="value6"
+                                    type="daterange"
+                                    range-separator="-"
+                                    start-placeholder="Start Date"
+                                    end-placeholder="End Date">
+                            </el-date-picker>
+                        </div>
+
+                    </el-row>
+
+
+
                 <el-dialog
                         title="Todo Details"
                         :visible.sync="centerDialogVisible"
@@ -163,6 +187,7 @@
         data: function () {
 
             return {
+                value6: '',
                 loading2: true,
                 importantAndUrgent:[],
                 importantNotUrgent:[],
@@ -362,7 +387,7 @@
     }
     ul{
         overflow:hidden;
-        padding:3em;
+        padding:2em;
     }
 
     ul li a{
