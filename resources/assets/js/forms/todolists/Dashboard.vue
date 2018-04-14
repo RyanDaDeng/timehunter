@@ -30,7 +30,9 @@
             <div class="drag" >
 
                 <el-row :gutter="20">
-                    <el-col :span="6"><div class="grid-content bg-pink">
+                    <el-col :span="6">
+                        <div class="div-middle"><span class="attribution">Important and urgent</span></div>
+                        <div class="grid-content bg-pink">
 
                         <div >
                             <ul >
@@ -52,8 +54,9 @@
                             </ul>
                         </div>
                     </div></el-col>
-                    <el-col :span="6"><div class="grid-content bg-yellow">
-
+                    <el-col :span="6">
+                        <div class="div-middle"><span class="attribution">Important but not urgent</span></div>
+                        <div class="grid-content bg-yellow">
                         <div >
                             <ul >
                         <draggable v-model="importantNotUrgent" class="dragArea"  :options="{animation:200,group:'due_date_time'}" @change="updateTwo" >
@@ -70,7 +73,9 @@
                             </ul>
                         </div>
                     </div></el-col>
-                    <el-col :span="6" ><div class="grid-content bg-blue">
+                    <el-col :span="6" >
+                        <div class="div-middle"><span class="attribution">Not important but urgent</span></div>
+                        <div class="grid-content bg-blue">
                         <div >
                             <ul >
                                 <draggable v-model="notImportantButUrgent" class="dragArea":options="{animation:200,group:'due_date_time'}" @change="updateThree">
@@ -87,7 +92,9 @@
                             </ul>
                         </div>
                     </div></el-col>
-                    <el-col :span="6" ><div class="grid-content bg-green">
+                    <el-col :span="6" >
+                        <div class="div-middle"><span class="attribution">Not important not urgent</span></div>
+                        <div class="grid-content bg-green">
                         <div >
                             <ul >
                                 <draggable v-model="notImportantNotUrgent" class="dragArea" :options="{animation:200,group:'due_date_time'}" @change="updateFour">
@@ -184,10 +191,10 @@
 
 
                 if(todoDate.isSame(TODAY, 'd') ){
-                    return 'Today';
+                    return 'Today'+moment(date).format(', h:mm a');
                 }
                 if (todoDate.isSame(YESTERDAY, 'd')){
-                    return 'Yesterday';
+                    return 'Yesterday'+moment(date).format(', h:mm a');
                 }
                 return moment(date).format('MMMM Do YYYY, h:mm a');
             },
@@ -482,6 +489,20 @@
 
     .dragArea {
         min-height:800px;
+    }
+
+    .attribution{
+        font-family:"Reenie Beanie",arial,sans-serif;
+        font-size:120%;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: normal;
+    }
+
+    .div-middle {
+
+        text-align: center;
+        border: 2px dashed #f69c55;
     }
 
     .gap-margin {
