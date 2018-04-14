@@ -47,6 +47,54 @@
             </el-dialog>
 
 
+            <el-dialog :title="editTodoTitle" :visible.sync="editFormVisible">
+                <el-form :model="editForm" status-icon :rules="rules2" ref="editForm" label-width="100px" class="demo-ruleForm">
+                    <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
+                        <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
+                        <el-col>
+                            <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
+                        </el-col>
+                    </el-form-item>
+
+                    <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
+                        <el-input v-model="editForm.notes" auto-complete="off"></el-input>
+                    </el-form-item>
+
+                    <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
+                        <el-select filterable v-model="editForm.project_id" placeholder="Please select your project.">
+
+                            <el-option
+                                    v-for="item in projects"
+                                    :label="item.name"
+                                    :key="item.id"
+                                    :value="item.id">
+                            </el-option>
+
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="Priority" :label-width="formLabelWidth">
+                        <el-radio-group v-model="editForm.priority_level" size="medium">
+                            <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
+                            <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
+                            <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
+                            <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="Frequency" :label-width="formLabelWidth">
+                        <el-radio-group v-model="editForm.frequency" size="medium">
+                            <el-radio border label="every day"  auto-complete="off"></el-radio>
+                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
+                        </el-radio-group>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="editFormVisible = false">Cancel</el-button>
+                    <el-button type="primary" @click="submitEditForm('editForm')" :loading="editLoading">Submit</el-button>
+                </div>
+            </el-dialog>
+
 
             <el-dialog  title="Create a new todo" :visible.sync="dialogFormVisible">
                 <el-form :model="form" status-icon :rules="rules2" ref="form" label-width="100px" class="demo-ruleForm">
@@ -125,26 +173,22 @@
                                 <draggable v-model="results[1]" class="dragArea" :options="{animation:200,group:'due_date_time'}"    @change="updateOne">
 
                                 <li class="page-gap" v-for="v,x in results[1] " :key="v.id">
-                                    <div v-if="v.is_done == 0">
-                                <a  @click="handleDetails(v,x)">
 
-                                <h2>{{v.due_date_time | dateName}}</h2>
+                                    <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                        <p>{{v.name | truncate}}</p>
+                                        <h2>{{v.due_date_time | dateName}}</h2>
+                                        <!--style="text-decoration:line-through;"-->
+                                        <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
 
+                                        <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
-                                </a>
-                                </div>
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
+                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
+                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                    </span></div>
+                                    </a>
 
-                                    <div v-else>
-                                        <a  @click="handleDetails(v,x)" style="background:#cfc;">
-
-                                            <h2>{{v.due_date_time | dateName}}</h2>
-
-                                            <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-
-                                        </a>
-                                </div>
 
                                 </li>
 
@@ -164,26 +208,23 @@
                         <draggable v-model="results[2]" class="dragArea"  :options="{animation:200,group:'due_date_time'}" @change="updateTwo" >
 
                             <li class="page-gap" v-for="v,x in results[2] " :key="v.id">
-                                <div v-if="v.is_done == 0">
-                                    <a  @click="handleDetails(v,x)">
 
-                                        <h2>{{v.due_date_time | dateName}}</h2>
+                                <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                        <p>{{v.name | truncate}}</p>
+                                    <h2>{{v.due_date_time | dateName}}</h2>
+                                    <!--style="text-decoration:line-through;"-->
+                                    <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
+
+                                    <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
+                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
+                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                    </span></div>
+                                </a>
 
 
-                                    </a>
-                                </div>
-
-                                <div v-else>
-                                    <a  @click="handleDetails(v,x)" style="background:#cfc;">
-
-                                        <h2>{{v.due_date_time | dateName}}</h2>
-
-                                        <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-
-                                    </a>
-                                </div>
 
                             </li>
 
@@ -199,26 +240,22 @@
                                 <draggable v-model="results[3]" class="dragArea":options="{animation:200,group:'due_date_time'}" @change="updateThree">
 
                                     <li class="page-gap" v-for="v,x in results[3] ">
-                                        <div v-if="v.is_done == 0">
-                                            <a  @click="handleDetails(v,x)">
 
-                                                <h2>{{v.due_date_time | dateName}}</h2>
+                                        <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                                <p>{{v.name | truncate}}</p>
+                                            <h2>{{v.due_date_time | dateName}}</h2>
+                                            <!--style="text-decoration:line-through;"-->
+                                            <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
 
+                                            <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
-                                            </a>
-                                        </div>
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
+                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
+                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                    </span></div>
+                                        </a>
 
-                                        <div v-else>
-                                            <a  @click="handleDetails(v,x)" style="background:#cfc;">
-
-                                                <h2>{{v.due_date_time | dateName}}</h2>
-
-                                                <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-
-                                            </a>
-                                        </div>
 
                                     </li>
 
@@ -235,26 +272,22 @@
 
                                     <div v-for="v,x in results[4] ">
                                         <li class="page-gap" >
-                                            <div v-if="v.is_done == 0">
-                                                <a  @click="handleDetails(v,x)">
 
-                                                    <h2>{{v.due_date_time | dateName}}</h2>
+                                            <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                                    <p>{{v.name | truncate}}</p>
+                                                <h2>{{v.due_date_time | dateName}}</h2>
+                                                <!--style="text-decoration:line-through;"-->
+                                                <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
 
+                                                <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
-                                                </a>
-                                            </div>
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
+                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
+                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                    </span></div>
+                                            </a>
 
-                                            <div v-else>
-                                                <a  @click="handleDetails(v,x)" style="background:#cfc;">
-
-                                                    <h2>{{v.due_date_time | dateName}}</h2>
-
-                                                    <p style="text-decoration:line-through;">{{v.name | truncate}}</p>
-
-                                                </a>
-                                            </div>
 
                                         </li>
                                     </div>
@@ -312,6 +345,8 @@
         data: function () {
 
             return {
+                show:[],
+                upHere : false,
                 projects: [],
                 dialogFormVisible: false,
                 value6: [
@@ -332,6 +367,12 @@
                     3:[],
                     4:[]
                 },
+                editLoading: false,
+                editForm:{
+                },
+                editTodoTitle: '',
+                editIndex: null,
+                editFormVisible:false,
                 importantAndUrgent:[],
                 importantNotUrgent:[],
                 notImportantButUrgent:[],
@@ -397,6 +438,12 @@
             }
         },
         methods: {
+            getClass(v){
+              return v==1?'success-note':'';
+            },
+            getDoneClass(v){
+                return v==1?'success-done':'';
+            },
             getProjects(){
                 var app = this;
                 api.get('/api/todolists/v1/projects')
@@ -416,6 +463,16 @@
             handleCreate(){
                 this.createLoading = false;
                 this.dialogFormVisible = true
+            },
+            handleEdit(row,index) {
+                console.log(row);
+                this.editLoading = false;
+                this.editIndex = index;
+                this.editFormVisible = false;
+                this.editTodoTitle = 'Edit '+'#'+row.id +' todo: '+row.name;
+                this.editFormVisible = true;
+                this.editForm = JSON.parse(JSON.stringify(row));
+//                this.editForm.due_date_time = new Date(row.due_date_time);
             },
             complete(details){
                 const loading = this.$loading({
@@ -553,6 +610,11 @@
                 }
                 this.sortArray(this.results[4]);
             },
+            getShow(id,state){
+                var data = [];
+                data[id] = state;
+                this.show = data;
+            },
             onMove ({relatedContext, draggedContext}) {
                 const relatedElement = relatedContext.element;
                 const draggedElement = draggedContext.element;
@@ -684,6 +746,35 @@
                 this.centerDialogVisible = true;
                 this.details = v;
                 this.index = index;
+            },
+            submitEditForm(formName) {
+                this.editLoading = true;
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        let data = this.editForm;
+
+                        axios.put('/api/todolists/v1/todos/'+this.editForm.id,data)
+                                .then(response => {
+                            this.results[response.data.results.priority_level][this.editIndex] = response.data.results;
+                        this.$message({
+                            type: 'success',
+                            message: response.data.message
+                        });
+                        this.editFormVisible = false;
+                    })
+                    .catch(error => {
+                            this.$message({
+                            type: 'error',
+                            message: error.response.data.message
+                        });
+                    });
+
+                        this.$refs[formName].clearValidate();
+                    } else {
+                        console.log('error submit!!');
+                return false;
+            }
+            });
             },
             getNotDoneTodos(dateFrom,dateTo){
                 var app=this;
@@ -865,18 +956,37 @@
         vertical-align: middle;
         line-height: normal;
     }
+    .attribution-right{
+        font-family:"Reenie Beanie",arial,sans-serif;
+        font-size:120%;
+        display: inline-block;
+        horiz-align:right;
+    }
 
     .div-middle {
 
         text-align: center;
         border: 2px dashed #f69c55;
     }
+    .div-bottom {
 
+        text-align: right;
+    }
+
+    .success-note{
+        background:#cfc;
+    }
+    .success-done{
+        text-decoration:line-through;
+    }
     .gap-margin {
         margin-bottom: 40px;
     }
     .item {
         margin-top: 10px;
         margin-right: 40px;
+    }
+    .clickableAwesomeFont {
+        cursor: pointer
     }
 </style>
