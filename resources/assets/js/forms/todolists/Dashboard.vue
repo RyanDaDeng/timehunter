@@ -381,7 +381,7 @@
         -webkit-transition:-webkit-transform .15s linear;
     }
     ul li{
-        margin:1em;
+        margin:10px;
         /*float:left;*/
     }
     ul li h2{
