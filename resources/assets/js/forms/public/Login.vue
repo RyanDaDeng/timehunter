@@ -126,7 +126,7 @@
                                 .then(({data}) => {
                             auth.login(data.token, data.user);
                         this.fullscreenLoading = false;
-                        this.$router.push('/');
+                        this.$router.push({name:'Dashboard'});
                     })
                     .catch(({response}) => {
                             this.$notify({

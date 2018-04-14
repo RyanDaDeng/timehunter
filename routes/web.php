@@ -20,6 +20,10 @@ dd(1);
 })->name('AboutMe2');;
 Route::get('/', 'Vue\VueHomeController@index')->name('home');
 Route::get('/app', 'Vue\VueHomeController@app')->name('app');
+Route::get('/app/{vue_capture?}', function () {
+    return view('vue.app');
+})->where('vue_capture', '[\/\w\.-]*');
+
 Route::get('/home', 'Vue\VueHomeController@index')->name('vue.home');
 
 Route::get('/aboutme', function () {

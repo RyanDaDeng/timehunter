@@ -98,31 +98,31 @@
 
                 switch (this.activeIndex) {
                     case 'Timers':
-                        this.$router.push('/timers');
+                        this.$router.push({name:'Timers'});
                         break;
                     case 'Tasks':
-                        this.$router.push('/tasks');
+                        this.$router.push({name:'Tasks'});
                         break;
                     case 'Dashboard':
-                        this.$router.push('/dashboard');
+                        this.$router.push({name:'Dashboard'});
                         break;
                     case 'Reports':
-                        this.$router.push('/reports');
+                        this.$router.push({name:'Reports'});
                         break;
                     case 'Todos':
-                        this.$router.push('/todos');
+                        this.$router.push('/');
                         break;
                     case 'Projects':
-                        this.$router.push('/projects');
+                        this.$router.push({name:'Projects'});
                         break;
                     case 'TodosInbox':
-                        this.$router.push('/todos/inbox');
+                        this.$router.push({name:'TodosInbox'});
                         break;
                     case 'TodosToday':
-                        this.$router.push('/todos/today');
+                        this.$router.push({name:'TodosToday'});
                         break;
                     case 'Timeline':
-                        this.$router.push('/timeline');
+                        this.$router.push({name:'Timeline'});
                         break;
                     default:
                         break;

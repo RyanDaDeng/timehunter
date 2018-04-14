@@ -126,7 +126,7 @@
                     this.$router.push({ name: 'Signin'});
                 }
                 else if(key == '1' && this.authenticated && this.user != null){
-                    this.$router.push('/');
+                    this.$router.push({name:'Dashboard'});
                 }else if(key == 'signin'){
                     this.$router.push({ name: 'Signin'});
                 } else if(key == 'signup'){
