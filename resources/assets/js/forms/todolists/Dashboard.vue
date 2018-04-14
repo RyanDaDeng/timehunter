@@ -351,8 +351,7 @@
                 projects: [],
                 dialogFormVisible: false,
                 value6: [
-                        new Date(),
-                        new Date()
+
                 ],
                 form: {
                     due_date_time: new Date()
@@ -400,7 +399,9 @@
         mounted () {
             this.getProjects();
 
-            this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().endOf('day').format("YYYY-MM-DD HH:mm:ss"));
+            this.value6.push( new Date());
+            this.value6.push(this.addDays(new Date(),7));
+            this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().add(7,'day').endOf('day').format("YYYY-MM-DD HH:mm:ss"));
             console.log(this.importantAndUrgent);
             this.today = moment();
         },
@@ -439,6 +440,11 @@
             }
         },
         methods: {
+            addDays(date, days) {
+                var result = new Date(date);
+                result.setDate(result.getDate() + days);
+                return result;
+            },
             getClass(v){
               return v==1?'success-note':'';
             },
