@@ -974,7 +974,7 @@
     }
 
     .success-note{
-        background:#cfc;
+        background:#87CD66;
     }
     .success-done{
         text-decoration:line-through;
