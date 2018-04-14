@@ -69,7 +69,7 @@
                         {{--<li class="fb"><a href="https://www.facebook.com/" target="_blank"><i class="fa fa-facebook"></i></a></li>--}}
                         {{--<li class="dribbble"><a href="https://dribbble.com/" target="_blank"><i class="fa fa-dribbble"></i></a></li>--}}
                         {{--<li class="gplus"><a href="https://plus.google.com/" target="_blank"><i class="fa fa-google-plus"></i></a></li>--}}
-                        <li class="linkedin"><a href="https://www.linkedin.com/in/ryandeng/" target="_blank"><i
+                        <li class="linkedin"><a href="//www.linkedin.com/in/ryandeng/" target="_blank"><i
                                         class="fa fa-linkedin-square"></i></a></li>
                     </ul>
 
@@ -131,7 +131,7 @@
 <script src="/social/scripts/jquery-1.8.2.min.js"></script>
 {{--<script src="/social/scripts/bootstrap.min.js"></script>--}}
 {{--<script src="/social/scripts/jquery.validate.min.js"></script>--}}
-<script src="/social/scripts/custom.js"></script>
+{{--<script src="/social/scripts/custom.js"></script>--}}
 
 <style>
 
