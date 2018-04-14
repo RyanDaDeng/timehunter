@@ -87,7 +87,7 @@
                             app.fullscreenLoading = false;
                             alert("Could not logout");
                         });
-                app.$router.push('/signin');
+                app.$router.push({ name: 'Signin'});
             },
             getRouteName(){
                 switch(this.$route.name){
@@ -119,24 +119,24 @@
                 this.fullscreenLoading = true;
                 if(key == 'logout'){
                     this.activeIndex = '1';
-                    this.$router.push('/signin');
+                    this.$router.push({ name: 'Signin'});
                 }
 
                 else if(key == '1' && !this.authenticated && this.user == null){
-                    this.$router.push('/signin');
+                    this.$router.push({ name: 'Signin'});
                 }
                 else if(key == '1' && this.authenticated && this.user != null){
                     this.$router.push('/');
                 }else if(key == 'signin'){
-                    this.$router.push('/signin');
+                    this.$router.push({ name: 'Signin'});
                 } else if(key == 'signup'){
-                    this.$router.push('/signup');
+                    this.$router.push({ name: 'Signup'});
                 }else if(key == 'about-app'){
-                    this.$router.push('/aboutapp');
+                    this.$router.push({ name: 'AboutApp'});
                 }else if(key == 'about-me'){
-                    this.$router.push('/aboutme');
+                    this.$router.push({ name: 'AboutMe'});
                 }else if(key == 'donate-me'){
-                    this.$router.push('/donateme');
+                    this.$router.push({ name: 'DonateMe'});
                 }
                 this.fullscreenLoading = false;
                 console.log(key)

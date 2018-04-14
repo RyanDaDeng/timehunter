@@ -134,7 +134,7 @@
                 this.timezones =  momentTimezone.tz.names();
             },
             showSignin(){
-                this.$router.push('/signin');
+                this.$router.push({ name: 'Signin'});
             },
             submitForm(formName) {
 

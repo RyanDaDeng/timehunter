@@ -16,4 +16,9 @@ class VueHomeController extends Controller
         return view('vue.index');
     }
 
+    public function app()
+    {
+        return view('vue.app');
+    }
+
 }

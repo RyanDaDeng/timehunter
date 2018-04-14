@@ -18,76 +18,76 @@ import Project from './forms/todolists/Project.vue';
 import Timeline from './forms/todolists/Timeline.vue';
 let routes = [
     {
-        path: '/',
+        path: '/app',
         component: AppControl,
         children: [
             // UserHome will be rendered inside User's <router-view>
             // when /user/:id is matched
-            { path: '/timers', name:'Timers',component: Timer },
-            { path: '/tasks', name:'Tasks',component: Task },
+            { path: '/app/timers', name:'Timers',component: Timer },
+            { path: '/app/tasks', name:'Tasks',component: Task },
             {
-                path: '/dashboard',
+                path: '/app/dashboard',
                 component: Dashboard,
                 name: 'Dashboard'
             },
             {
-                path: '/reports',
+                path: '/app/reports',
                 component: Reports,
                 name: 'Reports'
             },
             {
-                path: '/timeline',
+                path: '/app/timeline',
                 component: Timeline,
                 name: 'Timeline'
             },
             {
-                path: '/todos/inbox',
+                path: '/app/todos/inbox',
                 component: TodoInbox,
                 name: 'TodosInbox'
             },
             {
-                path: '/todos/today',
+                path: '/app/todos/today',
                 component: TodosToday,
                 name: 'TodosToday'
             },
             {
-                path: '/projects',
+                path: '/app/projects',
                 component: Project,
                 name: 'Projects'
             }
             // ...other sub routes
         ],
         name: 'App',
-        redirect: '/dashboard',
+        redirect: '/app/dashboard',
         meta: { requiresAuth: true }
     },
     {
-        path: '/aboutapp',
+        path: '/app/aboutapp',
         component: AboutApp,
         name: 'AboutApp'
     },
     {
-        path: '/aboutme',
+        path: '/app/aboutme',
         component: AboutMe,
         name: 'AboutMe'
     },
     {
-        path: '/donateme',
+        path: '/app/donateme',
         component: DonateMe,
         name: 'DonateMe'
     },
     {
-        path: '/signin',
+        path: '/app/signin',
         component: Login,
         name: 'Signin'
     },
     {
-        path: '/signup',
+        path: '/app/signup',
         component: Signup,
         name: 'Signup'
     },
     {
-        path: '/home',
+        path: '/app/home',
         component: PublicHome,
         name: 'PublicHome',
         meta: { requiresAuth: true }
@@ -96,14 +96,16 @@ let routes = [
 
 
 const router = new VueRouter({
-    routes
+    history: true,
+    mode: 'history',
+    routes: routes
 });
 
 router.beforeEach((to, from, next) => {
     const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
     if (requiresAuth == true && auth.check() == false) {
-        next('/signin');
+        next('/app/signin');
     }else{
         next();
     }

@@ -19,6 +19,7 @@ Route::get('/cc', function () {
 dd(1);
 })->name('AboutMe2');;
 Route::get('/', 'Vue\VueHomeController@index')->name('home');
+Route::get('/app', 'Vue\VueHomeController@app')->name('app');
 Route::get('/home', 'Vue\VueHomeController@index')->name('vue.home');
 
 Route::get('/aboutme', function () {
