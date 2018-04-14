@@ -174,7 +174,7 @@
 
                                 <li class="page-gap" v-for="v,x in results[1] " :key="v.id">
 
-                                    <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                    <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
                                         <h2>{{v.due_date_time | dateName}}</h2>
                                         <!--style="text-decoration:line-through;"-->
@@ -209,7 +209,7 @@
 
                             <li class="page-gap" v-for="v,x in results[2] " :key="v.id">
 
-                                <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
                                     <h2>{{v.due_date_time | dateName}}</h2>
                                     <!--style="text-decoration:line-through;"-->
@@ -241,7 +241,7 @@
 
                                     <li class="page-gap" v-for="v,x in results[3] ">
 
-                                        <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                        <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
                                             <h2>{{v.due_date_time | dateName}}</h2>
                                             <!--style="text-decoration:line-through;"-->
@@ -273,7 +273,7 @@
                                     <div v-for="v,x in results[4] ">
                                         <li class="page-gap" >
 
-                                            <a v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                            <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
                                                 <h2>{{v.due_date_time | dateName}}</h2>
                                                 <!--style="text-decoration:line-through;"-->
@@ -345,6 +345,7 @@
         data: function () {
 
             return {
+                todoLoading:[],
                 show:[],
                 upHere : false,
                 projects: [],
@@ -475,16 +476,21 @@
 //                this.editForm.due_date_time = new Date(row.due_date_time);
             },
             complete(details){
-                const loading = this.$loading({
-                    lock: true,
-                    text: 'Syncing',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.7)'
-                });
+//                const loading = this.$loading({
+//                    lock: true,
+//                    text: 'Syncing',
+//                    spinner: 'el-icon-loading',
+//                    background: 'rgba(0, 0, 0, 0.7)'
+//                });
 
+                var data = JSON.parse(JSON.stringify([]));
+                data[details.id] = true;
+                var app = this;
+                app.todoLoading = data;
                 axios.post('/api/todolists/v1/todos/' + details.id+'/done')
                         .then(response => {
                     details.is_done = !(details.is_done);
+               app.todoLoading[details.id] = false;
                 this.$message({
                     type: 'success',
                     message: response.data.message
@@ -497,7 +503,8 @@
                 });
             });
                 this.centerDialogVisible = false;
-                loading.close();
+//                this.todoLoading[details.id] = false;
+//                loading.close();
             },
             changeDate(){
                 this.getNotDoneTodos(moment(this.value6[0]).startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment(this.value6[1]).endOf('day').format("YYYY-MM-DD HH:mm:ss"))
