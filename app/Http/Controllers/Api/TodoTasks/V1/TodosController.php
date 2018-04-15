@@ -97,7 +97,7 @@ class TodosController extends BaseController
             'due_date_time' => Carbon::parse($request->due_date_time,
                 $user->timezone)->timezone('UTC')->format('Y-m-d H:i:s'),
             'task_id' => $request->task_id,
-            'is_done'=>false,
+            'is_done' => false,
             'notes' => $request->notes,
             'name' => $request->name,
             'project_id' => $request->project_id,
@@ -141,14 +141,19 @@ class TodosController extends BaseController
             return $this->sendBadRequest('Resource cannot be found.');
         }
 
+
         if ($todo->is_done == true) {
             $todo->is_done = false;
             $todo->save();
-            return $this->sendOkResponse($todo->toArray(), 'Todo is marked as Uncompleted.');
+            $result = [
+                'done' => $todo->toArray(),
+                'newTodo' => null
+            ];
+            return $this->sendOkResponse($result, 'Todo is marked as Uncompleted.');
         }
 
 
-
+        $newTodo = null;
         if ($todo->frequency == 'every day') {
 
             $newTodo = new Todo($todo->toArray());
@@ -160,7 +165,13 @@ class TodosController extends BaseController
         $todo->is_done = true;
         $todo->frequency = null;
         $todo->save();
-        return $this->sendOkResponse($todo->toArray(), 'Todo is marked as done.');
+
+        $result = [
+            'done' => $todo->toArray(),
+            'newTodo' => $newTodo == null ? null : $newTodo->toArray()
+        ];
+
+        return $this->sendOkResponse($result, 'Todo is marked as done.');
     }
 
 
@@ -169,7 +180,6 @@ class TodosController extends BaseController
         $user = Auth::user();
         $dateFrom = Carbon::parse($request->due_date_time_from)->setTimezone($user->timezone)->timezone('UTC');
         $dateTo = Carbon::parse($request->due_date_time_to)->setTimezone($user->timezone)->timezone('UTC');
-
 
 
         $todos = Todo::where('user_id', $user->id)->where('due_date_time', '>=',
@@ -219,7 +229,6 @@ class TodosController extends BaseController
     }
 
 
-
     public function updatePriority(Request $request, $id)
     {
         $user = Auth::user();
@@ -234,7 +243,6 @@ class TodosController extends BaseController
 
         return $this->sendOkResponse($todo->toArray(), 'Todo is marked as done.');
     }
-
 
 
 }

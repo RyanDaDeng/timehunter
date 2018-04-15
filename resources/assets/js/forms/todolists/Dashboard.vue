@@ -37,7 +37,7 @@
 
                   <span slot="footer" class="dialog-footer">
                            <el-button-group>
-                               <el-button type="danger" @click="handleDelete(details)" >Delete</el-button>
+                               <el-button type="danger" @click="handleDelete(details,index)" >Delete</el-button>
   <el-button v-if="details.is_done == 0" type="success" @click="complete(details)" >Mark it as Completed</el-button>
       <el-button v-else type="success" @click="complete(details)" >Mark it as Uncomplete</el-button>
       <el-button type="warning"   @click="handleStart(details)">Start timer</el-button>
@@ -174,21 +174,20 @@
 
                                 <li class="page-gap" v-for="v,x in results[1] " :key="v.id">
 
-                                    <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                        <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                        <h2>{{v.due_date_time | dateName}}</h2>
-                                        <!--style="text-decoration:line-through;"-->
-                                        <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
+                                            <h2>{{v.due_date_time | dateName}}</h2>
+                                            <!--style="text-decoration:line-through;"-->
+                                            <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
 
-                                        <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+                                            <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
                                         <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
                                       <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
                                          <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
                                     </span></div>
-                                    </a>
-
+                                        </a>
 
                                 </li>
 
@@ -209,21 +208,21 @@
 
                             <li class="page-gap" v-for="v,x in results[2] " :key="v.id">
 
-                                <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                    <h2>{{v.due_date_time | dateName}}</h2>
-                                    <!--style="text-decoration:line-through;"-->
-                                    <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
+                                    <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                    <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+                                        <h2>{{v.due_date_time | dateName}}</h2>
+                                        <!--style="text-decoration:line-through;"-->
+                                        <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
+
+                                        <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
                                         <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
                                       <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
                                          <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
                                     </span></div>
-                                </a>
-
+                                    </a>
 
 
                             </li>
@@ -241,20 +240,22 @@
 
                                     <li class="page-gap" v-for="v,x in results[3] ">
 
-                                        <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                            <h2>{{v.due_date_time | dateName}}</h2>
-                                            <!--style="text-decoration:line-through;"-->
-                                            <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
 
-                                            <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+                                            <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+
+                                                <h2>{{v.due_date_time | dateName}}</h2>
+                                                <!--style="text-decoration:line-through;"-->
+                                                <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
+
+                                                <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
                                         <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
                                       <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
                                          <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
                                     </span></div>
-                                        </a>
+                                            </a>
 
 
                                     </li>
@@ -273,20 +274,22 @@
                                     <div v-for="v,x in results[4] ">
                                         <li class="page-gap" >
 
-                                            <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                                <h2>{{v.due_date_time | dateName}}</h2>
-                                                <!--style="text-decoration:line-through;"-->
-                                                <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
 
-                                                <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+                                                <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+
+                                                    <h2>{{v.due_date_time | dateName}}</h2>
+                                                    <!--style="text-decoration:line-through;"-->
+                                                    <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
+
+                                                    <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
                                         <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
                                       <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
                                          <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v)" class="el-icon-delete"></i></span>
+                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
                                     </span></div>
-                                            </a>
+                                                </a>
 
 
                                         </li>
@@ -428,7 +431,7 @@
 //                if(str === null || str === ''){
 //                    return str;
 //                }
-                var maxLength = 35;
+                var maxLength = 60;
                 var suffix ='......';
                 if(str.length > maxLength)
                 {
@@ -495,8 +498,18 @@
                 app.todoLoading = data;
                 axios.post('/api/todolists/v1/todos/' + details.id+'/done')
                         .then(response => {
-                    details.is_done = !(details.is_done);
+//                    details = response.data.results.done;
+                    details.is_done = response.data.results.done.is_done;
+                    details.frequency = response.data.results.done.frequency;
                app.todoLoading[details.id] = false;
+                if(response.data.results.newTodo !=null){
+                    var dueDate = moment(response.data.results.newTodo.due_date_time).startOf('day');
+                    if(moment(this.value6[0]).startOf('day') <= dueDate && moment(this.value6[1]).startOf('day') >= dueDate){
+                        this.results[response.data.results.newTodo.priority_level].push(response.data.results.newTodo);
+                        this.sortArray(this.results[response.data.results.newTodo.priority_level]);
+                    }
+                }
+
                 this.$message({
                     type: 'success',
                     message: response.data.message
@@ -688,7 +701,7 @@
             }
             });
             },
-            handleDelete(row) {
+            handleDelete(row,index) {
                 console.log(row);
                 this.$confirm('Are you sure you want to delete this todo?', 'Delete a todo', {
                     confirmButtonText: 'Confirm',
@@ -699,7 +712,8 @@
 
                     axios.delete('/api/todolists/v1/todos/' + row.id)
                         .then(response => {
-                    this.results[row.priority_level].splice(this.index, 1);
+                    this.results[row.priority_level].splice(index
+                        , 1);
                 this.$message({
                     type: 'success',
                     message: response.data.message
@@ -866,7 +880,7 @@
     }
     ul li p{
         /*font-family:"Reenie Beanie",arial,sans-serif;*/
-        font-size:120%;
+        font-size:80%;
         word-wrap: break-word;
     }
     /*ul li:nth-child(even) a{*/
