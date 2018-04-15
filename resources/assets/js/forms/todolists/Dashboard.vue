@@ -504,7 +504,7 @@
                 if (todoDate.isSame(YESTERDAY, 'd')){
                     return 'Yesterday'+moment(date).format(', h:mm a');
                 }
-                return moment(date).format('MMMM Do YYYY, h:mm a');
+                return moment(date).format('ddd, MMMM Do, h:mm a');
             },
             truncate(str){
 //                if(str === null || str === ''){
