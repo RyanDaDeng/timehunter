@@ -26,6 +26,7 @@
 
             </el-row>
 
+
             <el-dialog
                     title="Todo Details"
                     :visible.sync="centerDialogVisible"
@@ -161,8 +162,28 @@
 
 
                 <el-row >
+                    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 
-
+                    <transition
+                            name="custom-classes-transition"
+                            enter-active-class="animated tada"
+                            leave-active-class="animated bounceOutRight"
+                    >
+                        <div  id="popup1" class="overlay" v-show="showBox">
+                            <div class="popup">
+                                <h2 style=" margin-top: 0;
+        font-size: 180%;
+        color:#3DCB9A;
+        font-family: Tahoma, Arial, sans-serif;"><i  class="far fa-check-circle"></i> Congratulations!</h2>
+                                <a class="close" @click="showBox = false">&times;</a>
+                                <div class="content">
+                                    WINNER WINNER, CHICKEN DINNER!
+                                </div>
+                            </div>
+                        </div>
+                        <!--<p v-if="showBox">hello</p>-->
+                    </transition>
+                    
                     <el-col :span="6">
                         <div class="div-middle"><span class="attribution">Important and urgent</span></div>
                         <div class="grid-content bg-pink" v-loading="loadingOne">
@@ -171,6 +192,7 @@
                             <ul >
 
                                 <draggable v-model="results[1]" class="dragArea" :options="{animation:200,group:'due_date_time'}"    @change="updateOne">
+
 
                                 <li class="page-gap" v-for="v,x in results[1] " :key="v.id">
 
@@ -182,10 +204,11 @@
 
                                             <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
-                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
-                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
+
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
+                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
+                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
+                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
                                         </a>
 
@@ -217,10 +240,11 @@
 
                                         <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
-                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
-                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
+
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
+                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
+                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
+                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
                                     </a>
 
@@ -250,10 +274,10 @@
 
                                                 <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
-                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
-                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
+                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
+                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
+                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
                                             </a>
 
@@ -284,10 +308,11 @@
 
                                                     <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="el-icon-edit"></i></span>
-                                      <span class='clickableAwesomeFont'><i  @click="handleStart(v)" class="el-icon-time"></i></span>
-                                         <span class='clickableAwesomeFont'><i  @click="complete(v)" class="el-icon-circle-check-outline"></i></span>
-                                        <span class='clickableAwesomeFont'><i @click="handleDelete(v,x)" class="el-icon-delete"></i></span>
+
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
+                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
+                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
+                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
                                                 </a>
 
@@ -300,6 +325,7 @@
                             </ul>
                         </div>
                     </div></el-col>
+
                 </el-row>
 
 
@@ -349,6 +375,7 @@
 
             return {
                 todoLoading:[],
+                showBox:false,
                 show:[],
                 upHere : false,
                 projects: [],
@@ -451,6 +478,10 @@
             getClass(v){
               return v==1?'success-note':'';
             },
+            getClassIcon(v){
+                console.log(v);
+                return v==1?'far fa-check-circle':'far fa-circle';
+            },
             getDoneClass(v){
                 return v==1?'success-done':'';
             },
@@ -510,10 +541,14 @@
                     }
                 }
 
-                this.$message({
-                    type: 'success',
-                    message: response.data.message
-                });
+                if(response.data.results.done.is_done == 1){
+                    this.showBox = true;
+                }
+
+//                this.$message({
+//                    type: 'success',
+//                    message: response.data.message
+//                });
             })
             .catch(error => {
                     this.$message({
@@ -835,6 +870,46 @@
 
 
 <style scoped>
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .popup {
+        margin: 200px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 5px;
+        width: 30%;
+        position: relative;
+    }
+    .popup .cute {
+        margin-top: 0;
+        color: #333;
+        font-family: Tahoma, Arial, sans-serif;
+    }
+    .popup .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #333;
+    }
+    .popup .close:hover {
+        color: #06D85F;
+    }
+    .popup .content {
+        max-height: 50%;
+        overflow: auto;
+    }
+
     body{
         font-family:arial,sans-serif;
         font-size:100%;
@@ -1015,5 +1090,16 @@
     }
     .clickableAwesomeFont {
         cursor: pointer
+    }
+    .list-item {
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .list-enter-active, .list-leave-active {
+        transition: all 1s;
+    }
+    .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+        opacity: 0;
+        transform: translateY(30px);
     }
 </style>
