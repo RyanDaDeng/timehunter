@@ -178,13 +178,19 @@ class TodosController extends BaseController
     public function getNotDone(Request $request)
     {
         $user = Auth::user();
-        $dateFrom = Carbon::parse($request->due_date_time_from)->setTimezone($user->timezone)->timezone('UTC');
-        $dateTo = Carbon::parse($request->due_date_time_to)->setTimezone($user->timezone)->timezone('UTC');
 
+        if($request->is_expired == "false"){
+            $dateFrom = Carbon::parse($request->due_date_time_from)->setTimezone($user->timezone)->timezone('UTC');
+            $dateTo = Carbon::parse($request->due_date_time_to)->setTimezone($user->timezone)->timezone('UTC');
 
-        $todos = Todo::where('user_id', $user->id)->where('due_date_time', '>=',
-            $dateFrom->format('Y-m-d H:i:s'))->where('due_date_time', '<=',
-            $dateTo->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'asc')->get();
+            $todos = Todo::where('user_id', $user->id)->where('due_date_time', '>=',
+                $dateFrom->format('Y-m-d H:i:s'))->where('due_date_time', '<=',
+                $dateTo->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'asc')->get();
+        }else{
+            $now = Carbon::now('UTC');
+            $todos = Todo::where('user_id', $user->id)->where('is_done',0)->where('due_date_time', '<=',
+                $now->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'asc')->get();
+        }
 
         $result = [
             1 => [],

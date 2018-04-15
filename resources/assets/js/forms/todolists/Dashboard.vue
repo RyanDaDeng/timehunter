@@ -14,6 +14,15 @@
 
                 <div class="block" style="position:absolute;
   right:0;">
+
+                        <el-radio-group v-model="radio3">
+                            <el-radio-button label="Today"></el-radio-button>
+                            <el-radio-button label="Week"></el-radio-button>
+                            <el-radio-button label="Month"></el-radio-button>
+                            <el-radio-button label="Expired"></el-radio-button>
+                        </el-radio-group>
+
+
                     <el-date-picker
                             @change="changeDate()"
                             v-model="value6"
@@ -374,6 +383,7 @@
         data: function () {
 
             return {
+                radio3:'',
                 audio: null,
                 todoLoading:[],
                 showBox:false,
@@ -427,13 +437,54 @@
             };
 
         },
+        watch:{
+            radio3: function(val){
+                console.log(val);
+                var start;
+                var end;
+                var expired = false;
+                switch(val){
+                    case 'Today':
+                        start = moment().startOf('day').toDate();
+                        end   = moment().endOf('day').toDate();
+                        this.value6 = [];
+                        this.value6.push( start);
+                        this.value6.push(end);
+                        break;
+                    case 'Week':
+                        start = moment().startOf('week').toDate();
+                        end   = moment().endOf('week').toDate();
+                        this.value6 = [];
+                        this.value6.push( start);
+                        this.value6.push(end);
+                        break;
+                    case 'Month':
+                        start = moment().startOf('month').toDate();
+                        end   = moment().endOf('month').toDate();
+                        this.value6 = [];
+                        this.value6.push( start);
+                        this.value6.push(end);
+                        break;
+                    case 'Expired':
+//                        start = moment().startOf('month').toDate();
+//                        end   = moment().endOf('month').toDate();
+                        this.value6 = [];
+//                        this.value6.push( start);
+//                        this.value6.push(end);
+                        expired = true;
+                        break;
+                }
+                this.getNotDoneTodos(moment(this.value6[0]).startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment(this.value6[1]).endOf('day').format("YYYY-MM-DD HH:mm:ss"),expired)
+
+            }
+        },
         mounted () {
             this.getProjects();
-
-            this.value6.push( new Date());
-            this.value6.push(this.addDays(new Date(),7));
-            this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().add(7,'day').endOf('day').format("YYYY-MM-DD HH:mm:ss"));
-            console.log(this.importantAndUrgent);
+            this.radio3 = 'Today';
+//            this.value6.push( new Date());
+//            this.value6.push(this.addDays(new Date(),1));
+//            this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().add(7,'day').endOf('day').format("YYYY-MM-DD HH:mm:ss"));
+//            console.log(this.importantAndUrgent);
             this.today = moment();
         },
         filters: {
@@ -564,7 +615,7 @@
 //                loading.close();
             },
             changeDate(){
-                this.getNotDoneTodos(moment(this.value6[0]).startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment(this.value6[1]).endOf('day').format("YYYY-MM-DD HH:mm:ss"))
+                this.getNotDoneTodos(moment(this.value6[0]).startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment(this.value6[1]).endOf('day').format("YYYY-MM-DD HH:mm:ss"),false)
             },
             updatePriority(todoId,newPriorityLevel) {
 //                const loading = this.$loading({
@@ -841,13 +892,14 @@
             }
             });
             },
-            getNotDoneTodos(dateFrom,dateTo){
+            getNotDoneTodos(dateFrom,dateTo,expired){
                 var app=this;
                 app.loadingFull = true;
                 api.get('/api/todolists/v1/todos/notdone',{
                     params:{
                         due_date_time_from: dateFrom,
-                        due_date_time_to: dateTo
+                        due_date_time_to: dateTo,
+                        is_expired:expired
                     }
                 })
                         .then(function (resp) {
