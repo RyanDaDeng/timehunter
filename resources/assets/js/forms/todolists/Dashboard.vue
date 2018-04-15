@@ -157,7 +157,7 @@
             <!--</div>-->
 
 
-            <div  v-loading="loading">
+            <div  v-loading="loadingFull">
 
 
                 <el-row >
@@ -377,7 +377,7 @@
                 importantNotUrgent:[],
                 notImportantButUrgent:[],
                 notImportantNotUrgent:[],
-                loading:false,
+                loadingFull:false,
                 centerDialogVisible:false,
                 formLabelWidth: '120px',
                 index:null,
@@ -791,7 +791,7 @@
             },
             getNotDoneTodos(dateFrom,dateTo){
                 var app=this;
-                app.loading = true;
+                app.loadingFull = true;
                 api.get('/api/todolists/v1/todos/notdone',{
                     params:{
                         due_date_time_from: dateFrom,
@@ -801,7 +801,7 @@
                         .then(function (resp) {
 
                             app.results = resp.data.results;
-                            app.loading = false;
+                            app.loadingFull = false;
                         })
                         .catch(function (resp) {
                             console.log(resp);
@@ -809,7 +809,7 @@
                                 type: 'error',
                                 message: 'Not Todos cannot be retrieved.'
                             });
-                            app.loading = false;
+                            app.loadingFull = false;
                         });
 
             },
