@@ -374,6 +374,7 @@
         data: function () {
 
             return {
+                audio: null,
                 todoLoading:[],
                 showBox:false,
                 show:[],
@@ -543,6 +544,8 @@
 
                 if(response.data.results.done.is_done == 1){
                     this.showBox = true;
+                    this.audio = new Audio('http://ryandeng.test/audio/teda.mp3');
+                    this.audio.play();
                 }
 
 //                this.$message({
