@@ -544,7 +544,7 @@
 
                 if(response.data.results.done.is_done == 1){
                     this.showBox = true;
-                    this.audio = new Audio('http://ryandeng.test/audio/teda.mp3');
+                    this.audio = new Audio('https://ryandeng.com/audio/teda.mp3');
                     this.audio.play();
                 }
 
