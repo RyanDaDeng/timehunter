@@ -1,163 +1,292 @@
 <template>
 
-    <el-container>
+  <div>
 
-        <el-header  style="">
-            <el-row :gutter="20">
-                <el-col :span="6">
-                    <el-button type="success" round @click="handleCreate();" >Create a new todo</el-button>
+      <el-row>
+          <!--<el-col :span="4">-->
+              <!--<el-progress type="circle" :percentage="80" color="#8e71c7"></el-progress>-->
+          <!--</el-col>-->
 
-                </el-col>
-                <el-col :span="10">
-                    <div class="grid-content bg-purple"></div>
-                </el-col>
+          <el-col :span="4" >  <el-button-group>
+              <el-button type="success" @click="handleCreate();" icon="el-icon-plus" circle></el-button>
+              <el-button type="primary" icon="el-icon-menu" circle></el-button>
+              <el-button type="info" icon="el-icon-setting" circle></el-button>
 
-                <div class="block" style="position:absolute;
-  right:0;">
+          </el-button-group></el-col>
 
-                        <el-radio-group v-model="radio3">
-                            <el-radio-button label="Today"></el-radio-button>
-                            <el-radio-button label="Week"></el-radio-button>
-                            <el-radio-button label="Month"></el-radio-button>
-                            <el-radio-button label="Expired"></el-radio-button>
-                        </el-radio-group>
+          <el-col :span="3" > <el-progress type="circle"  width='80' :percentage="25"></el-progress></el-col>
+          <el-col :span="3" > <el-progress type="circle" width='80' :percentage="80" color="#8e71c7"></el-progress> </el-col>
+
+          <el-col :span="3">
+          <el-select v-model="value8" filterable placeholder="Project">
+              <el-option
+                      v-for="item in options"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+              </el-option>
+          </el-select>
+          </el-col>
+          <el-col :span="3">
+
+              <el-select v-model="value8" filterable placeholder="Status">
+                  <el-option
+                          v-for="item in options"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.value">
+                  </el-option>
+              </el-select>
+          </el-col>
+          <el-col :span="8">  <el-date-picker
+                  @change="changeDate()"
+                  v-model="value6"
+                  type="daterange"
+                  range-separator="-"
+                  start-placeholder="Start Date"
+                  end-placeholder="End Date"
+                  :picker-options="pickerOptions2">
+          </el-date-picker></el-col>
 
 
-                    <el-date-picker
-                            @change="changeDate()"
-                            v-model="value6"
-                            type="daterange"
-                            range-separator="-"
-                            start-placeholder="Start Date"
-                            end-placeholder="End Date">
-                    </el-date-picker>
-                </div>
 
-            </el-row>
+      </el-row>
+
+      <el-tabs  v-model="activeName" >
+          <el-tab-pane label="Todos" name="first">
 
 
-            <el-dialog
-                    title="Todo Details"
-                    :visible.sync="centerDialogVisible"
-                    width="40%"
-                    center>
-                <p>Due Date: {{details.due_date_time|dateName}}</p>
-                <p>Name: {{details.name}}</p>
-                <p>Notes: {{details.notes}}</p>
+              <div  v-loading="loadingFull">
+
+
+                  <el-row class="el-row">
+                      <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+
+                      <transition
+                              name="custom-classes-transition"
+                              enter-active-class="animated tada"
+                              leave-active-class="animated bounceOutRight"
+                      >
+                          <div  id="popup1" class="overlay" v-show="showBox" >
+                              <div class="popup">
+                                  <h2 style=" margin-top: 0;
+        font-size: 180%;
+        color:#3DCB9A;
+        font-family: Tahoma, Arial, sans-serif;"><i  class="far fa-check-circle"></i> Congratulations!</h2>
+                                  <!--<a class="close" @click="showBox = false">&times;</a>-->
+                                  <div class="content">
+                                      WINNER WINNER, CHICKEN DINNER!
+                                  </div>
+                              </div>
+                          </div>
+                          <!--<p v-if="showBox">hello</p>-->
+                      </transition>
+
+                      <div v-for="result,index in results">
+                          <el-col :span="6">
+                              <div class="div-middle"><span class="attribution">Important and urgent</span></div>
+                              <div  v-bind:class="getGridColorClass(index)" v-loading="gridLoading[index]">
+
+                                  <div >
+                                      <ul >
+
+                                          <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
+
+
+                                              <li class="page-gap" v-for="v,x in results[index] " :key="v.id">
+
+                                                  <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+
+                                                      <h2>{{v.due_date_time | dateName}}</h2>
+                                                      <!--style="text-decoration:line-through;"-->
+                                                      <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
+
+                                                      <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+
+
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
+                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
+                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
+                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
+                                    </span></div>
+                                                  </a>
+
+                                              </li>
+
+                                          </draggable>
+
+                                      </ul>
+                                  </div>
+                              </div>
+                          </el-col>
+                      </div>
+
+
+                  </el-row>
+
+
+              </div>
+          </el-tab-pane>
+
+          <el-tab-pane label="Statistics" name="second">
+
+              <el-row :gutter="12">
+                  <el-col :span="8">
+                      <el-card shadow="always">
+                          <el-progress type="circle" :percentage="80" color="#8e71c7"></el-progress>
+                      </el-card>
+                  </el-col>
+                  <el-col :span="8">
+                      <el-card shadow="hover">
+                          <el-progress type="circle" :percentage="25"></el-progress>
+                      </el-card>
+                  </el-col>
+                  <el-col :span="8">
+                      <el-card shadow="never">
+                          <el-progress type="circle" :percentage="25"></el-progress>
+                      </el-card>
+                  </el-col>
+              </el-row>
+
+          </el-tab-pane>
+      </el-tabs>
+
+
+
+
+
+
+
+
+
+
+          <el-dialog
+                  title="Todo Details"
+                  :visible.sync="centerDialogVisible"
+                  width="40%"
+                  center>
+              <p>Due Date: {{details.due_date_time|dateName}}</p>
+              <p>Name: {{details.name}}</p>
+              <p>Notes: {{details.notes}}</p>
 
                   <span slot="footer" class="dialog-footer">
                            <el-button-group>
                                <el-button type="danger" @click="handleDelete(details,index)" >Delete</el-button>
-  <el-button v-if="details.is_done == 0" type="success" @click="complete(details)" >Mark it as Completed</el-button>
-      <el-button v-else type="success" @click="complete(details)" >Mark it as Uncomplete</el-button>
-      <el-button type="warning"   @click="handleStart(details)">Start timer</el-button>
+                               <el-button v-if="details.is_done == 0" type="success" @click="complete(details)" >Mark it as Completed</el-button>
+                               <el-button v-else type="success" @click="complete(details)" >Mark it as Uncomplete</el-button>
+                               <el-button type="warning"   @click="handleStart(details)">Start timer</el-button>
                                <el-button type="info"  @click="centerDialogVisible = false" >Close</el-button>
-                               </el-button-group>
+                           </el-button-group>
                   </span>
-            </el-dialog>
+          </el-dialog>
 
 
-            <el-dialog :title="editTodoTitle" :visible.sync="editFormVisible">
-                <el-form :model="editForm" status-icon :rules="rules2" ref="editForm" label-width="100px" class="demo-ruleForm">
-                    <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
-                        <el-input v-model="editForm.name" auto-complete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
-                        <el-col>
-                            <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
-                        </el-col>
-                    </el-form-item>
+          <el-dialog :title="editTodoTitle" :visible.sync="editFormVisible">
+              <el-form :model="editForm" status-icon :rules="rules2" ref="editForm" label-width="100px" class="demo-ruleForm">
+                  <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
+                      <el-input v-model="editForm.name" auto-complete="off"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
+                      <el-col>
+                          <el-date-picker type="datetime" value-format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="editForm.due_date_time"></el-date-picker>
+                      </el-col>
+                  </el-form-item>
 
-                    <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
-                        <el-input v-model="editForm.notes" auto-complete="off"></el-input>
-                    </el-form-item>
+                  <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
+                      <el-input v-model="editForm.notes" auto-complete="off"></el-input>
+                  </el-form-item>
 
-                    <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
-                        <el-select filterable v-model="editForm.project_id" placeholder="Please select your project.">
+                  <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
+                      <el-select filterable v-model="editForm.project_id" placeholder="Please select your project.">
 
-                            <el-option
-                                    v-for="item in projects"
-                                    :label="item.name"
-                                    :key="item.id"
-                                    :value="item.id">
-                            </el-option>
+                          <el-option
+                                  v-for="item in projects"
+                                  :label="item.name"
+                                  :key="item.id"
+                                  :value="item.id">
+                          </el-option>
 
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="Priority" :label-width="formLabelWidth">
-                        <el-radio-group v-model="editForm.priority_level" size="medium">
-                            <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
-                            <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
-                            <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
-                            <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="Frequency" :label-width="formLabelWidth">
-                        <el-radio-group v-model="editForm.frequency" size="medium">
-                            <el-radio border label="every day"  auto-complete="off"></el-radio>
-                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="editFormVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="submitEditForm('editForm')" :loading="editLoading">Submit</el-button>
-                </div>
-            </el-dialog>
-
-
-            <el-dialog  title="Create a new todo" :visible.sync="dialogFormVisible">
-                <el-form :model="form" status-icon :rules="rules2" ref="form" label-width="100px" class="demo-ruleForm">
-                    <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
-                        <el-input v-model="form.name" auto-complete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
-                        <el-col>
-                            <el-date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="form.due_date_time"></el-date-picker>
-                        </el-col>
-                    </el-form-item>
-                    <el-form-item prop="priority_level"  label="Priority" :label-width="formLabelWidth">
-                        <el-radio-group v-model="form.priority_level" size="medium">
-                            <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
-                            <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
-                            <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
-                            <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
-                        <el-input v-model="form.notes" auto-complete="off"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
-                        <el-select filterable v-model="form.project_id" placeholder="Please select your project.">
-
-                            <el-option
-                                    v-for="item in projects"
-                                    :label="item.name"
-                                    :key="item.id"
-                                    :value="item.id">
-                            </el-option>
-
-                        </el-select>
-                    </el-form-item>
+                      </el-select>
+                  </el-form-item>
+                  <el-form-item label="Priority" :label-width="formLabelWidth">
+                      <el-radio-group v-model="editForm.priority_level" size="medium">
+                          <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
+                          <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
+                          <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
+                          <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
+                      </el-radio-group>
+                  </el-form-item>
+                  <el-form-item label="Frequency" :label-width="formLabelWidth">
+                      <el-radio-group v-model="editForm.frequency" size="medium">
+                          <el-radio border label="every day"  auto-complete="off"></el-radio>
+                          <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
+                      </el-radio-group>
+                  </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                  <el-button @click="editFormVisible = false">Cancel</el-button>
+                  <el-button type="primary" @click="submitEditForm('editForm')" :loading="editLoading">Submit</el-button>
+              </div>
+          </el-dialog>
 
 
-                    <el-form-item label="Frequency" :label-width="formLabelWidth">
-                        <el-radio-group v-model="form.frequency" size="medium">
-                            <el-radio border label="every day"  auto-complete="off"></el-radio>
-                            <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
+          <el-dialog  title="Create a new todo" :visible.sync="dialogFormVisible">
+              <el-form :model="form" status-icon :rules="rules2" ref="form" label-width="100px" class="demo-ruleForm">
+                  <el-form-item prop="name" label="Name" :label-width="formLabelWidth">
+                      <el-input v-model="form.name" auto-complete="off"></el-input>
+                  </el-form-item>
+                  <el-form-item label="Due Date Time" prop="due_date_time" :label-width="formLabelWidth">
+                      <el-col>
+                          <el-date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select Date Time" v-model="form.due_date_time"></el-date-picker>
+                      </el-col>
+                  </el-form-item>
+                  <el-form-item prop="priority_level"  label="Priority" :label-width="formLabelWidth">
+                      <el-radio-group v-model="form.priority_level" size="medium">
+                          <el-radio border label=1 auto-complete="off">Important and Urgent</el-radio>
+                          <el-radio border label=2 auto-complete="off">Important but Not Urgent</el-radio>
+                          <el-radio border label=3 auto-complete="off">Not Important but Urgent</el-radio>
+                          <el-radio border label=4 auto-complete="off">Not Important and Not Urgent</el-radio>
+                      </el-radio-group>
+                  </el-form-item>
+                  <el-form-item prop="notes" label="Notes" :label-width="formLabelWidth">
+                      <el-input v-model="form.notes" auto-complete="off"></el-input>
+                  </el-form-item>
 
-                </el-form>
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                    <el-button type="primary" @click="submitForm('form')" :loading="createLoading">Submit</el-button>
-                </div>
-            </el-dialog>
+                  <el-form-item label="Project" prop="project" :label-width="formLabelWidth" >
+                      <el-select filterable v-model="form.project_id" placeholder="Please select your project.">
 
-        </el-header>
-        <el-main>
+                          <el-option
+                                  v-for="item in projects"
+                                  :label="item.name"
+                                  :key="item.id"
+                                  :value="item.id">
+                          </el-option>
+
+                      </el-select>
+                  </el-form-item>
+
+
+                  <el-form-item label="Frequency" :label-width="formLabelWidth">
+                      <el-radio-group v-model="form.frequency" size="medium">
+                          <el-radio border label="every day"  auto-complete="off"></el-radio>
+                          <el-radio border label="No recurrence"  auto-complete="off"></el-radio>
+                      </el-radio-group>
+                  </el-form-item>
+
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                  <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                  <el-button type="primary" @click="submitForm('form')" :loading="createLoading">Submit</el-button>
+              </div>
+          </el-dialog>
+
+
+
+
+
+  </div>
+
+
 
             <!--<div  class="list-group col-md-3">-->
                 <!--<pre>{{importantAndUrgent}}</pre>-->
@@ -167,178 +296,6 @@
             <!--</div>-->
 
 
-            <div  v-loading="loadingFull">
-
-
-                <el-row >
-                    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
-
-                    <transition
-                            name="custom-classes-transition"
-                            enter-active-class="animated tada"
-                            leave-active-class="animated bounceOutRight"
-                    >
-                        <div  id="popup1" class="overlay" v-show="showBox">
-                            <div class="popup">
-                                <h2 style=" margin-top: 0;
-        font-size: 180%;
-        color:#3DCB9A;
-        font-family: Tahoma, Arial, sans-serif;"><i  class="far fa-check-circle"></i> Congratulations!</h2>
-                                <a class="close" @click="showBox = false">&times;</a>
-                                <div class="content">
-                                    WINNER WINNER, CHICKEN DINNER!
-                                </div>
-                            </div>
-                        </div>
-                        <!--<p v-if="showBox">hello</p>-->
-                    </transition>
-                    
-                    <el-col :span="6">
-                        <div class="div-middle"><span class="attribution">Important and urgent</span></div>
-                        <div class="grid-content bg-pink" v-loading="loadingOne">
-
-                        <div >
-                            <ul >
-
-                                <draggable v-model="results[1]" class="dragArea" :options="{animation:200,group:'due_date_time'}"    @change="updateOne">
-
-
-                                <li class="page-gap" v-for="v,x in results[1] " :key="v.id">
-
-                                        <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
-
-                                            <h2>{{v.due_date_time | dateName}}</h2>
-                                            <!--style="text-decoration:line-through;"-->
-                                            <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
-
-                                            <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
-
-
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
-                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
-                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
-                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
-                                    </span></div>
-                                        </a>
-
-                                </li>
-
-                                </draggable>
-
-                                <!--<draggable v-model="importantAndUrgent" class="dragArea" :options="{group:'people'}">-->
-                                    <!--<div v-for="element in importantAndUrgent">{{element.name}}</div>-->
-                                <!--</draggable>-->
-                            </ul>
-                        </div>
-                    </div></el-col>
-                    <el-col :span="6">
-                        <div class="div-middle"><span class="attribution">Important but not urgent</span></div>
-                        <div class="grid-content bg-yellow" v-loading="loadingTwo" >
-                        <div >
-                            <ul >
-                        <draggable v-model="results[2]" class="dragArea"  :options="{animation:200,group:'due_date_time'}" @change="updateTwo" >
-
-                            <li class="page-gap" v-for="v,x in results[2] " :key="v.id">
-
-
-                                    <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
-
-                                        <h2>{{v.due_date_time | dateName}}</h2>
-                                        <!--style="text-decoration:line-through;"-->
-                                        <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
-
-                                        <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
-
-
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
-                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
-                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
-                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
-                                    </span></div>
-                                    </a>
-
-
-                            </li>
-
-                        </draggable>
-                            </ul>
-                        </div>
-                    </div></el-col>
-                    <el-col :span="6" >
-                        <div class="div-middle"><span class="attribution">Not important but urgent</span></div>
-                        <div class="grid-content bg-blue" v-loading="loadingThree">
-                        <div >
-                            <ul >
-                                <draggable v-model="results[3]" class="dragArea":options="{animation:200,group:'due_date_time'}" @change="updateThree">
-
-                                    <li class="page-gap" v-for="v,x in results[3] ">
-
-
-
-                                            <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
-
-                                                <h2>{{v.due_date_time | dateName}}</h2>
-                                                <!--style="text-decoration:line-through;"-->
-                                                <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
-
-                                                <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
-
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
-                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
-                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
-                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
-                                    </span></div>
-                                            </a>
-
-
-                                    </li>
-
-                                </draggable>
-                            </ul>
-                        </div>
-                    </div></el-col>
-                    <el-col :span="6" >
-                        <div class="div-middle"><span class="attribution">Not important not urgent</span></div>
-                        <div class="grid-content bg-green" v-loading="loadingFour">
-                        <div >
-                            <ul >
-                                <draggable v-model="results[4]" class="dragArea" :options="{animation:200,group:'due_date_time'}" @change="updateFour">
-
-                                    <div v-for="v,x in results[4] ">
-                                        <li class="page-gap" >
-
-
-
-                                                <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
-
-                                                    <h2>{{v.due_date_time | dateName}}</h2>
-                                                    <!--style="text-decoration:line-through;"-->
-                                                    <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.name | truncate}}</p>
-
-                                                    <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
-
-
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
-                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
-                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
-                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
-                                    </span></div>
-                                                </a>
-
-
-                                        </li>
-                                    </div>
-
-
-                                </draggable>
-                            </ul>
-                        </div>
-                    </div></el-col>
-
-                </el-row>
-
-
-            </div>
 
 
             <!--<div class="drag">-->
@@ -355,13 +312,6 @@
 
 
 
-
-
-        </el-main>
-
-
-
-    </el-container>
 
 
 
@@ -383,6 +333,30 @@
         data: function () {
 
             return {
+                options: [{
+                    value: '选项1',
+                    label: '黄金糕'
+                }, {
+                    value: '选项2',
+                    label: '双皮奶'
+                }, {
+                    value: '选项3',
+                    label: '蚵仔煎'
+                }, {
+                    value: '选项4',
+                    label: '龙须面'
+                }, {
+                    value: '选项5',
+                    label: '北京烤鸭'
+                }],
+                value8: '',
+                gridLoading: {
+                    1: false,
+                    2: false,
+                    3: false,
+                    4: false
+                },
+                createLoading:false,
                 radio3:'',
                 audio: null,
                 todoLoading:[],
@@ -397,11 +371,6 @@
                 form: {
                     due_date_time: new Date()
                 },
-                loadingOne:false,
-                createLoading:false,
-                loadingTwo:false,
-                loadingThree:false,
-                loadingFour:false,
                 results: {
                     1:[],
                     2:[],
@@ -411,6 +380,7 @@
                 editLoading: false,
                 editForm:{
                 },
+                activeName:'first',
                 editTodoTitle: '',
                 editIndex: null,
                 editFormVisible:false,
@@ -433,6 +403,31 @@
                     priority_level:[
                         { required: true, message: 'Priroity is required.', trigger: 'blur' }
                     ]
+                },
+                pickerOptions2: {
+                    shortcuts: [{
+                        text: 'Today',
+                        onClick(picker) {
+                            const start = moment().startOf('day').toDate();
+                            const end   = moment().endOf('day').toDate();
+
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: 'This Week',
+                        onClick(picker) {
+                            const start = moment().startOf('week').toDate();
+                            const end   = moment().endOf('week').toDate();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }, {
+                        text: 'This Month',
+                        onClick(picker) {
+                            const start = moment().startOf('month').toDate();
+                            const end   = moment().endOf('month').toDate();
+                            picker.$emit('pick', [start, end]);
+                        }
+                    }]
                 }
             };
 
@@ -522,6 +517,23 @@
             }
         },
         methods: {
+            getLoading(index){
+              return false;
+            },
+            getGridColorClass(index){
+              switch(index){
+                  case '1':
+                      return 'grid-content bg-pink';
+                  case '2':
+                      return 'grid-content bg-yellow';
+                  case '3':
+                      return 'grid-content bg-blue';
+                  case '4':
+                      return 'grid-content bg-green';
+                  default:
+                      return '';
+              }
+            },
             addDays(date, days) {
                 var result = new Date(date);
                 result.setDate(result.getDate() + days);
@@ -597,6 +609,8 @@
                     this.showBox = true;
                     this.audio = new Audio('https://ryandeng.com/audio/teda.mp3');
                     this.audio.play();
+
+                    setTimeout(function () {  this.showBox = false }.bind(this), 3000)
                 }
 
 //                this.$message({
@@ -626,20 +640,8 @@
 //                });
                 var app=this;
 
-                switch(newPriorityLevel){
-                    case 1:
-                        app.loadingOne = true;
-                        break;
-                    case 2:
-                        app.loadingTwo = true;
-                        break;
-                    case 3:
-                        app.loadingThree = true;
-                        break;
-                    case 4:
-                        app.loadingFour = true;
-                        break;
-                }
+                app.gridLoading[newPriorityLevel] = true;
+
 
                 api.post('/api/todolists/v1/todos/'+todoId +'/updatePriority',{
                     priority_level:newPriorityLevel
@@ -649,20 +651,7 @@
                                 message: "It's updated!",
                                 type: 'success'
                             });
-                            switch(newPriorityLevel){
-                                case 1:
-                                    app.loadingOne = false;
-                                    break;
-                                case 2:
-                                    app.loadingTwo = false;
-                                    break;
-                                case 3:
-                                    app.loadingThree = false;
-                                    break;
-                                case 4:
-                                    app.loadingFour = false;
-                                    break;
-                            }
+                            app.gridLoading[newPriorityLevel] = false;
                         })
                         .catch(function (resp) {
                             console.log(resp);
@@ -670,20 +659,7 @@
                                 type: 'error',
                                 message: 'The todo cannot be synced.'
                             });
-                            switch(newPriorityLevel){
-                                case 1:
-                                    app.loadingOne = false;
-                                    break;
-                                case 2:
-                                    app.loadingTwo = false;
-                                    break;
-                                case 3:
-                                    app.loadingThree = false;
-                                    break;
-                                case 4:
-                                    app.loadingFour = false;
-                                    break;
-                            }
+                            app.gridLoading[newPriorityLevel] = false;
                         });
 
 
@@ -701,29 +677,13 @@
                     return new Date(a.due_date_time) - new Date(b.due_date_time);
                 });
             },
-            updateOne(e){
-                if(e.added){
-                    this.updatePriority(e.added.element.id,1);
+            updateOne(index,$event){
+//                console.log(e);
+                if($event.added){
+                    this.updatePriority($event.added.element.id,index);
+                    this.sortArray(this.results[index]);
                 }
-                this.sortArray(this.results[1]);
-            },
-            updateTwo(e){
-                if(e.added){
-                    this.updatePriority(e.added.element.id,2);
-                }
-                this.sortArray(this.results[2]);
-            },
-            updateThree(e){
-                if(e.added){
-                    this.updatePriority(e.added.element.id,3);
-                }
-                this.sortArray(this.results[3]);
-            },
-            updateFour(e){
-                if(e.added){
-                    this.updatePriority(e.added.element.id,4);
-                }
-                this.sortArray(this.results[4]);
+
             },
             getShow(id,state){
                 var data = [];
@@ -736,24 +696,6 @@
                 console.log(relatedElement);
                 console.log(draggedContext);
                 return (!relatedElement || !relatedElement.fixed) && !draggedElement.fixed
-            },
-            handleChange() {
-                console.log('changed');
-            },
-            inputChanged(value) {
-                this.activeNames = value;
-                console.log('input change');
-            },
-            getComponentData() {
-                return {
-                    on: {
-                        change: this.handleChange,
-                        input: this.inputChanged
-                    },
-                    props: {
-                        value: this.activeNames
-                    }
-                };
             },
             submitForm(formName) {
                 this.createLoading = true;
@@ -928,11 +870,14 @@
 
     .overlay {
         position: fixed;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: rgba(0, 0, 0, 0.7);
+        width:1000px;
+        height:1000px;
+        z-index: 999;
+        /*top: 0;*/
+        /*bottom: 0;*/
+        /*left: 0;*/
+        /*right: 0;*/
+        /*background: rgba(0, 0, 0, 0.7);*/
     }
 
     .popup {
@@ -1143,6 +1088,9 @@
         margin-top: 10px;
         margin-right: 40px;
     }
+    .el-row {
+        margin-top: 10px;
+    }
     .clickableAwesomeFont {
         cursor: pointer
     }
@@ -1156,5 +1104,21 @@
     .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
         opacity: 0;
         transform: translateY(30px);
+    }
+    .el-col {
+        border-radius: 4px;
+    }
+    .bg-purple-dark {
+        background: #99a9bf;
+    }
+    .bg-purple {
+        background: #d3dce6;
+    }
+    .bg-purple-light {
+        background: #e5e9f2;
+    }
+    .grid-content {
+        border-radius: 4px;
+        min-height: 36px;
     }
 </style>
