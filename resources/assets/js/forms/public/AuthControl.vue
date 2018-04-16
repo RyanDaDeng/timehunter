@@ -3,84 +3,90 @@
 
         <el-container>
 
-            <el-aside  width="80px">
+            <div style="  position: fixed; ">
 
-                <!--<FloatTimer></FloatTimer>-->
+                <el-aside  width="80px" >
 
-
-                <el-menu
-                        :default-active=activeIndex
-                        class="el-menu-vertical-demo"
-                        @select="handleSelect"
-                        @open="handleOpen"
-                        :collapse="isCollapse"
-                        @close="handleClose"
-
-                >
-
-                    <el-menu-item index="Dashboard">
-                        <i class="fa fa-home fa-lg"></i>
-                        <span slot="title">&nbsp;&nbsp;&nbsp;Dashboard</span>
-                    </el-menu-item>
+                    <!--<FloatTimer></FloatTimer>-->
 
 
-                    <el-menu-item index="Timers">
-                        <i class="far fa-clock fa-lg"></i>
-                        <span slot="title">&nbsp;&nbsp;&nbsp;Timers</span>
-                    </el-menu-item>
+                    <el-menu
+                            :default-active=activeIndex
+                            class="el-menu-vertical-demo"
+                            @select="handleSelect"
+                            @open="handleOpen"
+                            :collapse="isCollapse"
+                            @close="handleClose"
+
+                    >
+
+                        <el-menu-item index="Dashboard">
+                            <i class="fa fa-home fa-lg"></i>
+                            <span slot="title">&nbsp;&nbsp;&nbsp;Dashboard</span>
+                        </el-menu-item>
 
 
-                    <!--<el-menu-item index="Tasks">-->
+                        <el-menu-item index="Timers">
+                            <i class="far fa-clock fa-lg"></i>
+                            <span slot="title">&nbsp;&nbsp;&nbsp;Timers</span>
+                        </el-menu-item>
+
+
+                        <!--<el-menu-item index="Tasks">-->
                         <!--<i class="fas fa-tasks fa-lg"></i>-->
                         <!--<span slot="title">&nbsp;&nbsp;&nbsp;Tasks</span>-->
-                    <!--</el-menu-item>-->
+                        <!--</el-menu-item>-->
 
 
-                    <el-submenu index="Todos">
-                        <template slot="title">
-                            <i class="far fa-calendar-check fa-lg"></i>
-                            <span>&nbsp;&nbsp;&nbsp;Todos</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="TodosInbox">Inbox</el-menu-item>
-                            <el-menu-item index="TodosToday">Today</el-menu-item>
-                            <el-menu-item index="calendar">Calendar</el-menu-item>
-                        </el-menu-item-group>
+                        <el-submenu index="Todos">
+                            <template slot="title">
+                                <i class="far fa-calendar-check fa-lg"></i>
+                                <span>&nbsp;&nbsp;&nbsp;Todos</span>
+                            </template>
+                            <el-menu-item-group>
+                                <el-menu-item index="TodosInbox">Inbox</el-menu-item>
+                                <el-menu-item index="TodosToday">Today</el-menu-item>
+                                <el-menu-item index="calendar">Calendar</el-menu-item>
+                            </el-menu-item-group>
 
-                    </el-submenu>
+                        </el-submenu>
 
-                    <el-menu-item index="Projects">
-                        <i class="far fa-folder-open fa-lg"></i>
-                        <span slot="title">&nbsp;&nbsp;&nbsp;Projects</span>
-                    </el-menu-item>
+                        <el-menu-item index="Projects">
+                            <i class="far fa-folder-open fa-lg"></i>
+                            <span slot="title">&nbsp;&nbsp;&nbsp;Projects</span>
+                        </el-menu-item>
 
-                    <el-menu-item index="Reports">
-                        <i class="fas fa-chart-bar fa-lg"></i>
-                        <span slot="title">&nbsp;&nbsp;&nbsp;Reports</span>
-                    </el-menu-item>
+                        <el-menu-item index="Reports">
+                            <i class="fas fa-chart-bar fa-lg"></i>
+                            <span slot="title">&nbsp;&nbsp;&nbsp;Reports</span>
+                        </el-menu-item>
 
-                    <el-menu-item index="Timeline">
-                        <i class="fas fa-history fa-lg"></i>
-                        <span slot="title">&nbsp;&nbsp;&nbsp;Timeline</span>
-                    </el-menu-item>
+                        <el-menu-item index="Timeline">
+                            <i class="fas fa-history fa-lg"></i>
+                            <span slot="title">&nbsp;&nbsp;&nbsp;Timeline</span>
+                        </el-menu-item>
 
-                    <el-submenu index="User">
-                        <template slot="title">
-                            <i class="fas fa-user fa-lg"></i>
-                            <span>&nbsp;&nbsp;&nbsp;User</span>
-                        </template>
-                        <el-menu-item-group>
-                            <el-menu-item index="ProfileSetting">Profile Setting</el-menu-item>
-                            <el-menu-item index="AdvancedSetting">Advanced Setting</el-menu-item>
-                            <el-menu-item  @click="logout" index="Logout">Sign out</el-menu-item>
-                        </el-menu-item-group>
+                        <el-submenu index="User">
+                            <template slot="title">
+                                <i class="fas fa-user fa-lg"></i>
+                                <span>&nbsp;&nbsp;&nbsp;User</span>
+                            </template>
+                            <el-menu-item-group>
+                                <el-menu-item index="ProfileSetting">Profile Setting</el-menu-item>
+                                <el-menu-item index="AdvancedSetting">Advanced Setting</el-menu-item>
+                                <el-menu-item  @click="logout" index="Logout">Sign out</el-menu-item>
+                            </el-menu-item-group>
 
-                    </el-submenu>
+                        </el-submenu>
 
 
-                </el-menu>
-            </el-aside>
-            <el-main>
+                    </el-menu>
+                </el-aside>
+
+
+            </div>
+
+            <el-main style="margin-left: 80px;">
                 <router-view></router-view>
             </el-main>
 
