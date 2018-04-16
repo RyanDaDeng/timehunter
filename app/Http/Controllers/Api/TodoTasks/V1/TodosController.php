@@ -180,8 +180,8 @@ class TodosController extends BaseController
         $user = Auth::user();
 
         if($request->is_expired == "false"){
-            $dateFrom = Carbon::parse($request->due_date_time_from)->setTimezone($user->timezone)->timezone('UTC');
-            $dateTo = Carbon::parse($request->due_date_time_to)->setTimezone($user->timezone)->timezone('UTC');
+            $dateFrom = Carbon::parse($request->due_date_time_from,$user->timezone)->timezone('UTC');
+            $dateTo = Carbon::parse($request->due_date_time_to,$user->timezone)->timezone('UTC');
 
             $todos = Todo::where('user_id', $user->id)->where('due_date_time', '>=',
                 $dateFrom->format('Y-m-d H:i:s'))->where('due_date_time', '<=',
