@@ -2,20 +2,23 @@
 
   <div>
 
-      <el-row>
+      <el-row >
           <!--<el-col :span="4">-->
               <!--<el-progress type="circle" :percentage="80" color="#8e71c7"></el-progress>-->
           <!--</el-col>-->
 
-          <el-col :span="4" >  <el-button-group>
+          <el-col :span="4" >
+
+              <el-button-group>
               <el-button type="success" @click="handleCreate();" icon="el-icon-plus" circle></el-button>
-              <el-button type="primary" icon="el-icon-menu" circle></el-button>
+              <el-button type="primary" icon="el-icon-menu" @click="view='card'"circle></el-button>
+                  <el-button type="warning" icon="el-icon-tickets" @click="view='list'"circle></el-button>
               <el-button type="info" icon="el-icon-setting" circle></el-button>
 
           </el-button-group></el-col>
 
-          <el-col :span="3" > <el-progress type="circle"  width='80' :percentage="25"></el-progress></el-col>
-          <el-col :span="3" > <el-progress type="circle" width='80' :percentage="80" color="#8e71c7"></el-progress> </el-col>
+          <el-col :span="3" > <el-progress type="circle"  :width='80' :percentage="25"></el-progress></el-col>
+          <el-col :span="3" > <el-progress type="circle" :width='80' :percentage="80" color="#8e71c7"></el-progress> </el-col>
 
           <el-col :span="3">
           <el-select v-model="value8" filterable placeholder="Project">
@@ -38,7 +41,7 @@
                   </el-option>
               </el-select>
           </el-col>
-          <el-col :span="8">  <el-date-picker
+          <el-col :span="8" >  <el-date-picker
                   @change="changeDate()"
                   v-model="value6"
                   type="daterange"
@@ -49,8 +52,44 @@
           </el-date-picker></el-col>
 
 
+          <!--<el-col :span="2" :offset="1">  <el-row>-->
+              <!--<v-badge color="red" v-model="show">-->
+                  <!--<span slot="badge">6</span>-->
+                  <!--<el-radio v-model="radio3" label="Today" border>Today</el-radio>-->
+              <!--</v-badge>-->
+
+          <!--</el-row></el-col>-->
+
+          <el-col :span="8" :offset="6">  <el-row>
+
+                  <v-chip @click="radio3='Today'" color="blue" text-color="white">Today</v-chip>
+
+                    <v-chip @click="radio3='Week'" color="green" text-color="white">Week</v-chip>
+
+                  <v-chip @click="radio3='Month'" color="orange" text-color="white">Month</v-chip>
+
+                  <v-chip @click="radio3='Expired'" color="red" text-color="white">Delayed</v-chip>
+
+
+          </el-row></el-col>
+
+          <!--<el-col :span="2" :offset="1">  <el-row>-->
+              <!--<v-badge color="red" v-model="show">-->
+                  <!--<span slot="badge">6</span>-->
+                  <!--<el-radio v-model="radio3" label="Month" border>Month</el-radio>-->
+              <!--</v-badge>-->
+          <!--</el-row></el-col>-->
+
+
+          <!--<el-col :span="2" :offset="1">  <el-row>-->
+              <!--<v-badge color="red" v-model="show">-->
+                  <!--<span slot="badge">6</span>-->
+                  <!--<el-radio v-model="radio3" label="Expired" border>Delayed</el-radio>-->
+              <!--</v-badge>-->
+          <!--</el-row></el-col>-->
 
       </el-row>
+
 
       <el-tabs  v-model="activeName" >
           <el-tab-pane label="Todos" name="first">
@@ -82,26 +121,27 @@
                           <!--<p v-if="showBox">hello</p>-->
                       </transition>
 
-                      <div v-for="result,index in results">
-                          <el-col :span="6">
-                              <div class="div-middle"><span class="attribution">Important and urgent</span></div>
-                              <div  v-bind:class="getGridColorClass(index)" v-loading="gridLoading[index]">
 
-                                  <div >
-                                      <ul >
+                          <div v-for="result,index in results">
+                              <el-col :span="6">
+                                  <div class="div-middle"><span class="attribution">Important and urgent</span></div>
+                                  <div  v-bind:class="getGridColorClass(index)" v-loading="gridLoading[index]">
 
-                                          <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
+                                      <div v-if="view=='card'">
+                                          <ul >
+
+                                              <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
 
 
-                                              <li class="page-gap" v-for="v,x in results[index] " :key="v.id">
+                                                  <li class="page-gap" v-for="v,x in results[index] " :key="v.id">
 
-                                                  <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                                      <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                                      <h2>{{v.due_date_time | dateName}}</h2>
-                                                      <!--style="text-decoration:line-through;"-->
-                                                      <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
+                                                          <h2>{{v.due_date_time | dateName}}</h2>
+                                                          <!--style="text-decoration:line-through;"-->
+                                                          <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
 
-                                                      <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+                                                          <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
 
                                         <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
@@ -109,17 +149,50 @@
                                          <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
                                         <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
-                                                  </a>
+                                                      </a>
 
-                                              </li>
+                                                  </li>
 
-                                          </draggable>
+                                              </draggable>
 
-                                      </ul>
+                                          </ul>
+                                      </div>
+
+                                      <div v-if="view=='list'">
+                                          <div style="cursor: move;">
+
+                                              <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
+
+
+                                                  <li class="page-gap" style=" padding:10px 0;margin-left:10px;" v-for="v,x in results[index] " :key="v.id">
+
+                                                      <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+
+                                                          <h2 >{{v.due_date_time | dateName}}</h2>
+                                                          <!--style="text-decoration:line-through;"-->
+                                                          <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
+
+                                                          <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+
+
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
+                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
+                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
+                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
+                                    </span></div>
+                                                      </a>
+
+                                                  </li>
+
+                                              </draggable>
+
+                                          </div>
+                                      </div>
                                   </div>
-                              </div>
-                          </el-col>
-                      </div>
+                              </el-col>
+                          </div>
+
+
 
 
                   </el-row>
@@ -130,23 +203,23 @@
 
           <el-tab-pane label="Statistics" name="second">
 
-              <el-row :gutter="12">
-                  <el-col :span="8">
-                      <el-card shadow="always">
-                          <el-progress type="circle" :percentage="80" color="#8e71c7"></el-progress>
-                      </el-card>
-                  </el-col>
-                  <el-col :span="8">
-                      <el-card shadow="hover">
-                          <el-progress type="circle" :percentage="25"></el-progress>
-                      </el-card>
-                  </el-col>
-                  <el-col :span="8">
-                      <el-card shadow="never">
-                          <el-progress type="circle" :percentage="25"></el-progress>
-                      </el-card>
-                  </el-col>
-              </el-row>
+              <!--<el-row :gutter="12">-->
+                  <!--<el-col :span="8">-->
+                      <!--<el-card shadow="always">-->
+                          <!--<el-progress type="circle" :percentage="80" color="#8e71c7"></el-progress>-->
+                      <!--</el-card>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="8">-->
+                      <!--<el-card shadow="hover">-->
+                          <!--<el-progress type="circle" :percentage="25"></el-progress>-->
+                      <!--</el-card>-->
+                  <!--</el-col>-->
+                  <!--<el-col :span="8">-->
+                      <!--<el-card shadow="never">-->
+                          <!--<el-progress type="circle" :percentage="25"></el-progress>-->
+                      <!--</el-card>-->
+                  <!--</el-col>-->
+              <!--</el-row>-->
 
           </el-tab-pane>
       </el-tabs>
@@ -333,6 +406,7 @@
         data: function () {
 
             return {
+                value2:true,
                 options: [{
                     value: '选项1',
                     label: '黄金糕'
@@ -350,6 +424,7 @@
                     label: '北京烤鸭'
                 }],
                 value8: '',
+                view:'list',
                 gridLoading: {
                     1: false,
                     2: false,
@@ -928,14 +1003,23 @@
         overflow:hidden;
         padding:2em;
     }
-
+    .content {
+        flex: 1;
+        display: flex;
+        overflow: auto;
+    }
+    .box {
+        min-height: min-content; /* needs vendor prefixes */
+        display: flex;
+    }
     ul li a{
+        cursor:move;
         text-decoration:none;
         color:#000;
         background:#ffc;
         display:block;
-        height: 170px;
-        width:170px;
+        height: 200px;
+        width:200px;
         padding:1em;
         -moz-box-shadow:5px 5px 7px rgba(33,33,33,1);
         -webkit-box-shadow: 5px 5px 7px rgba(33,33,33,.7);
@@ -945,17 +1029,17 @@
         -webkit-transition:-webkit-transform .15s linear;
     }
     ul li{
-        margin:10px;
+        margin:30px;
         /*float:left;*/
     }
     ul li h2{
-        font-size:80%;
+        font-size:100%;
         font-weight:bold;
         padding-bottom:5px;
     }
     ul li p{
         /*font-family:"Reenie Beanie",arial,sans-serif;*/
-        font-size:80%;
+        font-size:120%;
         word-wrap: break-word;
     }
     /*ul li:nth-child(even) a{*/

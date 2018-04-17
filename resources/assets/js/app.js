@@ -26,6 +26,11 @@ import 'element-ui/lib/theme-chalk/index.css';
 import locale from 'element-ui/lib/locale/lang/en'
 
 window.Vue.use(ElementUI,{ locale });
+
+
+import 'vuetify/dist/vuetify.min.css';
+import Vuetify from 'vuetify'
+window.Vue.use(Vuetify)
 //import VueI18n from 'vue-i18n'
 //
 //window.Vue.use(VueI18n);
