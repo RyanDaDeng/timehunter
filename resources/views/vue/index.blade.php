@@ -3,7 +3,7 @@
 <head>
 
     <!-- Html Page Specific -->
-    <title>Tick-Tock Todo</title>
+    <title>Time Hunter</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <meta charset="utf-8">

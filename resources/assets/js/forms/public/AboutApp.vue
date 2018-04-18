@@ -15,7 +15,7 @@
                             <div style="text-align: center;">
 
                                 <h3>Version Information</h3>
-                                <p>Tick-Tock is a product that allows you to track your tasks, todos and works easily.</p>
+                                <p>Time Hunter is a product that allows you to track your tasks, todos and works easily.</p>
                             </div>
 
                             <!--<i class="fas fa-clock fa-8x" style="color: red;"></i>-->

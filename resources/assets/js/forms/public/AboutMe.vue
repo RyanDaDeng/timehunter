@@ -157,7 +157,7 @@
                             <p>Worked as a non-commercial developer during my spare time. </p>
 
                             <ul>
-                                <li> Working on a personal project called Tick-Tock, which is a completely free software
+                                <li> Working on a personal project called Time Hunter, which is a completely free software
                                     that allows people to track their time, todos and works easily.
                                 </li>
                                 <li> Created a fully automated booking script by using Selenium to help my friend to

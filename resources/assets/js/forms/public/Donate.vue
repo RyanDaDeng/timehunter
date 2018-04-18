@@ -15,7 +15,7 @@
                             <div style="text-align: center;">
 
                                 <h3>Please support me.</h3>
-                                <p>Support Tick-Tock (A completely free time management software.) </p>
+                                <p>Support Time Hunter (A completely free time management software.) </p>
                                 <div>
                                     <p>Paypal</p>
                                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
@@ -42,10 +42,10 @@
                         <div style="font-size:16px;">
 
                             <p style="color: red;"><i class="fas fa-heart fa-2x" style="color:red;"></i>
-                                &nbsp;&nbsp;Thank you for supporting Tick-Tock, every $2 will help our servers run for
+                                &nbsp;&nbsp;Thank you for supporting Time Hunter, every $2 will help our servers run for
                                 another 1 hour.</p>
                             <p>The application is built by my spare time. I do really enjoy my time on implementing this
-                                website. I wish you had a good journey on Tick-Tock.</p>
+                                website. I wish you had a good journey on Time Hunter.</p>
 
                             <p>However, The server is currently host on Amazon Web
                                 Service - Free tier. The free server has a lot of limitations and random disconnections.

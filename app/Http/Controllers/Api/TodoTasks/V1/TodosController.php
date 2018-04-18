@@ -179,32 +179,47 @@ class TodosController extends BaseController
     {
         $user = Auth::user();
 
-        if($request->is_expired == "false"){
-            $dateFrom = Carbon::parse($request->due_date_time_from,$user->timezone)->timezone('UTC');
-            $dateTo = Carbon::parse($request->due_date_time_to,$user->timezone)->timezone('UTC');
+        if ($request->is_expired == "false") {
+            $dateFrom = Carbon::parse($request->due_date_time_from, $user->timezone)->timezone('UTC');
+            $dateTo = Carbon::parse($request->due_date_time_to, $user->timezone)->timezone('UTC');
 
             $todos = Todo::where('user_id', $user->id)->where('due_date_time', '>=',
                 $dateFrom->format('Y-m-d H:i:s'))->where('due_date_time', '<=',
                 $dateTo->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'asc')->get();
-        }else{
+        } else {
             $now = Carbon::now('UTC');
-            $todos = Todo::where('user_id', $user->id)->where('is_done',0)->where('due_date_time', '<=',
+            $todos = Todo::where('user_id', $user->id)->where('is_done', 0)->where('due_date_time', '<=',
                 $now->format('Y-m-d H:i:s'))->orderBy('due_date_time', 'asc')->get();
         }
 
         $result = [
+            'summary' => [
+                'done' => 0,
+                'not_done' => 0,
+                'total_hours'=>0
+            ],
             1 => [],
             2 => [],
             3 => [],
-            4 => []
+            4 => [],
         ];
+
+        $done = 0;
+        $notDone = 0;
         foreach ($todos as $todo) {
+            if($todo->is_done == true){
+                $done ++;
+            }else{
+                $notDone++;
+            }
+
             $todo->due_date_time = Carbon::parse($todo->due_date_time,
                 'UTC')->timezone($user->timezone)->format('Y-m-d H:i:s');
             $result[$todo->priority_level][] = $todo->toArray();
 
         }
-
+        $result['summary']['done'] = $done;
+        $result['summary']['not_done'] = $notDone;
         return $this->sendOkResponse($result, 'Incomplete Todo retrieved.');
     }
 

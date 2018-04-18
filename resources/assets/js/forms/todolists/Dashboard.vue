@@ -18,27 +18,42 @@
           </el-button-group></el-col>
 
           <el-col :span="3" > <el-progress type="circle"  :width='80' :percentage="25"></el-progress></el-col>
-          <el-col :span="3" > <el-progress type="circle" :width='80' :percentage="80" color="#8e71c7"></el-progress> </el-col>
+          <el-col :span="3" > <el-progress type="circle" :width='80' :percentage="finishRatio" color="#87CD66"></el-progress> </el-col>
 
           <el-col :span="3">
           <el-select v-model="value8" filterable placeholder="Project">
               <el-option
-                      v-for="item in options"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.value">
+                      key="All"
+                      label="All"
+                      value="All">
+              </el-option>
+              <el-option
+                      key="Done"
+                      label="Done"
+                      value="Done">
+              </el-option>
+              <el-option
+                      key="NotDone"
+                      label="Not Done"
+                      value="NotDone">
               </el-option>
           </el-select>
           </el-col>
           <el-col :span="3">
 
-              <el-select v-model="value8" filterable placeholder="Status">
+              <el-select v-model="value9" filterable placeholder="Project">
                   <el-option
-                          v-for="item in options"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.value">
+                          label="All"
+                          key="All"
+                          value="All">
                   </el-option>
+                  <el-option
+                          v-for="item in projects"
+                          :label="item.name"
+                          :key="item.id"
+                          :value="item.id">
+                  </el-option>
+
               </el-select>
           </el-col>
           <el-col :span="8" >  <el-date-picker
@@ -132,8 +147,10 @@
 
                                               <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
 
-
-                                                  <li class="page-gap" v-for="v,x in results[index] " :key="v.id">
+                                                  <div v-for="v,x in results[index] " :key="v.id">
+                                                      <transition name="slide-fade">
+                                                      <div v-show="checkStatusCondition(v)">
+                                                  <li class="page-gap" >
 
                                                       <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
@@ -153,6 +170,10 @@
 
                                                   </li>
 
+                                                  </div>
+                                                      </transition>
+                                                  </div>
+
                                               </draggable>
 
                                           </ul>
@@ -163,16 +184,18 @@
 
                                               <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
 
+                                                  <div v-for="v,x in results[index] " :key="v.id">
+                                                      <transition name="slide-fade">
+                                                  <div v-if="checkStatusCondition(v)">
+                                                  <li class="page-gap" style=" padding:10px 0;margin-left:10px;"  >
 
-                                                  <li class="page-gap" style=" padding:10px 0;margin-left:10px;" v-for="v,x in results[index] " :key="v.id">
+                                                          <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                                      <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                                              <h2 >{{v.due_date_time | dateName}}</h2>
+                                                              <!--style="text-decoration:line-through;"-->
+                                                              <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name }}</p>
 
-                                                          <h2 >{{v.due_date_time | dateName}}</h2>
-                                                          <!--style="text-decoration:line-through;"-->
-                                                          <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
-
-                                                          <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+                                                              <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
 
                                         <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
@@ -180,10 +203,11 @@
                                          <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
                                         <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
-                                                      </a>
-
+                                                          </a>
                                                   </li>
-
+                                                  </div>
+                                                          </transition>
+                                                  </div>
                                               </draggable>
 
                                           </div>
@@ -406,24 +430,12 @@
         data: function () {
 
             return {
+                numDone:0,
+                numNotDone:0,
                 value2:true,
-                options: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }, {
-                    value: '选项3',
-                    label: '蚵仔煎'
-                }, {
-                    value: '选项4',
-                    label: '龙须面'
-                }, {
-                    value: '选项5',
-                    label: '北京烤鸭'
-                }],
-                value8: '',
+                summary:{},
+                value8: 'All',
+                value9:'All',
                 view:'list',
                 gridLoading: {
                     1: false,
@@ -507,6 +519,16 @@
             };
 
         },
+        computed: {
+            finishRatio: function () {
+                const a = this.numNotDone + this.numDone
+
+                if(a<=0){
+                    return 0;
+                }
+                return Math.round((this.numDone /a) *100)
+            }
+        },
         watch:{
             radio3: function(val){
                 console.log(val);
@@ -556,6 +578,7 @@
 //            this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().add(7,'day').endOf('day').format("YYYY-MM-DD HH:mm:ss"));
 //            console.log(this.importantAndUrgent);
             this.today = moment();
+
         },
         filters: {
 
@@ -592,6 +615,30 @@
             }
         },
         methods: {
+            checkStatusCondition(v){
+
+                if(this.value9 !='All'){
+                    if(v.project_id != this.value9){
+                        return false;
+                    }
+                }
+                if(this.value8 =='All'){
+                    return true;
+                }
+
+                if(v.is_done == true && this.value8 =='Done'){
+
+                    return true;
+                }
+
+                if(v.is_done == false && this.value8 =='NotDone'){
+                    return true;
+                }
+
+
+
+                return false
+            },
             getLoading(index){
               return false;
             },
@@ -681,11 +728,16 @@
                 }
 
                 if(response.data.results.done.is_done == 1){
+                    this.numDone ++;
+                    this.numNotDone --;
                     this.showBox = true;
                     this.audio = new Audio('https://ryandeng.com/audio/teda.mp3');
                     this.audio.play();
 
                     setTimeout(function () {  this.showBox = false }.bind(this), 3000)
+                }else{
+                    this.numDone --;
+                    this.numNotDone ++;
                 }
 
 //                this.$message({
@@ -921,6 +973,13 @@
                 })
                         .then(function (resp) {
 
+
+                            app.summary = resp.data.results['summary'];
+
+                            app.numDone = app.summary.done;
+                            app.numNotDone = app.summary.not_done;
+
+                            delete resp.data.results["summary"];
                             app.results = resp.data.results;
                             app.loadingFull = false;
                         })
@@ -956,7 +1015,8 @@
     }
 
     .popup {
-        margin: 50px auto;
+        margin: 200px auto;
+        left:20%;
         padding: 20px;
         background: #fff;
         border-radius: 5px;
@@ -1204,5 +1264,24 @@
     .grid-content {
         border-radius: 4px;
         min-height: 36px;
+    }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
+    /* Enter and leave animations can use different */
+    /* durations and timing functions.              */
+    .slide-fade-enter-active {
+        transition: all .5s ease;
+    }
+    .slide-fade-leave-active {
+        transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to
+        /* .slide-fade-leave-active below version 2.1.8 */ {
+        transform: translateX(10px);
+        opacity: 0;
     }
 </style>

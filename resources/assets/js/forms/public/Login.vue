@@ -25,7 +25,7 @@
 
 
                         <div>
-                            <small  class="text-muted" style="font-size: 10px;vertical-align: text-top;">Tick-Tock</small> <sup><small class="text-muted">v0.1.2</small></sup>
+                            <small  class="text-muted" style="font-size: 10px;vertical-align: text-top;">Time Hunter</small> <sup><small class="text-muted">v0.1.2</small></sup>
 
                         </div>
 
