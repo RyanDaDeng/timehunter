@@ -139,7 +139,24 @@
 
                           <div v-for="result,index in results">
                               <el-col :span="6">
-                                  <div class="div-middle"><span class="attribution">Important and urgent</span></div>
+                                  <div class="div-middle"><span class="attribution">
+
+                                      <div v-if="index == 1">
+                                          Important and Urgent2
+                                      </div>
+
+                                       <div v-if="index == 2">
+                                           Important but Not Urgent
+                                       </div>
+                                       <div v-if="index == 3">
+                                           Not Important but Urgent
+                                       </div>
+                                       <div v-if="index == 4">
+                                           Not Important and Not Urgent
+                                       </div>
+
+
+                                  </span></div>
                                   <div  v-bind:class="getGridColorClass(index)" v-loading="gridLoading[index]">
 
                                       <div v-if="view=='card'">
