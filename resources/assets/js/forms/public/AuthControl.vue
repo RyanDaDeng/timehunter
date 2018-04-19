@@ -7,7 +7,7 @@
 
                 <el-aside  width="80px" >
 
-                    <!--<FloatTimer></FloatTimer>-->
+                    <FloatTimer></FloatTimer>
 
 
                     <el-menu
