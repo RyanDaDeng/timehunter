@@ -223,6 +223,8 @@
                                          <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
                                         <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
+
+                                                                  
                                                               </a>
                                                           </li>
                                                       </div>
