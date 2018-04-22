@@ -137,9 +137,11 @@
                       </transition>
 
 
-                          <div v-for="result,index in results">
-                              <el-col :span="6">
-                                  <div class="div-middle"><span class="attribution">
+                      <div class="flexbox">
+
+                          <el-col :span="6" v-bind:class="getGridColorClass(index)" v-for="v,index in results " :key="v.id">
+
+                              <div class="div-middle"><span class="attribution">
 
                                       <div v-if="index == 1">
                                           Important and Urgent2
@@ -157,62 +159,26 @@
 
 
                                   </span></div>
-                                  <div  v-bind:class="getGridColorClass(index)" v-loading="gridLoading[index]">
 
-                                      <div v-if="view=='card'">
-                                          <ul >
+                              <div v-loading="gridLoading[index]">
 
-                                              <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
+                                  <div v-if="view=='card'">
+                                      <ul >
 
-                                                  <div v-for="v,x in results[index] " :key="v.id">
-                                                      <transition name="slide-fade">
+                                          <draggable v-model="results[index]"  class='dragArea' :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
+
+                                              <div v-for="v,x in results[index] " :key="v.id">
+                                                  <transition name="slide-fade">
                                                       <div v-show="checkStatusCondition(v)">
-                                                  <li class="page-gap" >
+                                                          <li class="page-gap" >
 
-                                                      <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+                                                              <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
 
-                                                          <h2>{{v.due_date_time | dateName}}</h2>
-                                                          <!--style="text-decoration:line-through;"-->
-                                                          <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
+                                                                  <h2>{{v.due_date_time | dateName}}</h2>
+                                                                  <!--style="text-decoration:line-through;"-->
+                                                                  <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name | truncate}}</p>
 
-                                                          <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
-
-
-                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
-                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
-                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
-                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
-                                    </span></div>
-                                                      </a>
-
-                                                  </li>
-
-                                                  </div>
-                                                      </transition>
-                                                  </div>
-
-                                              </draggable>
-
-                                          </ul>
-                                      </div>
-
-                                      <div v-if="view=='list'">
-                                          <div style="cursor: move;">
-
-                                              <draggable v-model="results[index]" class="dragArea" :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
-
-                                                  <div v-for="v,x in results[index] " :key="v.id">
-                                                      <transition name="slide-fade">
-                                                  <div v-if="checkStatusCondition(v)">
-                                                  <li class="page-gap" style=" padding:10px 0;margin-left:10px;"  >
-
-                                                          <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
-
-                                                              <h2 >{{v.due_date_time | dateName}}</h2>
-                                                              <!--style="text-decoration:line-through;"-->
-                                                              <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name }}</p>
-
-                                                              <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+                                                                  <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
 
 
                                         <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
@@ -220,19 +186,56 @@
                                          <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
                                         <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
                                     </span></div>
-                                                          </a>
-                                                  </li>
-                                                  </div>
-                                                          </transition>
-                                                  </div>
-                                              </draggable>
+                                                              </a>
 
-                                          </div>
+                                                          </li>
+
+                                                      </div>
+                                                  </transition>
+                                              </div>
+
+                                          </draggable>
+
+                                      </ul>
+                                  </div>
+
+                                  <div v-if="view=='list'">
+                                      <div style="cursor: move;">
+
+                                          <draggable v-model="results[index]"  class='dragArea' :options="{animation:200,group:'due_date_time'}"  @change="updateOne(index,$event)">
+
+                                              <div v-for="v,x in results[index] " :key="v.id">
+                                                  <transition name="slide-fade">
+                                                      <div v-if="checkStatusCondition(v)">
+                                                          <li class="page-gap" style=" padding:10px 0;margin-left:10px;"  >
+
+                                                              <a v-loading="todoLoading[v.id]" v-bind:class="getClass(v.is_done)" @mouseover="getShow(v.id,true)" @mouseleave="getShow(v.id,false)">
+
+                                                                  <h2 >{{v.due_date_time | dateName}}</h2>
+                                                                  <!--style="text-decoration:line-through;"-->
+                                                                  <p v-bind:class="getDoneClass(v.is_done)" @click="handleDetails(v,x)">{{v.frequency}} {{v.name }}</p>
+
+                                                                  <div class="div-bottom" v-show="show[v.id]"><span class="attribution-right">
+
+
+                                        <span class='clickableAwesomeFont' @click="handleEdit(v,x)"><i  class="far fa-edit"></i></span>
+                                      <span class='clickableAwesomeFont'  @click="handleStart(v)"><i class="far fa-clock"></i></span>
+                                         <span class='clickableAwesomeFont' @click="complete(v)"><i  class="far fa-check-circle"></i></span>
+                                        <span class='clickableAwesomeFont'  @click="handleDelete(v,x)"><i class="far fa-trash-alt"></i></span>
+                                    </span></div>
+                                                              </a>
+                                                          </li>
+                                                      </div>
+                                                  </transition>
+                                              </div>
+                                          </draggable>
+
                                       </div>
                                   </div>
-                              </el-col>
-                          </div>
+                              </div>
 
+                          </el-col>
+                      </div>
 
 
 
@@ -589,7 +592,7 @@
         },
         mounted () {
             this.getProjects();
-            this.radio3 = 'Today';
+            this.radio3 = 'Month';
 //            this.value6.push( new Date());
 //            this.value6.push(this.addDays(new Date(),1));
 //            this.getNotDoneTodos(moment().startOf('day').format("YYYY-MM-DD HH:mm:ss"),moment().add(7,'day').endOf('day').format("YYYY-MM-DD HH:mm:ss"));
@@ -1068,6 +1071,8 @@
         margin:3em;
         background:#666;
         color:#fff;
+        height: 100%;
+        min-height: 100vh;
     }
     h2,p{
         font-size:100%;
@@ -1209,7 +1214,7 @@
     ol li a{color:#fff;}
 
     .dragArea {
-        min-height:800px;
+        min-height:100vh;
     }
 
     .attribution{
@@ -1300,5 +1305,27 @@
         /* .slide-fade-leave-active below version 2.1.8 */ {
         transform: translateX(10px);
         opacity: 0;
+    }
+    .flexbox {
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        overflow: hidden;
+    }
+    .flexbox .col {
+        flex: 1;
+    }
+
+    .flexbox .col:nth-child(1) {
+        background: red;
+    }
+    .flexbox .col:nth-child(2) {
+        background: red;
+    }
+    .flexbox .col:nth-child(3) {
+        background: red;
+    }
+    .flexbox .col:nth-child(4) {
+        background: red;
     }
 </style>

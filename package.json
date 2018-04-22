@@ -30,6 +30,7 @@
         "moment-timezone": "^0.5.14",
         "vue-chartjs": "^3.3.1",
         "vue-cute-timeline": "^1.2.4",
+        "vue-draggable-resizable": "^1.7.1",
         "vue-i18n": "^7.6.0",
         "vue-infinite-scroll": "^2.0.2",
         "vuedraggable": "^2.16.0",

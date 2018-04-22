@@ -1,6 +1,9 @@
 <template>
 
-    <div>
+    <div class="yess">
+
+
+            <vue-draggable-resizable >
 
     <div v-if="hasRunningTimer== true">
         <el-dialog
@@ -77,11 +80,14 @@
 
 
     </div>
+            </vue-draggable-resizable>
+
     </div>
 </template>
 
 <script>
     import moment from 'moment'
+    import VueDraggableResizable from 'vue-draggable-resizable'
     export default {
         data: function () {
             return {
@@ -92,6 +98,10 @@
                 runningTimer:{id:null,name:'',started_at:''},
                 counter: {seconds: 0, timer: null,ticker:null},
                 activeTimerString: 'Calculating...',
+                width: 0,
+                height: 0,
+                x: 0,
+                y: 0
             }
         },
         mounted() {
@@ -128,6 +138,16 @@
             }
         },
         methods: {
+            onResize: function (x, y, width, height) {
+                this.x = x
+                this.y = y
+                this.width = width
+                this.height = height
+            },
+            onDrag: function (x, y) {
+                this.x = x
+                this.y = y
+            },
             /**
              * Conditionally pads a number with "0"
              */
@@ -192,3 +212,10 @@
         }
     }
 </script>
+
+
+<style>
+    .yess{
+        position:absolute;z-index:122222000;overflow: visible;
+    }
+</style>

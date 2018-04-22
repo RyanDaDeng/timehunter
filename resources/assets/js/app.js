@@ -31,6 +31,9 @@ window.Vue.use(ElementUI,{ locale });
 import 'vuetify/dist/vuetify.min.css';
 import Vuetify from 'vuetify'
 window.Vue.use(Vuetify)
+import VueDraggableResizable from 'vue-draggable-resizable'
+
+window.Vue.component('vue-draggable-resizable', VueDraggableResizable)
 //import VueI18n from 'vue-i18n'
 //
 //window.Vue.use(VueI18n);
