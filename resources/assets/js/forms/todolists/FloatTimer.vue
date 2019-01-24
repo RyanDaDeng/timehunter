@@ -216,6 +216,8 @@
 
 <style>
     .yess{
-        position:absolute;z-index:122222000;overflow: visible;
+        position:fixed;z-index:122222000;overflow: visible;
+        left:0px;
+        bottom:150px;
     }
 </style>

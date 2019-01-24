@@ -2,12 +2,11 @@
     <div>
 
         <el-container>
+            <FloatTimer></FloatTimer>
 
             <div style="  position: fixed; ">
 
                 <el-aside  width="80px" >
-
-                    <FloatTimer></FloatTimer>
 
 
                     <el-menu
