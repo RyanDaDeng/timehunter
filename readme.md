@@ -22,6 +22,7 @@ There are many useless files and haven't been cleaned up, they are all my testin
 
 The vue main src located at https://github.com/RyanDaDeng/timehunter/tree/ryandeng-backup/resources/assets/js/forms
 
+Well, this is still the project that I am proud of.
 ## Install
 
 1. Run composer install
