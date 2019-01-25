@@ -13,6 +13,12 @@ The project is built on March 2017 and finished draft version in 2 weeks. The pr
 
 YouTube draft demo video: https://youtu.be/lZp60SQXFMI
 
+## Install
+
+1. Run composer install
+2. Run npm install
+3. Create your database, and run php artisan migrate
+4. Done
 
 ## Some Pictures
 
