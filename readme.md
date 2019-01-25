@@ -16,3 +16,8 @@ YouTube draft demo video: https://youtu.be/lZp60SQXFMI
 
 ## Some Pictures
 
+<img src="https://github.com/RyanDaDeng/timehunter/blob/master/1.jpg" />
+
+<img src="https://github.com/RyanDaDeng/timehunter/blob/master/2.jpg" />
+
+<img src="https://github.com/RyanDaDeng/timehunter/blob/master/3.jpg" />
