@@ -1,7 +1,7 @@
 
 ## About This project
 
-Laravel, Vuejs, vue-router, Passport, OAuth2
+Built by Laravel, Vuejs, vue-router, Passport, OAuth2 and ElementUI
 
 The project was originally host on Amazon EC2 with https://timehunter.io (I have shut it down recently.)
 
