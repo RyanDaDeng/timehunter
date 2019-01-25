@@ -13,6 +13,12 @@ The project is built on March 2017 and finished draft version in 2 weeks. The pr
 
 YouTube draft demo video: https://youtu.be/lZp60SQXFMI
 
+## More...
+This is a project that helps me learn a lot vuejs and my first startup project.
+The backend structure is shit....
+There are many useless files and haven't been cleaned up, they are all my testing files...
+The vue main src located at https://github.com/RyanDaDeng/timehunter/tree/ryandeng-backup/resources/assets/js/forms
+
 ## Install
 
 1. Run composer install
