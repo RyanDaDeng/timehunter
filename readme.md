@@ -14,7 +14,7 @@ YouTube draft demo video: https://youtu.be/lZp60SQXFMI
 ## More...
 This is a project that helps me learn a lot vuejs and my first startup project.
 
-The project is built in March 2017 and rushed draft version in 2 weeks. The project is not fully polished and is not following good OOD design, it requires more clean-up.
+The project is built in March 2018 and rushed draft version in 2 weeks. The project is not fully polished and is not following good OOD design, it requires more clean-up.
 
 The backend structure is shit....
 
