@@ -16,8 +16,6 @@ This is a project that helps me learn a lot vuejs and my first startup project.
 
 The project is built in March 2018 and rushed draft version in 2 weeks. The project is not fully polished and is not following good OOD design, it requires more clean-up.
 
-The backend structure is shit....
-
 There are many useless files and haven't been cleaned up, they are all my testing files...
 
 The vue main src located at https://github.com/RyanDaDeng/timehunter/tree/ryandeng-backup/resources/assets/js/forms
